@@ -1,4 +1,5 @@
 var fs = require('fs');
+var os = require('os');
 
 var TestSuite = require('./TestSuite');
 var Test = require('./Test');
@@ -13,7 +14,7 @@ var regexEscape = function(string) {
 };
 
 var stringContainsSubstring = function(string, substring) {
-  return string.search(new RegExp(regexEscape(substring))) < 0;
+  return string.search(new RegExp(regexEscape(substring))) > 0;
 };
 
 global.UnitTestSCAD = [];
@@ -30,39 +31,48 @@ global.it = function(title, callback) {
   callback();
 }
 
-global.assert = {
-  "openScadFunction": function(testText) {
-    return {
-      "outputToBe": function(expectedText) {
-        ScadHandler.writeScadFile(CONFIG.openScadDirectory, TEMP, 'echo("UnitTestSCAD");\necho(' + testText + ');');
-        output = ScadHandler.execTemp(STL, TEMP);
-        output = ScadHandler.getOutputLine(output.split("\n"));
-
-        global.currentTest.assertions++;
-        if(stringContainsSubstring(output, expectedText)) {
-          global.currentTest.failures++;
-        }
-      }
-    }
-  },
-  "openScadModule": function(testText) {
-    return {
-      "stlFileToBe": function(file) {
-        ScadHandler.writeScadFile(CONFIG.openScadDirectory, TEMP, testText + ';');
-        ScadHandler.execTemp(STL, TEMP);
-
-        global.currentTest.assertions++;
-
-        var output = fs.readFileSync(STL, 'utf8');
-        var expected = fs.readFileSync(file, 'utf8');
-
-        if(output !== expected) {
-          global.currentTest.failures++;
-        }
-        fs.unlink(STL);
+var functionTester = function(testText) {
+  ScadHandler.writeScadFile(CONFIG.openScadDirectory, TEMP, 'echo("UnitTestSCAD");' + os.EOL + 'echo(' + testText + ');');
+  output = ScadHandler.execTemp(STL, TEMP);
+  output = ScadHandler.getOutputLine(output.split(os.EOL));
+  
+  return {
+    "outputToBe": function(expectedText) {
+      global.currentTest.assertions++;
+      if(!stringContainsSubstring(output, expectedText)) {
+        global.currentTest.failures++;
       }
     }
   }
+};
+
+var moduleTester = function(testText) {
+  ScadHandler.writeScadFile(CONFIG.openScadDirectory, TEMP, testText + ';');
+  ScadHandler.execTemp(STL, TEMP);
+  
+  var output = fs.readFileSync(STL, 'utf8');
+
+  return {
+    "stlFileToBe": function(file) {
+      global.currentTest.assertions++;
+      var expected = fs.readFileSync(file, 'utf8');
+
+      if(output !== expected) {
+        global.currentTest.failures++;
+      }
+    },
+    "toHaveVertexCountOf": function(expectedCount) {
+      global.currentTest.assertions++;
+      if(ScadHandler.countVertices(output) !== expectedCount) {
+        global.currentTest.failures++;
+      }
+    }
+  }
+};
+
+global.assert = {
+  "openScadFunction": functionTester,
+  "openScadModule": moduleTester
 };
 
 CONFIG.testFiles.forEach(function(file) {
@@ -71,8 +81,9 @@ CONFIG.testFiles.forEach(function(file) {
 
 global.UnitTestSCAD.forEach(function(testSuite) {
   testSuite.tests.forEach(function(test) {
-    console.log(testSuite.name + ": " + test.title + ":\n    " + test.failures + " failures in " + test.assertions + " assertions.");
+    console.log(testSuite.name + ": " + test.title + ":" +  os.EOL + "    " + test.failures + " failures in " + test.assertions + " assertions.");
   });
 
   fs.unlink(TEMP);
+  fs.unlink(STL);
 });

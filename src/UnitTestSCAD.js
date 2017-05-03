@@ -82,7 +82,11 @@ global.assert = {
 
 var main = function(configFile, temporaryFile, stlFile) {
   if(configFile) {
-    CONFIG = JSON.parse(fs.readFileSync(configFile, 'utf8'));
+    try {
+      CONFIG = JSON.parse(fs.readFileSync(configFile, 'utf8'));
+    } catch (a) {
+      ErrorHandler.throwErrorAndExit(ErrorHandler.REASONS.INVALID_CONFIG);
+    }
     CONFIG.testFiles.forEach(function(file) {
       require(file);
     });

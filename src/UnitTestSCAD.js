@@ -1,11 +1,16 @@
+#!/usr/bin/env node
+
 var fs = require('fs');
 var os = require('os');
 
 var TestSuite = require('./TestSuite');
 var Test = require('./Test');
 var ScadHandler = require('./ScadHandler');
+var ErrorHandler = require('./util/ErrorHandler');
 
-var CONFIG = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+var configFile = process.argv[2];
+
+var CONFIG;
 var TEMP = "temp.scad";
 var STL = "temp.stl";
 
@@ -75,15 +80,35 @@ global.assert = {
   "openScadModule": moduleTester
 };
 
-CONFIG.testFiles.forEach(function(file) {
-  require(file);
-});
+var main = function(configFile, temporaryFile, stlFile) {
+  if(configFile) {
+    CONFIG = JSON.parse(fs.readFileSync(configFile, 'utf8'));
+    CONFIG.testFiles.forEach(function(file) {
+      require(file);
+    });
 
-global.UnitTestSCAD.forEach(function(testSuite) {
-  testSuite.tests.forEach(function(test) {
-    console.log(testSuite.name + ": " + test.title + ":" +  os.EOL + "    " + test.failures + " failures in " + test.assertions + " assertions.");
-  });
+    var totalAssertions = 0;
+    var totalFailures = 0;
 
-  fs.unlink(TEMP);
-  fs.unlink(STL);
-});
+    global.UnitTestSCAD.forEach(function(testSuite) {
+      testSuite.tests.forEach(function(test) {
+        totalAssertions += test.assertions;
+        totalFailures += test.failures;
+
+        console.log(testSuite.name + ": " + test.title + ":" +  os.EOL + "    " + test.failures + " failures in " + test.assertions + " assertions.");
+      });
+    });
+
+    console.log(totalFailures + " total failures in " +  totalAssertions + " total assertions.");
+    if(totalFailures > 0) {
+      ErrorHandler.throwErrorAndExit(ErrorHandler.REASON.ASSERTION_FAILURES);
+    }
+
+    fs.unlink(temporaryFile);
+    fs.unlink(stlFile);
+  } else {
+    ErrorHandler.throwErrorAndExit(ErrorHandler.REASONS.INVALID_CONFIG);
+  }
+};
+
+main(configFile, TEMP, STL);

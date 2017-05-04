@@ -2,6 +2,7 @@
 
 var fs = require('fs');
 var os = require('os');
+var path = require('path');
 
 var TestSuite = require('./TestSuite');
 var Test = require('./Test');
@@ -87,8 +88,11 @@ var main = function(configFile, temporaryFile, stlFile) {
     } catch (a) {
       ErrorHandler.throwErrorAndExit(ErrorHandler.REASONS.INVALID_CONFIG);
     }
+    process.chdir(path.dirname(configFile));
+
     CONFIG.testFiles.forEach(function(file) {
-      require(file);
+      var pathToFile = path.resolve(file);
+      require(pathToFile);
     });
 
     var totalAssertions = 0;

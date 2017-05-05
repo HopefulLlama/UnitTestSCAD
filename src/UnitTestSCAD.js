@@ -38,8 +38,12 @@ var createTester = function(AssertionsClazz, testText, test) {
 	return tester.assertions;
 };
 
+var wrapFunctionText = function(testText) {
+	return 'echo("UnitTestSCAD");' + os.EOL + "echo(" + testText + ")";
+};
+
 var functionTester = function(testText) {
-	return createTester(FunctionAssertions, testText, global.currentTest);
+	return createTester(FunctionAssertions, wrapFunctionText(testText), global.currentTest);
 };
 
 var moduleTester = function(testText) {
@@ -82,8 +86,8 @@ var main = function(configFile, temporaryFile, stlFile) {
       ErrorHandler.throwErrorAndExit(ErrorHandler.REASONS.ASSERTION_FAILURES);
     }
 
-    fs.unlink(temporaryFile);
-    fs.unlink(stlFile);
+    // fs.unlink(temporaryFile);
+    // fs.unlink(stlFile);
   } else {
     ErrorHandler.throwErrorAndExit(ErrorHandler.REASONS.INVALID_CONFIG);
   }

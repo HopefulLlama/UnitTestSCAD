@@ -30,4 +30,15 @@ ModuleAssertions.prototype.toHaveVertexCountOf = function(expectedCount) {
   };
 };
 
+ModuleAssertions.prototype.toHaveTriangleCountOf = function(expectedCount) {
+	this.tester.test.assertions++;
+	if(ScadHandler.countTriangles(this.tester.output) !== expectedCount) {
+		this.tester.test.failures++;
+	}
+
+	return {
+		'and': this
+	};
+};
+
 module.exports = ModuleAssertions;

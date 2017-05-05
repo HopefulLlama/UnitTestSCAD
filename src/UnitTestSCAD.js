@@ -86,8 +86,8 @@ var main = function(configFile, temporaryFile, stlFile) {
       ErrorHandler.throwErrorAndExit(ErrorHandler.REASONS.ASSERTION_FAILURES);
     }
 
-    // fs.unlink(temporaryFile);
-    // fs.unlink(stlFile);
+    fs.unlink(temporaryFile);
+    fs.unlink(stlFile);
   } else {
     ErrorHandler.throwErrorAndExit(ErrorHandler.REASONS.INVALID_CONFIG);
   }

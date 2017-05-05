@@ -13,7 +13,7 @@ function Tester(testText, test, assertions) {
 };
 
 Tester.prototype.generateStlFile = function(openScadDirectory, scadFile, stlFile) {
-  ScadHandler.writeScadFile(openScadDirectory, scadFile, this.testText + ';');
+  ScadHandler.writeScadFile(openScadDirectory, scadFile, this.testText + ';', this);
   ScadHandler.execTemp(stlFile, scadFile);
 
   this.output = fs.readFileSync(stlFile, 'utf8');

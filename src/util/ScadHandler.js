@@ -4,7 +4,7 @@ var execSync = require('child_process').execSync;
 
 function ScadHandler() {};
 
-ScadHandler.prototype.writeScadFile = function(scadDirectory, filePath, testText) {
+ScadHandler.prototype.writeScadFile = function(scadDirectory, filePath, testText, test) {
 	contents = global.currentTestSuite.getHeader(scadDirectory);
 	contents += os.EOL;
 	contents += testText;
@@ -32,13 +32,21 @@ ScadHandler.prototype.getOutputLine = function(output) {
 };
 
 ScadHandler.prototype.countVertices = function(contents) {
-	contents = contents.split(os.EOL);
-	contents = contents.filter(function(line) {
+	return contents.split(os.EOL)
+	.filter(function(line) {
 		return line.match(/vertex([ ]{1}[0-9]*){3}/);
-	});
-	contents = contents.filter(function(value, index, self) {
+	})
+	.filter(function(value, index, self) {
 		return self.indexOf(value) === index;
-	});
-	return contents.length;
+	})
+	.length;
 };
+
+ScadHandler.prototype.countTriangles = function(contents) {
+	return contents.split(os.EOL)
+	.filter(function(line) {
+		return line.match(/endfacet/);
+	})
+	.length;
+}
 module.exports = new ScadHandler();

@@ -7,7 +7,7 @@ var Tester = require('./Tester');
 
 function ModuleTester(testText, test) {
 	Tester.call(this, testText, test, new ModuleAssertions());
-};
+}
 
 ModuleTester.prototype.generateOutput = function(openScadDirectory, scadFile, stlFile) {
   ScadHandler.writeScadFile(openScadDirectory, scadFile, this.testText + ';', this);

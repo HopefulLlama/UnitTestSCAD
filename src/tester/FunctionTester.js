@@ -7,7 +7,7 @@ var Tester = require('./Tester');
 
 function FunctionTester(testText, test) {
 	Tester.call(this, testText, test, new FunctionAssertions());
-};
+}
 
 util.inherits(FunctionTester, Tester);
 

@@ -6,6 +6,6 @@ function Tester(testText, test, assertions) {
 
   assertions.tester = this;
   this.assertions = assertions;
-};
+}
 
 module.exports = Tester;

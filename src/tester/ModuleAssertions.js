@@ -4,7 +4,7 @@ var ScadHandler = require('../util/ScadHandler');
 
 function ModuleAssertions() {
   this.tester = null;
-};
+}
 
 ModuleAssertions.prototype.stlFileToBe = function(file) {
   this.tester.test.assertions++;

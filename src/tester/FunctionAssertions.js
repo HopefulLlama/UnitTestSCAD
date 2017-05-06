@@ -4,8 +4,7 @@ var ScadHandler = require('../util/ScadHandler');
 
 function FunctionAssertions() {
   this.tester = null;
-};
-
+}
 
 FunctionAssertions.prototype.outputToBe = function(expectedText) {
   this.tester.test.assertions++;

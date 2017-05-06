@@ -2,7 +2,7 @@ var fs = require('fs');
 var os = require('os');
 var execSync = require('child_process').execSync;
 
-function ScadHandler() {};
+function ScadHandler() {}
 
 ScadHandler.prototype.writeScadFile = function(scadDirectory, filePath, testText, test) {
 	contents = global.currentTestSuite.getHeader(scadDirectory);
@@ -66,5 +66,6 @@ ScadHandler.prototype.countTriangles = function(contents) {
 		return line.match(/endfacet/);
 	})
 	.length;
-}
+};
+
 module.exports = new ScadHandler();

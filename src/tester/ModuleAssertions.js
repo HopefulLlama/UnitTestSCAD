@@ -10,7 +10,7 @@ ModuleAssertions.prototype.stlFileToBe = function(file) {
   this.tester.test.assertions++;
   var expected = fs.readFileSync(file, 'utf8');
 
-  if(this.parent.fileOutput !== expected) {
+  if(this.parent.output !== expected) {
     this.test.failures++;
   }
 
@@ -21,7 +21,7 @@ ModuleAssertions.prototype.stlFileToBe = function(file) {
 
 ModuleAssertions.prototype.toHaveVertexCountOf = function(expectedCount) {
   this.tester.test.assertions++;
-  if(ScadHandler.countVertices(this.tester.fileOutput) !== expectedCount) {
+  if(ScadHandler.countVertices(this.tester.output) !== expectedCount) {
     this.tester.test.failures++;
   }
 
@@ -32,7 +32,7 @@ ModuleAssertions.prototype.toHaveVertexCountOf = function(expectedCount) {
 
 ModuleAssertions.prototype.toHaveTriangleCountOf = function(expectedCount) {
 	this.tester.test.assertions++;
-	if(ScadHandler.countTriangles(this.tester.fileOutput) !== expectedCount) {
+	if(ScadHandler.countTriangles(this.tester.output) !== expectedCount) {
 		this.tester.test.failures++;
 	}
 

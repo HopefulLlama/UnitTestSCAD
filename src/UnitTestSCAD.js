@@ -4,13 +4,12 @@ var fs = require('fs');
 var os = require('os');
 var path = require('path');
 
-var TestSuite = require('./TestSuite');
-var Test = require('./Test');
-var ScadHandler = require('./util/ScadHandler');
-var Tester = require('./tester/Tester');
-var FunctionAssertions = require('./tester/FunctionAssertions');
-var ModuleAssertions = require('./tester/ModuleAssertions');
 var ErrorHandler = require('./util/ErrorHandler');
+var FunctionTester = require('./tester/FunctionTester');
+var ModuleTester = require('./tester/ModuleTester');
+var ScadHandler = require('./util/ScadHandler');
+var Test = require('./Test');
+var TestSuite = require('./TestSuite');
 
 var configFile = process.argv[2];
 
@@ -32,22 +31,21 @@ global.it = function(title, callback) {
   callback();
 };
 
-var createTester = function(AssertionsClazz, testText, test) {
-	var tester = new Tester(testText,test, new AssertionsClazz());
-	tester.generateStlFile(CONFIG.openScadDirectory, TEMP, STL);
-	return tester.assertions;
-};
-
 var wrapFunctionText = function(testText) {
 	return 'echo("UnitTestSCAD");' + os.EOL + "echo(" + testText + ")";
 };
 
 var functionTester = function(testText) {
-	return createTester(FunctionAssertions, wrapFunctionText(testText), global.currentTest);
+  var tester = new FunctionTester(wrapFunctionText(testText), global.currentTest);
+  tester.generateOutput(CONFIG.openScadDirectory, TEMP, STL);
+	return tester.assertions;
 };
 
 var moduleTester = function(testText) {
-	return createTester(ModuleAssertions, testText, global.currentTest);
+  var tester = new ModuleTester(testText + ';', global.currentTest);
+  tester.generateOutput(CONFIG.openScadDirectory, TEMP, STL);
+  console.log(tester);
+  return tester.assertions;
 };
 
 global.assert = {

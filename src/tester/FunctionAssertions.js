@@ -9,7 +9,7 @@ function FunctionAssertions() {
 
 FunctionAssertions.prototype.outputToBe = function(expectedText) {
   this.tester.test.assertions++;
-  if(!stringContainsSubstring(this.tester.consoleOutput, expectedText)) {
+  if(!stringContainsSubstring(this.tester.output, expectedText)) {
     this.tester.test.failures++;
   }
 

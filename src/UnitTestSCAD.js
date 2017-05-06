@@ -44,7 +44,6 @@ var functionTester = function(testText) {
 var moduleTester = function(testText) {
   var tester = new ModuleTester(testText + ';', global.currentTest);
   tester.generateOutput(CONFIG.openScadDirectory, TEMP, STL);
-  console.log(tester);
   return tester.assertions;
 };
 

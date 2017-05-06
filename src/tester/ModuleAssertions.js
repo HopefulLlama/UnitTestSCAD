@@ -41,4 +41,30 @@ ModuleAssertions.prototype.toHaveTriangleCountOf = function(expectedCount) {
 	};
 };
 
+var isCoordinateWithinBounds = function(coordinate, min, max) {
+  return coordinate >= min || coordinate <= max;
+};
+
+ModuleAssertions.prototype.toBeWithinBoundingBox = function(vectors) {
+  var failingVertices = 0;
+  this.tester.test.assertions++;
+
+  ScadHandler.getVertices(this.tester.output)
+  .forEach(function(vertex) {
+    vertex.forEach(function(coordinate, index) {
+      if(!isCoordinateWithinBounds(coordinate, vectors[0][index], vectors[1][index])) {
+        failingVertices++;
+      }
+    });
+  });
+
+  if(failingVertices > 0) {
+    this.tester.test.failures++;
+  }
+
+  return {
+    'and': this
+  };
+};
+
 module.exports = ModuleAssertions;

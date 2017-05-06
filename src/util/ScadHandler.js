@@ -31,11 +31,29 @@ ScadHandler.prototype.getOutputLine = function(output) {
 	return output[output.indexOf(marker) + 1];
 };
 
-ScadHandler.prototype.countVertices = function(contents) {
+var getLinesWithVertex = function(contents) {
 	return contents.split(os.EOL)
 	.filter(function(line) {
 		return line.match(/vertex([ ]{1}[0-9]*){3}/);
-	})
+	});
+};
+
+ScadHandler.prototype.getVertices = function(contents) {
+	return getLinesWithVertex(contents)
+	.reduce(function(accumulator, currentValue) {
+		// Last three elements should be the co-ordinates, as a string
+		var vertex = currentValue.split(' ')
+		.slice(-3)
+		.map(function(v) {
+			return parseInt(v, 10);
+		});
+		accumulator.push(vertex);
+		return accumulator;
+	}, []);
+};
+
+ScadHandler.prototype.countVertices = function(contents) {
+	return getLinesWithVertex(contents)
 	.filter(function(value, index, self) {
 		return self.indexOf(value) === index;
 	})

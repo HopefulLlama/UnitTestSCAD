@@ -8,41 +8,43 @@ var ErrorHandler = require('./util/ErrorHandler');
 var FunctionTester = require('./tester/FunctionTester');
 var ModuleTester = require('./tester/ModuleTester');
 var ScadHandler = require('./util/ScadHandler');
-var Test = require('./Test');
-var TestSuite = require('./TestSuite');
+var Test = require('./test/Test');
+var TestRunner = require('./test/TestRunner');
+var TestSuite = require('./test/TestSuite');
 
 var configFile = process.argv[2];
 
 var CONFIG;
 var SCAD = "temp.scad";
 var STL = "temp.stl";
+var TEST_RUNNER = new TestRunner();
 
-global.UnitTestSCAD = [];
-global.currentTestSuite = null;
-global.currentTest = null;
 
 global.testSuite = function(name, options, callback) {
   var testSuite = new TestSuite(name, options.use, options.include);
-  global.UnitTestSCAD.push(testSuite);
-  global.currentTestSuite = testSuite;
+
+  TEST_RUNNER.testSuites.push(testSuite);
+  TEST_RUNNER.current.testSuite = testSuite;
+
   callback();
 };
 
 global.it = function(title, callback) {
   var test = new Test(title, global.currentTestSuite);
-  global.currentTestSuite.tests.push(test);
-  global.currentTest = test;
+  
+  TEST_RUNNER.current.testSuite.tests.push(test);
+  TEST_RUNNER.current.test = test;
   callback();
 };
 
 var functionTester = function(testText) {
-  var tester = new FunctionTester(testText, global.currentTest);
+  var tester = new FunctionTester(testText, TEST_RUNNER.current.test);
   tester.generateOutput(CONFIG.openScadDirectory, SCAD, STL);
 	return tester.assertions;
 };
 
 var moduleTester = function(testText) {
-  var tester = new ModuleTester(testText + ';', global.currentTest);
+  var tester = new ModuleTester(testText + ';', TEST_RUNNER.current.test);
   tester.generateOutput(CONFIG.openScadDirectory, SCAD, STL);
   return tester.assertions;
 };
@@ -69,7 +71,7 @@ var main = function(configFile, temporaryFile, stlFile) {
     var totalAssertions = 0;
     var totalFailures = 0;
 
-    global.UnitTestSCAD.forEach(function(testSuite) {
+    TEST_RUNNER.testSuites.forEach(function(testSuite) {
       testSuite.tests.forEach(function(test) {
         totalAssertions += test.assertions;
         totalFailures += test.failures;

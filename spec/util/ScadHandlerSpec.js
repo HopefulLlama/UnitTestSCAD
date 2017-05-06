@@ -66,6 +66,23 @@ describe('ScadHandler', function() {
 				'vertex 10 0 5'
 			)).toEqual([[5, 4, 3], [10, 0, 5]]);
 		});
+
+		it('should uniquify the vertices in a given list', function() {
+			expect(ScadHandler.getVertices(
+				'vertex 5 4 3' + os.EOL + 
+				'vertex 5 4 3' + os.EOL + 
+				'vertex 5 4 3' + os.EOL + 
+				'vertex 5 4 3' + os.EOL + 
+				'vertex 5 4 3' + os.EOL + 
+				'vertex 5 4 3' + os.EOL + 
+				'vertex 5 4 3' + os.EOL + 
+				'vertex 5 4 3' + os.EOL + 
+				'vertex 5 4 3' + os.EOL + 
+				'vertex 5 4 3' + os.EOL + 
+				'vertex 5 4 3' + os.EOL + 
+				'vertex 5 4 3'
+			)).toEqual([[5, 4, 3]]);
+		});
 	});
 
 	describe('getTriangles', function() {

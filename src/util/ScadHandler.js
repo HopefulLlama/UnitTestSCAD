@@ -9,8 +9,8 @@ ScadHandler.prototype.writeScadFile = function(header, filePath, testText) {
 	fs.writeFileSync(filePath, contents);
 };
 
-ScadHandler.prototype.execTemp = function(stlFile, outputFile) {
-	var COMMAND = 'openscad -o ' + stlFile + ' ' + outputFile;
+ScadHandler.prototype.execTemp = function(stlFile, scadFile) {
+	var COMMAND = 'openscad -o ' + stlFile + ' ' + scadFile;
 	var output;
 	try {
 		output = execSync(COMMAND);

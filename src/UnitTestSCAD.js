@@ -14,7 +14,7 @@ var TestSuite = require('./TestSuite');
 var configFile = process.argv[2];
 
 var CONFIG;
-var TEMP = "temp.scad";
+var SCAD = "temp.scad";
 var STL = "temp.stl";
 
 global.UnitTestSCAD = [];
@@ -35,19 +35,15 @@ global.it = function(title, callback) {
   callback();
 };
 
-var wrapFunctionText = function(testText) {
-	return 'echo("UnitTestSCAD");' + os.EOL + "echo(" + testText + ")";
-};
-
 var functionTester = function(testText) {
-  var tester = new FunctionTester(wrapFunctionText(testText), global.currentTest);
-  tester.generateOutput(CONFIG.openScadDirectory, TEMP, STL);
+  var tester = new FunctionTester(testText, global.currentTest);
+  tester.generateOutput(CONFIG.openScadDirectory, SCAD, STL);
 	return tester.assertions;
 };
 
 var moduleTester = function(testText) {
   var tester = new ModuleTester(testText + ';', global.currentTest);
-  tester.generateOutput(CONFIG.openScadDirectory, TEMP, STL);
+  tester.generateOutput(CONFIG.openScadDirectory, SCAD, STL);
   return tester.assertions;
 };
 
@@ -95,4 +91,4 @@ var main = function(configFile, temporaryFile, stlFile) {
   }
 };
 
-main(configFile, TEMP, STL);
+main(configFile, SCAD, STL);

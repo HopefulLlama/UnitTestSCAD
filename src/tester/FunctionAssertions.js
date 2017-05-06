@@ -22,7 +22,7 @@ var regexEscape = function(string) {
 };
 
 var stringContainsSubstring = function(string, substring) {
-  return string.search(new RegExp(regexEscape(substring))) > 0;
+  return string.search(new RegExp(regexEscape(substring))) >= 0;
 };
 
 module.exports = FunctionAssertions;

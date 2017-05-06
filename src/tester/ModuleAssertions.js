@@ -10,8 +10,8 @@ ModuleAssertions.prototype.stlFileToBe = function(file) {
   this.tester.test.assertions++;
   var expected = fs.readFileSync(file, 'utf8');
 
-  if(this.parent.output !== expected) {
-    this.test.failures++;
+  if(this.tester.output !== expected) {
+    this.tester.test.failures++;
   }
 
   return {
@@ -42,7 +42,7 @@ ModuleAssertions.prototype.toHaveTriangleCountOf = function(expectedCount) {
 };
 
 var isCoordinateWithinBounds = function(coordinate, min, max) {
-  return coordinate >= min || coordinate <= max;
+  return coordinate >= min && coordinate <= max;
 };
 
 ModuleAssertions.prototype.toBeWithinBoundingBox = function(vectors) {

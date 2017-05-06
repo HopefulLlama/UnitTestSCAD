@@ -1,4 +1,5 @@
 var fs = require('fs');
+var os = require('os');
 var util = require('util');
 
 var FunctionAssertions = require('./FunctionAssertions');
@@ -6,6 +7,7 @@ var ScadHandler = require('../util/ScadHandler');
 var Tester = require('./Tester');
 
 function FunctionTester(testText, test) {
+	testText = 'echo("UnitTestSCAD");' + os.EOL + 'echo(' + testText + ')';
 	Tester.call(this, testText, test, new FunctionAssertions());
 }
 

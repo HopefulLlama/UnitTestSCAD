@@ -8,7 +8,10 @@ gulp.task('default', function() {
 });
 
 gulp.task('lint', function() {
-	return gulp.src('src/**/*.js')
+	return gulp.src([
+		'src/**/*.js',
+		'spec/**/*.js'
+	])
 	.pipe(jshint())
 	.pipe(jshint.reporter('default'))
 	.pipe(jshint.reporter('fail'));

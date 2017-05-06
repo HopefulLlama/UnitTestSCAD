@@ -37,7 +37,6 @@ describe('TestSuite', function() {
         });
 
         it('should "use" and "include" correctly', function() {
-
             var testSuite = new TestSuite(name, use, include);
             var header = testSuite.getHeader(directory);
 

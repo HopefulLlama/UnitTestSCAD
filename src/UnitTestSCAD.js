@@ -15,8 +15,8 @@ var TestSuite = require('./test/TestSuite');
 var configFile = process.argv[2];
 
 var CONFIG;
-var SCAD = "temp.scad";
-var STL = "temp.stl";
+var SCAD = 'temp.scad';
+var STL = 'temp.stl';
 var TEST_RUNNER = new TestRunner();
 
 
@@ -50,8 +50,8 @@ var moduleTester = function(testText) {
 };
 
 global.assert = {
-  "openScadFunction": functionTester,
-  "openScadModule": moduleTester
+  'openScadFunction': functionTester,
+  'openScadModule': moduleTester
 };
 
 var main = function(configFile, temporaryFile, stlFile) {
@@ -74,13 +74,14 @@ var main = function(configFile, temporaryFile, stlFile) {
     TEST_RUNNER.testSuites.forEach(function(testSuite) {
       testSuite.tests.forEach(function(test) {
         totalAssertions += test.assertions;
-        totalFailures += test.failures;
+        totalFailures += test.failures.length;
 
-        console.log(testSuite.name + ": " + test.title + ":" +  os.EOL + "    " + test.failures + " failures in " + test.assertions + " assertions.");
+        console.log(testSuite.name + ': ' + test.title + ':' +  os.EOL + '    ' + test.failures.length + ' failures in ' + test.assertions + ' assertions.');
+        console.log('    ' + test.failures.join('\n    ') + '\n');
       });
     });
 
-    console.log(totalFailures + " total failures in " +  totalAssertions + " total assertions.");
+    console.log(totalFailures + ' total failures in ' +  totalAssertions + ' total assertions.');
 
     fs.unlink(temporaryFile);
     fs.unlink(stlFile);   

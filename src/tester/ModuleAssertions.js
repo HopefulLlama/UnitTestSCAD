@@ -11,7 +11,7 @@ ModuleAssertions.prototype.stlFileToBe = function(file) {
   var expected = fs.readFileSync(file, 'utf8');
 
   if(this.tester.output !== expected) {
-    this.tester.test.failures++;
+    this.tester.test.failures.push('Expected "' + this.tester.output + '" to be "' + expected + '".');
   }
 
   return {
@@ -21,8 +21,9 @@ ModuleAssertions.prototype.stlFileToBe = function(file) {
 
 ModuleAssertions.prototype.toHaveVertexCountOf = function(expectedCount) {
   this.tester.test.assertions++;
-  if(ScadHandler.getVertices(this.tester.output).length !== expectedCount) {
-    this.tester.test.failures++;
+  var vertices = ScadHandler.getVertices(this.tester.output).length;
+  if(vertices !== expectedCount) {
+    this.tester.test.failures.push('Expected ' + vertices + ' to be ' + expectedCount + '.');
   }
 
   return {
@@ -32,8 +33,9 @@ ModuleAssertions.prototype.toHaveVertexCountOf = function(expectedCount) {
 
 ModuleAssertions.prototype.toHaveTriangleCountOf = function(expectedCount) {
 	this.tester.test.assertions++;
-	if(ScadHandler.countTriangles(this.tester.output) !== expectedCount) {
-		this.tester.test.failures++;
+  var triangles = ScadHandler.countTriangles(this.tester.output);
+	if(triangles !== expectedCount) {
+		this.tester.test.failures.push('Expected ' + triangles + ' to be ' + expectedCount + '.');
 	}
 
 	return {
@@ -48,9 +50,9 @@ var isCoordinateWithinBounds = function(coordinate, min, max) {
 ModuleAssertions.prototype.toBeWithinBoundingBox = function(vectors) {
   var failingVertices = 0;
   this.tester.test.assertions++;
+  var vertices = ScadHandler.getVertices(this.tester.output);
 
-  ScadHandler.getVertices(this.tester.output)
-  .forEach(function(vertex) {
+  vertices.forEach(function(vertex) {
     vertex.forEach(function(coordinate, index) {
       if(!isCoordinateWithinBounds(coordinate, vectors[0][index], vectors[1][index])) {
         failingVertices++;
@@ -59,7 +61,7 @@ ModuleAssertions.prototype.toBeWithinBoundingBox = function(vectors) {
   });
 
   if(failingVertices > 0) {
-    this.tester.test.failures++;
+    this.tester.test.failures.push('Expected ' + vertices + ' to be within the bounds of ' + vectors + '.');
   }
 
   return {

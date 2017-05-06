@@ -7,7 +7,7 @@ describe('ModuleAssertions', function() {
 
 	var assertAssertionsAndFailures = function(assertions, failures) {
 		expect(moduleAssertions.tester.test.assertions).toBe(assertions, 'assertions');
-		expect(moduleAssertions.tester.test.failures).toBe(failures, 'failures');
+		expect(moduleAssertions.tester.test.failures.length).toBe(failures, 'failures');
 	};
 
 	var assertStlFile = function(filePath, assertions, failures) {
@@ -43,7 +43,7 @@ describe('ModuleAssertions', function() {
 				'output': OUTPUT,
 				'test': {
 					'assertions': 0,
-					'failures': 0
+					'failures': []
 				}
 			};
 
@@ -54,6 +54,7 @@ describe('ModuleAssertions', function() {
 		it('should fail to compare STL files', function() {
 			for (var i = 1; i <= 3; i++) {
 				assertStlFile('spec/resources/garbage.stl', i, i);
+				expect(moduleAssertions.tester.test.failures[i-1]).toBe('Expected "' + moduleAssertions.tester.output + '" to be "garbage".');
 			}
 		});
 
@@ -64,6 +65,7 @@ describe('ModuleAssertions', function() {
 		it('should fail if the count of vertices does not match', function() {
 			for(var i = 1; i <= 10; i++) {
 				assertVertexCount(5, i, i);
+				expect(moduleAssertions.tester.test.failures[i-1]).toBe('Expected 3 to be 5.');
 			}
 		});
 
@@ -74,6 +76,7 @@ describe('ModuleAssertions', function() {
 		it('should fail if the count of triangles does not match', function() {
 			for(var i = 1; i <= 10; i++) {
 				assertTriangleCount(5, i, i);
+				expect(moduleAssertions.tester.test.failures[i-1]).toBe('Expected 2 to be 5.');
 			}
 		});
 
@@ -90,8 +93,10 @@ describe('ModuleAssertions', function() {
 				[[0, 0, 0], [3, 2, 3]],
 				[[0, 0, 0], [3, 3, 2]]
 			];
+			var actual = [[0, 0, 0], [3, 0, 3], [3, 3, 3]].toString();
 			for(var i = 0; i < testCases.length; i++) {
 				assertBoundingBox(testCases[i], i+1, i+1);
+				expect(moduleAssertions.tester.test.failures[i]).toBe('Expected ' + actual + ' to be within the bounds of ' + testCases[i] + '.');
 			}
 		});
 	});
@@ -104,7 +109,7 @@ describe('ModuleAssertions', function() {
 				'output': OUTPUT,
 				'test': {
 					'assertions': 0,
-					'failures': 0
+					'failures': []
 				}
 			};
 

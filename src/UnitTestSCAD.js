@@ -30,7 +30,7 @@ global.testSuite = function(name, options, callback) {
 };
 
 global.it = function(title, callback) {
-  var test = new Test(title, global.currentTestSuite);
+  var test = new Test(title, TEST_RUNNER.current.testSuite);
   
   TEST_RUNNER.current.testSuite.tests.push(test);
   TEST_RUNNER.current.test = test;

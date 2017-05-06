@@ -1,8 +1,9 @@
-function Test(title) {
+function Test(title, testSuite) {
 	this.title = title;
 	this.assertions = 0;
 	this.failures = 0;
-	global.currentTest = this;
+
+	this.testSuite = testSuite;
 }
 
 module.exports = Test;

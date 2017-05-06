@@ -21,7 +21,7 @@ ModuleAssertions.prototype.stlFileToBe = function(file) {
 
 ModuleAssertions.prototype.toHaveVertexCountOf = function(expectedCount) {
   this.tester.test.assertions++;
-  if(ScadHandler.countVertices(this.tester.output) !== expectedCount) {
+  if(ScadHandler.getVertices(this.tester.output).length !== expectedCount) {
     this.tester.test.failures++;
   }
 

@@ -4,10 +4,8 @@ var execSync = require('child_process').execSync;
 
 function ScadHandler() {}
 
-ScadHandler.prototype.writeScadFile = function(scadDirectory, filePath, testText, test) {
-	contents = global.currentTestSuite.getHeader(scadDirectory);
-	contents += os.EOL;
-	contents += testText;
+ScadHandler.prototype.writeScadFile = function(header, filePath, testText) {
+	contents = header + os.EOL + testText;
 	fs.writeFileSync(filePath, contents);
 };
 
@@ -25,7 +23,7 @@ ScadHandler.prototype.execTemp = function(stlFile, outputFile) {
 
 ScadHandler.prototype.getOutputLine = function(output) {
 	var marker = output.find(function(line) {
-		return line.search(new RegExp('UnitTestSCAD')) > 0;
+		return line.search(new RegExp('UnitTestSCAD')) >= 0;
 	});
 
 	return output[output.indexOf(marker) + 1];
@@ -40,6 +38,9 @@ var getLinesWithVertex = function(contents) {
 
 ScadHandler.prototype.getVertices = function(contents) {
 	return getLinesWithVertex(contents)
+	.filter(function(value, index, self) {
+		return self.indexOf(value) === index;
+	})
 	.reduce(function(accumulator, currentValue) {
 		// Last three elements should be the co-ordinates, as a string
 		var vertex = currentValue.split(' ')
@@ -50,14 +51,6 @@ ScadHandler.prototype.getVertices = function(contents) {
 		accumulator.push(vertex);
 		return accumulator;
 	}, []);
-};
-
-ScadHandler.prototype.countVertices = function(contents) {
-	return getLinesWithVertex(contents)
-	.filter(function(value, index, self) {
-		return self.indexOf(value) === index;
-	})
-	.length;
 };
 
 ScadHandler.prototype.countTriangles = function(contents) {

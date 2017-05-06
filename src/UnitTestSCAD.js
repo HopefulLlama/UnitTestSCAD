@@ -22,12 +22,16 @@ global.currentTestSuite = null;
 global.currentTest = null;
 
 global.testSuite = function(name, options, callback) {
-  global.UnitTestSCAD.push(new TestSuite(name, options.use, options.include));
+  var testSuite = new TestSuite(name, options.use, options.include);
+  global.UnitTestSCAD.push(testSuite);
+  global.currentTestSuite = testSuite;
   callback();
 };
 
 global.it = function(title, callback) {
-  global.currentTestSuite.tests.push(new Test(title));
+  var test = new Test(title, global.currentTestSuite);
+  global.currentTestSuite.tests.push(test);
+  global.currentTest = test;
   callback();
 };
 
@@ -79,12 +83,13 @@ var main = function(configFile, temporaryFile, stlFile) {
     });
 
     console.log(totalFailures + " total failures in " +  totalAssertions + " total assertions.");
+
+    fs.unlink(temporaryFile);
+    fs.unlink(stlFile);   
+
     if(totalFailures > 0) {
       ErrorHandler.throwErrorAndExit(ErrorHandler.REASONS.ASSERTION_FAILURES);
     }
-
-    fs.unlink(temporaryFile);
-    fs.unlink(stlFile);
   } else {
     ErrorHandler.throwErrorAndExit(ErrorHandler.REASONS.INVALID_CONFIG);
   }

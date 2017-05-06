@@ -6,7 +6,8 @@ function Tester(testText, test, assertions) {
   this.testText = testText;
   this.test = test;
 
-  this.output = '';
+  this.consoleOutput = '';
+  this.fileOutput = '';
 
   assertions.tester = this;
   this.assertions = assertions;
@@ -14,9 +15,9 @@ function Tester(testText, test, assertions) {
 
 Tester.prototype.generateStlFile = function(openScadDirectory, scadFile, stlFile) {
   ScadHandler.writeScadFile(openScadDirectory, scadFile, this.testText + ';', this);
-  ScadHandler.execTemp(stlFile, scadFile);
+  this.consoleOutput = ScadHandler.execTemp(stlFile, scadFile);
 
-  this.output = fs.readFileSync(stlFile, 'utf8');
+  this.fileOutput = fs.readFileSync(stlFile, 'utf8');
 };
 
 module.exports = Tester;

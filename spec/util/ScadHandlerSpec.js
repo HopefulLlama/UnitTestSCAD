@@ -21,13 +21,32 @@ describe('ScadHandler', function() {
 		});
 	});
 
-	describe('execTemp', function() {
+	describe('executeConversion', function() {
 		it('should capture the output of the scad -> stl command', function() {
 			ScadHandler.scad = './spec/resources/echo.scad';
 			ScadHandler.stl = './spec/resources/echo.stl';
 
 			var output = ScadHandler.executeConversion();
 			expect(output.search(/If you can see this then it worked/) >= 0).toBe(true);
+		});
+	});
+
+	describe('cleanUp', function() {
+		function createTempFile(path) {
+			fs.closeSync(fs.openSync(path, 'w'));
+		}
+
+		it('should delete the files associated', function() {
+			ScadHandler.scad = './spec/resources/delet-this.scad';
+			ScadHandler.stl = './spec/resources/delet-this.stl';
+
+			createTempFile(ScadHandler.scad);
+			createTempFile(ScadHandler.stl);
+
+			ScadHandler.cleanUp();
+
+			expect(fs.existsSync(ScadHandler.scad)).toBe(false, 'scad file');
+			expect(fs.existsSync(ScadHandler.stl)).toBe(false, 'stl file');
 		});
 	});
 

@@ -64,4 +64,13 @@ ScadHandler.prototype.countTriangles = function(contents) {
 	.length;
 };
 
+ScadHandler.prototype.cleanUp = function() {
+	if(fs.existsSync(this.scad)) {
+		fs.unlinkSync(this.scad);
+	}
+	if(fs.existsSync(this.stl)) {
+		fs.unlinkSync(this.stl);
+	}
+};
+
 module.exports = new ScadHandler();

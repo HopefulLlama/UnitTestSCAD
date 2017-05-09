@@ -80,9 +80,6 @@ var main = function(configFile, temporaryFile, stlFile) {
 
     console.log(totalFailures + ' total failures in ' +  totalAssertions + ' total assertions.');
 
-    fs.unlink(temporaryFile);
-    fs.unlink(stlFile);   
-
     if(totalFailures > 0) {
       ErrorHandler.throwErrorAndExit(ErrorHandler.REASONS.ASSERTION_FAILURES);
     }
@@ -90,5 +87,9 @@ var main = function(configFile, temporaryFile, stlFile) {
     ErrorHandler.throwErrorAndExit(ErrorHandler.REASONS.INVALID_CONFIG);
   }
 };
+
+process.on('exit', function(code) {
+	ScadHandler.cleanUp();
+});
 
 main(configFile, ScadHandler.scad, ScadHandler.stl);

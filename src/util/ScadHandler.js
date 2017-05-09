@@ -2,15 +2,18 @@ var fs = require('fs');
 var os = require('os');
 var execSync = require('child_process').execSync;
 
-function ScadHandler() {}
+function ScadHandler() {
+	this.scad = 'temp.scad';
+	this.stl = 'temp.stl';
+}
 
-ScadHandler.prototype.writeScadFile = function(header, filePath, testText) {
+ScadHandler.prototype.writeScadFile = function(header, testText) {
 	contents = header + os.EOL + testText;
-	fs.writeFileSync(filePath, contents);
+	fs.writeFileSync(this.scad, contents);
 };
 
-ScadHandler.prototype.execTemp = function(stlFile, scadFile) {
-	var COMMAND = 'openscad -o ' + stlFile + ' ' + scadFile;
+ScadHandler.prototype.executeConversion = function() {
+	var COMMAND = 'openscad -o ' + this.stl + ' ' + this.scad;
 	var output;
 	try {
 		output = execSync(COMMAND);

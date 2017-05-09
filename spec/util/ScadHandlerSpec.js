@@ -6,29 +6,27 @@ var ScadHandler = require('../../src/util/ScadHandler');
 describe('ScadHandler', function() {
 	describe('writeScadFile', function() {
 		it('should write a .scad file', function() {
-			var PATH = './spec/resources/itshouldwriteascadfile.scad';
+			ScadHandler.scad = './spec/resources/itshouldwriteascadfile.scad';
 
 			var HEADER = 'use <"Fake.scad">';
 			var BODY = 'cube([1, 1, 1]);';
-			ScadHandler.writeScadFile(HEADER, PATH, BODY);
+			ScadHandler.writeScadFile(HEADER, BODY);
 			
-			expect(fs.existsSync(PATH)).toBe(true);
-  			expect(fs.readFileSync(PATH, 'utf8')).toBe(HEADER + os.EOL + BODY);
+			expect(fs.existsSync(ScadHandler.scad)).toBe(true);
+			expect(fs.readFileSync(ScadHandler.scad, 'utf8')).toBe(HEADER + os.EOL + BODY);
 
-			try {
-				fs.unlink(PATH);
-			} catch(e) {
-
+			if (fs.existsSync(ScadHandler.scad)) {
+				fs.unlink(ScadHandler.scad);
 			}
 		});
 	});
 
 	describe('execTemp', function() {
 		it('should capture the output of the scad -> stl command', function() {
-			var SCAD_FILE = './spec/resources/echo.scad';
-			var STL_FILE = './spec/resources/echo.stl';
+			ScadHandler.scad = './spec/resources/echo.scad';
+			ScadHandler.stl = './spec/resources/echo.stl';
 
-			var output = ScadHandler.execTemp(STL_FILE, SCAD_FILE);
+			var output = ScadHandler.executeConversion();
 			expect(output.search(/If you can see this then it worked/) >= 0).toBe(true);
 		});
 	});

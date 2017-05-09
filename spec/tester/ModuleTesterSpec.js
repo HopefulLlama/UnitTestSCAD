@@ -18,18 +18,22 @@ describe('ModuleTester', function() {
 		it('should store the output of the generated STL', function() {
 			var PATH = 'spec/resources/shouldstoretheoutputofthegeneratedSTL';
 			var tester = new ModuleTester('cube([5, 5, 5])', TEST);
-			tester.generateOutput('', PATH + '.scad', PATH + '.stl');
+			tester.scadHandler.scad = PATH + '.scad';
+			tester.scadHandler.stl = PATH + '.stl';
+			tester.generateOutput('');
 
-			var expectedOutput = fs.readFileSync('spec/resources/cube.stl', 'utf8');
+			var expectedOutput = fs.readFileSync(tester.scadHandler.stl, 'utf8');
 
 			expect(tester.output).toBe(expectedOutput);
 
-			try {
-				fs.unlink(PATH + '.scad');
-				fs.unlink(PATH + '.stl');
-			} catch (e) {
-
+			if(fs.existsSync(tester.scadHandler.scad)) {
+				fs.unlink(tester.scadHandler.scad);
 			}
+
+			if(fs.existsSync(tester.scadHandler.stl)) {
+				fs.unlink(tester.scadHandler.stl);
+			}
+
 		});
 	});
 });

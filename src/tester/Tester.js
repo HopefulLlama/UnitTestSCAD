@@ -6,6 +6,8 @@ function Tester(testText, test, assertions) {
 
   assertions.tester = this;
   this.assertions = assertions;
+
+  this.scadHandler = require('../util/ScadHandler');
 }
 
 module.exports = Tester;

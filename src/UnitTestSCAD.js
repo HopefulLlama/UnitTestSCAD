@@ -15,10 +15,7 @@ var TestSuite = require('./test/TestSuite');
 var configFile = process.argv[2];
 
 var CONFIG;
-var SCAD = 'temp.scad';
-var STL = 'temp.stl';
 var TEST_RUNNER = new TestRunner();
-
 
 global.testSuite = function(name, options, callback) {
   var testSuite = new TestSuite(name, options.use, options.include);
@@ -39,13 +36,13 @@ global.it = function(title, callback) {
 
 var functionTester = function(testText) {
   var tester = new FunctionTester(testText, TEST_RUNNER.current.test);
-  tester.generateOutput(CONFIG.openScadDirectory, SCAD, STL);
+  tester.generateOutput(CONFIG.openScadDirectory);
 	return tester.assertions;
 };
 
 var moduleTester = function(testText) {
   var tester = new ModuleTester(testText + ';', TEST_RUNNER.current.test);
-  tester.generateOutput(CONFIG.openScadDirectory, SCAD, STL);
+  tester.generateOutput(CONFIG.openScadDirectory);
   return tester.assertions;
 };
 
@@ -77,7 +74,7 @@ var main = function(configFile, temporaryFile, stlFile) {
         totalFailures += test.failures.length;
 
         console.log(testSuite.name + ': ' + test.title + ':' +  os.EOL + '    ' + test.failures.length + ' failures in ' + test.assertions + ' assertions.');
-        console.log('    ' + test.failures.join('\n    ') + '\n');
+        console.log('    ' + test.failures.join(os.EOL + '    ') + os.EOL);
       });
     });
 
@@ -94,4 +91,4 @@ var main = function(configFile, temporaryFile, stlFile) {
   }
 };
 
-main(configFile, SCAD, STL);
+main(configFile, ScadHandler.scad, ScadHandler.stl);

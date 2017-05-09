@@ -3,7 +3,6 @@ var os = require('os');
 var util = require('util');
 
 var FunctionAssertions = require('./FunctionAssertions');
-var ScadHandler = require('../util/ScadHandler');
 var Tester = require('./Tester');
 
 function FunctionTester(testText, test) {
@@ -13,9 +12,9 @@ function FunctionTester(testText, test) {
 
 util.inherits(FunctionTester, Tester);
 
-FunctionTester.prototype.generateOutput = function(openScadDirectory, scadFile, stlFile) {
-  ScadHandler.writeScadFile(this.test.testSuite.getHeader(openScadDirectory), scadFile, this.testText + ';');
-  this.output = ScadHandler.execTemp(stlFile, scadFile);
+FunctionTester.prototype.generateOutput = function(openScadDirectory) {
+  this.scadHandler.writeScadFile(this.test.testSuite.getHeader(openScadDirectory), this.testText + ';');
+  this.output = this.scadHandler.executeConversion();
 };
 
 module.exports = FunctionTester;

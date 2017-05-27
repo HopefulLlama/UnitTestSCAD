@@ -1,28 +1,17 @@
 var fs = require('fs');
+var util = require('util');
 
 var ScadHandler = require('../util/ScadHandler');
+var Assertions = require('./Assertions');
 
 function FunctionAssertions() {
-  this.tester = null;
+	Assertions.apply(this);
 }
 
+util.inherits(FunctionAssertions, Assertions);
+
 FunctionAssertions.prototype.outputToBe = function(expectedText) {
-  this.tester.test.assertions++;
-  if(!stringContainsSubstring(this.tester.output, expectedText)) {
-    this.tester.test.failures.push('Expected "' + this.tester.output + '" to contain "' + expectedText +'".');
-  }
-
-  return {
-  	'and': this
-  };
-};
-
-var regexEscape = function(string) {
-  return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-};
-
-var stringContainsSubstring = function(string, substring) {
-  return string.search(new RegExp(regexEscape(substring))) >= 0;
+	return this.__testContains(this.tester.output, expectedText);
 };
 
 module.exports = FunctionAssertions;

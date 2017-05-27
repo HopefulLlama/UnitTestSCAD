@@ -1,5 +1,4 @@
 var fs = require('fs');
-var util = require('util');
 
 var ModuleAssertions = require('./ModuleAssertions');
 var Tester = require('./Tester');

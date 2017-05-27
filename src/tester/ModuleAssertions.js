@@ -1,46 +1,25 @@
 var fs = require('fs');
+var util = require('util');
 
 var ScadHandler = require('../util/ScadHandler');
+var Assertions = require('./Assertions');
 
 function ModuleAssertions() {
-  this.tester = null;
+	Assertions.apply(this);
 }
 
+util.inherits(ModuleAssertions, Assertions);
+
 ModuleAssertions.prototype.stlFileToBe = function(file) {
-  this.tester.test.assertions++;
-  var expected = fs.readFileSync(file, 'utf8');
-
-  if(this.tester.output !== expected) {
-    this.tester.test.failures.push('Expected "' + this.tester.output + '" to be "' + expected + '".');
-  }
-
-  return {
-    'and': this
-  };
+  return this.__testEquality(this.tester.output, fs.readFileSync(file, 'utf8'));
 };
 
 ModuleAssertions.prototype.toHaveVertexCountOf = function(expectedCount) {
-  this.tester.test.assertions++;
-  var vertices = ScadHandler.getVertices(this.tester.output).length;
-  if(vertices !== expectedCount) {
-    this.tester.test.failures.push('Expected ' + vertices + ' to be ' + expectedCount + '.');
-  }
-
-  return {
-    'and': this
-  };
+	return this.__testEquality(ScadHandler.getVertices(this.tester.output).length, expectedCount);
 };
 
 ModuleAssertions.prototype.toHaveTriangleCountOf = function(expectedCount) {
-	this.tester.test.assertions++;
-  var triangles = ScadHandler.countTriangles(this.tester.output);
-	if(triangles !== expectedCount) {
-		this.tester.test.failures.push('Expected ' + triangles + ' to be ' + expectedCount + '.');
-	}
-
-	return {
-		'and': this
-	};
+	return this.__testEquality(ScadHandler.countTriangles(this.tester.output), expectedCount); 
 };
 
 var isCoordinateWithinBounds = function(coordinate, min, max) {
@@ -49,7 +28,6 @@ var isCoordinateWithinBounds = function(coordinate, min, max) {
 
 ModuleAssertions.prototype.toBeWithinBoundingBox = function(vectors) {
   var failingVertices = 0;
-  this.tester.test.assertions++;
   var vertices = ScadHandler.getVertices(this.tester.output);
 
   vertices.forEach(function(vertex) {
@@ -60,13 +38,9 @@ ModuleAssertions.prototype.toBeWithinBoundingBox = function(vectors) {
     });
   });
 
-  if(failingVertices > 0) {
-    this.tester.test.failures.push('Expected ' + vertices + ' to be within the bounds of ' + vectors + '.');
-  }
-
-  return {
-    'and': this
-  };
+  return this.__test(vertices, 'to be within the bounds of', vectors, function(dis) {
+  	return failingVertices === 0;
+  });
 };
 
 module.exports = ModuleAssertions;

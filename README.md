@@ -155,9 +155,7 @@ See the [Change Log](../master/CHANGELOG.md) document for more information on ch
 
 ```javascript
 {
-  'outputToBe': function(expectedOutput) {
-    ...
-  }
+  'outputToBe': function(expectedOutput) {...}
 }
 ```
 

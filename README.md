@@ -157,9 +157,23 @@ While specific details can be found in the [API Reference](#api-reference).
 }
 ```
 
+Begins an assertion or multiple assertions on an OpenSCAD function. 
+
 | Parameter | Data Type | Description |
 |---|---|---|
 | openScadFunction | String | The OpenSCAD function to be run (excluding the line-ending semi-colon). e.g. `getShoulderCorners([3, 3, 3])` |
+
+### `not()`
+
+**Returns**
+```javascript
+{
+  'not': function() {...},
+  'outputToBe': function(expectedOutput) {...}
+}
+```
+
+Inverts the expectation of the following assertion. This is used in a chain of commands such as `not().outputToBe()`.
 
 ### `outputToBe(expectedOutput)`
 
@@ -167,12 +181,13 @@ While specific details can be found in the [API Reference](#api-reference).
 ```javascript
 {
   'and': {
-    'outputToBe': function(expectedOutput) {
-      ...
-    }
+    'not': function() {...},
+    'outputToBe': function(expectedOutput) {...}
   }
 }
 ```
+
+Performs an equality check on the returned value of an OpenSCAD function.
 
 | Parameter | Data Type | Description |
 |---|---|---|
@@ -185,24 +200,34 @@ While specific details can be found in the [API Reference](#api-reference).
 
 ```javascript
 {
-  'stlFileToBe': function(expectedFile) {
-    ...
-  },
-  'toHaveTriangleCountOf': function(expectedTriangles) {
-    ...
-  },
-  'toHaveVertexCountOf': function(expectedVertices) {
-    ...
-  },
-  'toBeWithinBoundingBox': function(bounds) {
-    ...
-  }
+  'not': function(),
+  'stlFileToBe': function(expectedFile) {...},
+  'toHaveTriangleCountOf': function(expectedTriangles) {...},
+  'toHaveVertexCountOf': function(expectedVertices) {...},
+  'toBeWithinBoundingBox': function(bounds) {...}
 }
 ```
+
+Begins an assertion or multiple assertions on an OpenSCAD module.
 
 | Parameter | Data Type | Description |
 |---|---|---|
 | openScadModule | String | The OpenSCAD module to be run (excluding the line-ending semi-colon). e.g. `shoulder([3, 3, 3])` |
+
+### `not()`
+
+**Returns:**
+
+```javascript
+{
+  'not': function(),
+  'stlFileToBe': function(expectedFile) {...},
+  'toHaveTriangleCountOf': function(expectedTriangles) {...},
+  'toHaveVertexCountOf': function(expectedVertices) {...},
+  'toBeWithinBoundingBox': function(bounds) {...}
+}
+```
+Inverts the expectation of the following assertion. This is used in a chain of commands such as `not().stlFileToBe()`.
 
 ### `stlFileToBe(expectedFilePath)`
 
@@ -211,21 +236,16 @@ While specific details can be found in the [API Reference](#api-reference).
 ```javascript
 {
   'and': {
-    'stlFileToBe': function(expectedFilePath) {
-      ...
-    },
-    'toHaveVertexCountOf': function(expectedVertices) {
-      ...
-    },
-    'toHaveTriangleCountOf': function(expectedTriangles) {
-      ...
-    },
-    'toBeWithinBoundingBox': function(bounds) {
-      ...
-    }
+    'not': function(),
+    'stlFileToBe': function(expectedFile) {...},
+    'toHaveTriangleCountOf': function(expectedTriangles) {...},
+    'toHaveVertexCountOf': function(expectedVertices) {...},
+    'toBeWithinBoundingBox': function(bounds) {...}
   }
 }
 ```
+
+Compares the generated STL file of the OpenSCAD file, with a pre-existing known file.
 
 | Parameter | Data Type | Description |
 |---|---|---|
@@ -238,21 +258,16 @@ While specific details can be found in the [API Reference](#api-reference).
 ```javascript
 {
   'and': {
-    'stlFileToBe': function(expectedFilePath) {
-      ...
-    },
-    'toHaveVertexCountOf': function(expectedVertices) {
-      ...
-    },
-    'toHaveTriangleCountOf': function(expectedTriangles) {
-      ...
-    },
-    'toBeWithinBoundingBox': function(bounds) {
-      ...
-    }
+    'not': function(),
+    'stlFileToBe': function(expectedFile) {...},
+    'toHaveTriangleCountOf': function(expectedTriangles) {...},
+    'toHaveVertexCountOf': function(expectedVertices) {...},
+    'toBeWithinBoundingBox': function(bounds) {...}
   }
 }
 ```
+
+Compares the number of vertices produced by the module, against an expected value.
 
 | Parameter | Data Type | Description |
 |---|---|---|
@@ -265,21 +280,16 @@ While specific details can be found in the [API Reference](#api-reference).
 ```javascript
 {
   'and': {
-    'stlFileToBe': function(expectedFilePath) {
-      ...
-    },
-    'toHaveVertexCountOf': function(expectedVertices) {
-      ...
-    },
-    'toHaveTriangleCountOf': function(expectedTriangles) {
-      ...
-    },
-    'toBeWithinBoundingBox': function(bounds) {
-      ...
-    }
+    'not': function(),
+    'stlFileToBe': function(expectedFile) {...},
+    'toHaveTriangleCountOf': function(expectedTriangles) {...},
+    'toHaveVertexCountOf': function(expectedVertices) {...},
+    'toBeWithinBoundingBox': function(bounds) {...}
   }
 }
 ```
+
+Compares the number of 'triangles' created by the OpenSCAD module, against an expected value.
 
 | Parameter | Data Type | Description |
 |---|---|---|
@@ -292,25 +302,20 @@ While specific details can be found in the [API Reference](#api-reference).
 ```javascript
 {
   'and': {
-    'stlFileToBe': function(expectedFilePath) {
-      ...
-    },
-    'toHaveVertexCountOf': function(expectedVertices) {
-      ...
-    },
-    'toHaveTriangleCountOf': function(expectedTriangles) {
-      ...
-    },
-    'toBeWithinBoundingBox': function(bounds) {
-      ...
-    }
+    'not': function(),
+    'stlFileToBe': function(expectedFile) {...},
+    'toHaveTriangleCountOf': function(expectedTriangles) {...},
+    'toHaveVertexCountOf': function(expectedVertices) {...},
+    'toBeWithinBoundingBox': function(bounds) {...}
   }
 }
 ```
 
+Checks that every vertex produced by the OpenSCAD module lie between two bounds in each dimension ([x, y, z]).
+
 | Parameter | Data Type | Description |
 |---|---|---|
-| bounds | Array<Integer[3]>[2] | The bounds, described by an array, of two arrays of three integers. The array follows the format of `[[minX, minY, minZ], [maxX, maxY, maxZ]]`. The model will be considered within bounds if ALL vertices are within or equal to either bounds. |
+| bounds | Array<Array<Integer>[3]>[2] | The bounds, described by an array, of two arrays of three integers. The array follows the format of `[[minX, minY, minZ], [maxX, maxY, maxZ]]`. The model will be considered within bounds if ALL vertices are within or equal to either bounds. |
 
 # Uninstalling
 To uninstall UnitTestSCAD, run the command:

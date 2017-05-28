@@ -8,6 +8,7 @@ UnitTestSCAD brings forth unit testing capabilities to OpenSCAD. Unit testing en
 # Contents
 - [Getting Started](#getting-started)
 - [Usage](#usage)
+- [Change Log](#change-log)
 - [API Reference](#api-reference)
 - [Uninstalling](#uninstalling)
 - [Contribuing](#contributing)
@@ -125,6 +126,9 @@ Within the callback function, we can declare as many tests as we like using the 
 Inside the test, we can test the outcome of an OpenSCAD function or module using `assert.openScadFunction` or `assert.openScadModule`. Both of these functions take a string which should be the OpenSCAD function or module respectively. They can then be chained with another function to test and assert the result with an expected outcome.
 
 While specific details can be found in the [API Reference](#api-reference).
+
+# Change Log
+See the [Change Log](../master/CHANGELOG.md) document for more information on changes.
 
 # API Reference
 ## General

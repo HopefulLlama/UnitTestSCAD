@@ -5,7 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
-Nothing yet.
+### Fixed
+- `openScadFunction().outputToBe('...')` now performs a strict equality check, rather than weak containment check.
 
 ## [1.1.0] - 2017-05-28
 ### Added

@@ -6,10 +6,8 @@ var FunctionAssertions = require('./FunctionAssertions');
 var Tester = require('./Tester');
 
 function FunctionTester(testText, test) {
-	testText = 'echo("UnitTestSCAD");' + os.EOL + 'echo(' + testText + ')';
-	Tester.call(this, testText, test, new FunctionAssertions());
+	Tester.call(this, Tester.wrapWithMarker(testText), test, new FunctionAssertions());
 }
-
 util.inherits(FunctionTester, Tester);
 
 FunctionTester.prototype.generateOutput = function(openScadDirectory) {

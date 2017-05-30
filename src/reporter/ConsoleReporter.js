@@ -37,7 +37,7 @@ var report = function(results) {
   } else {
     summary += TERMINAL.RED;
   }
-  summary += results.failures + ' total failures' + TERMINAL.RESET + ' in ' +  results.assertions + ' total assertions.'
+  summary += results.failures + ' total failures' + TERMINAL.RESET + ' in ' +  results.assertions + ' total assertions.';
   console.log(summary); 
 };
 

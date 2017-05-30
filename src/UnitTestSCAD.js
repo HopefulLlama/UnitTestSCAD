@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+var fs = require('fs');
+var path = require('path');
 
 var ErrorHandler = require('./util/ErrorHandler');
 var FunctionTester = require('./tester/FunctionTester');
@@ -9,7 +11,10 @@ var TestSuite = require('./test/TestSuite');
 
 var TEST_RUNNER = require('./test/TestRunner');
 
-var configFile = process.argv[2];
+var CONFIG = {};
+var pathToConfig = process.argv[2];
+
+global.ReporterRegistry = require('./reporter/ReporterRegistry');
 
 global.testSuite = function(name, options, callback) {
   var testSuite = new TestSuite(name, options.use, options.include);
@@ -30,13 +35,13 @@ global.it = function(title, callback) {
 
 var functionTester = function(testText) {
   var tester = new FunctionTester(testText, TEST_RUNNER.current.test);
-  tester.generateOutput(TEST_RUNNER.config.properties.openScadDirectory);
+  tester.generateOutput(CONFIG.properties.openScadDirectory);
 	return tester.assertions;
 };
 
 var moduleTester = function(testText) {
   var tester = new ModuleTester(testText + ';', TEST_RUNNER.current.test);
-  tester.generateOutput(TEST_RUNNER.config.properties.openScadDirectory);
+  tester.generateOutput(CONFIG.properties.openScadDirectory);
   return tester.assertions;
 };
 
@@ -45,28 +50,32 @@ global.assert = {
   'openScadModule': moduleTester
 };
 
-var main = function(configFile, testRunner) {
-  if(configFile) {
-    try {
-      testRunner.readConfig(configFile);
-    } catch (a) {
-      ErrorHandler.throwErrorAndExit(ErrorHandler.REASONS.INVALID_CONFIG);
+var readConfig = function(pathToConfig) {
+  return {
+    'path': pathToConfig,
+    'properties': JSON.parse(fs.readFileSync(pathToConfig, 'utf8'))
+  };
+};
+
+var main = function(config, testRunner) {
+  process.chdir(path.dirname(pathToConfig));
+
+  if(config.properties.customReporters !== undefined) {
+    global.ReporterRegistry.__addCustomReporters(config.properties.customReporters);
+  }
+
+  testRunner.runTests(config.properties.testFiles);
+
+  var reporters = (config.properties.reporters !== undefined) ? config.properties.reporters : [
+    {
+      'name': 'console',
+      'options': null
     }
-    testRunner.runTests();
-    var results = testRunner.aggregateResults();
+  ];
+  testRunner.report(reporters);
 
-    // Candidiate for being moved to a 'Reporter' class?
-    results.summaries.forEach(function(summary) {
-      console.log(summary);
-    });
-
-    console.log(results.failures + ' total failures in ' +  results.assertions + ' total assertions.'); 
-
-    if(results.failures > 0) {
-      ErrorHandler.throwErrorAndExit(ErrorHandler.REASONS.ASSERTION_FAILURES);
-    }
-  } else {
-    ErrorHandler.throwErrorAndExit(ErrorHandler.REASONS.INVALID_CONFIG);
+  if(testRunner.aggregateResults().failures > 0) {
+    ErrorHandler.throwErrorAndExit(ErrorHandler.REASONS.ASSERTION_FAILURES);
   }
 };
 
@@ -74,4 +83,14 @@ process.on('exit', function(code) {
 	ScadHandler.cleanUp();
 });
 
-main(configFile, TEST_RUNNER);
+if(pathToConfig) {
+  try {
+    CONFIG = readConfig(pathToConfig);
+  } catch (a) {
+    ErrorHandler.throwErrorAndExit(ErrorHandler.REASONS.INVALID_CONFIG);
+  }
+} else {
+  ErrorHandler.throwErrorAndExit(ErrorHandler.REASONS.MISSING_CONFIG);
+}
+
+main(CONFIG, TEST_RUNNER);

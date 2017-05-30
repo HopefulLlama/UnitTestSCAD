@@ -4,17 +4,7 @@ describe('TestRunner', function() {
   beforeEach(function() {
     testRunner = require('../../src/test/TestRunner');
   });
-
-  describe('readConfig', function() {
-    it('should read the config', function() {
-      var path = 'spec/resources/config.json';
-      testRunner.readConfig(path);
-
-      expect(testRunner.config.path).toBe(path);
-      expect(testRunner.config.properties.mock).toBe('Not real');
-    });
-  });
-
+  
   describe('runTests', function() {
     it('should change directory and run all tests as "required"', function() {
      
@@ -23,23 +13,29 @@ describe('TestRunner', function() {
 
   describe('aggregateResults', function() {
     it('should get the summary of all tests', function() {
-      function mockTest(assertions, failures) {
+      function mockTestSuite(assertions, failures) {
         return {
           'assertions': assertions,
-          'failures': {'length': failures},
-          'getSummary': function() {}
+          'failures': failures,
+          'getSummary': function() {
+          	return {
+          		'assertions': assertions,
+          		'failures': failures
+          	};
+          }
         };
       }
 
       testRunner.testSuites = [
-        {'tests': [mockTest(5, 2), mockTest(10, 10)]}, 
-        {'tests': [mockTest(1, 0), mockTest(15, 5), mockTest(100, 50)]}
+        mockTestSuite(5, 2), 
+        mockTestSuite(10, 10), 
+        mockTestSuite(1, 0), 
+        mockTestSuite(15, 5), 
+        mockTestSuite(100, 50)
       ];
 
       testRunner.testSuites.forEach(function(testSuite) {
-        testSuite.tests.forEach(function(test) {
-          spyOn(test, 'getSummary').and.stub();
-        });
+        spyOn(testSuite, 'getSummary').and.callThrough();
       });
 
       var results = testRunner.aggregateResults();
@@ -47,9 +43,7 @@ describe('TestRunner', function() {
       expect(results.failures).toBe(67);
 
       testRunner.testSuites.forEach(function(testSuite) {
-        testSuite.tests.forEach(function(test) {
-          expect(test.getSummary).toHaveBeenCalled();
-        });
+        expect(testSuite.getSummary).toHaveBeenCalled();
       });
 
     });

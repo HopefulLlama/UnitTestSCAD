@@ -16,17 +16,22 @@ describe('Test', function() {
 
     it('should just report single line if no failures', function() {
       test.assertions = 5;
-      expect(test.getSummary()).toBe('Mock Test Suite: Test:' + os.EOL + '    0 failures in 5 assertions.' + os.EOL);
+
+      var summary = test.getSummary();
+      expect(summary.name).toBe('Test');
+      expect(summary.assertions).toBe(5);
+      expect(summary.failures).toEqual([]);
     });
 
     it('should report more detail if there are failures', function() {
+      var failures = ['Swag', 'Yolo', 'Honeybadger'];
       test.assertions = 7;
-      test.failures = ['Swag', 'Yolo', 'Honeybadger'];
+      test.failures = failures;
 
-      expect(test.getSummary()).toBe('Mock Test Suite: Test:' + os.EOL + '    3 failures in 7 assertions.' + os.EOL +
-        '    Swag' + os.EOL +
-        '    Yolo' + os.EOL +
-        '    Honeybadger' + os.EOL);
+      var summary = test.getSummary();
+      expect(summary.name).toBe('Test');
+      expect(summary.assertions).toBe(7);
+      expect(summary.failures).toEqual(failures);
     });
   });
 });

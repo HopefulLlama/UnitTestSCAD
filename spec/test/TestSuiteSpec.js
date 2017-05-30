@@ -52,5 +52,40 @@ describe('TestSuite', function() {
 
       expect(header).toBe(expected);
     });
+
+    it('should rollup information in a summary', function() {
+    	function mockTest(assertions, failures) {
+    		return {
+    			'assertions': assertions,
+    			'failures': {
+    				'length': failures
+    			},
+    			'getSummary': function() {
+
+    			}
+    		};
+    	}
+
+    	var testSuite = new TestSuite('TestSuite', [], []);
+    	testSuite.tests = [
+    		mockTest(5, 2),
+    		mockTest(2, 2),
+    		mockTest(0, 0)
+    	];
+
+    	testSuite.tests.forEach(function(test) {
+    		spyOn(test, 'getSummary').and.callThrough();
+    	});
+
+    	var summary = testSuite.getSummary();
+
+    	expect(summary.name).toBe('TestSuite');
+    	expect(summary.assertions).toBe(7);
+    	expect(summary.failures).toBe(4);
+    	
+    	testSuite.tests.forEach(function(test) {
+        expect(test.getSummary).toHaveBeenCalled();
+      });
+    });
   });
 });

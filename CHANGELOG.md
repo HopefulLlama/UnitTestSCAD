@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Fixed
 - `openScadFunction().outputToBe('...')` now performs a strict equality check, rather than weak containment check.
+- Added reporters, and ability to add custom reporters.
 
 ## [1.1.0] - 2017-05-28
 ### Added

@@ -66,6 +66,8 @@ To use UnitTestSCAD, you will first need a configuration file which will specify
 
 - `openScadDirectory`: This should be a string which points to the directory containing your OpenSCAD files. This can be a relative path (from the configuration file), or an absolute path.
 - `testFiles`: This should be an array of strings, which points to JavaScript specification files. These are the files which run your tests. These can be relative paths (from the configuration file), or an absolute path.
+- `customReporters`: This should be an array of strings, which points to JavaScript custom reporter files. These are the files which run your tests. These can be relative paths (from the configuration file), or an absolute path. More information can be found at [Reporters](#reporters).
+- `reporters`: This should be an array of objects, which specifies which reporters to use, along with additional options. These specify the output of the results of the test run. These can be relative paths (from the configuration file), or an absolute path. If omitted, this defaults to use the `console` reporter only. More information can be found at [Reporters](#reporters).
 
 Some example configuration files are provided.
 
@@ -77,6 +79,16 @@ Some example configuration files are provided.
     "./jointScadSpec.js",
     "./shoulderSpec.js",
     "./dowelJointSpec.js"
+  ], 
+  "customReporters": [
+    "./CustomisedOutput.js",
+    "./NyanCat.js"
+  ],
+  "reporters": [
+    {"name": "console", "options": {}},
+    {"name": "json", "options": {"dest": "./JsonOutput.json"}},
+    {"name": "CustomisedOutput", "options": {}},
+    {"name": "NyanCat", "options": {"anyGenericData": true}}
   ]
 }
 ```
@@ -89,6 +101,16 @@ Some example configuration files are provided.
     "E:/Developer/JointSCAD/spec/jointScadSpec.js",
     "E:/Developer/JointSCAD/spec/shoulderSpec.js",
     "E:/Developer/JointSCAD/spec/dowelJointSpec.js"
+  ], 
+  "customReporters": [
+    "E:/Developer/JointSCAD/spec/CustomisedOutput.js",
+    "E:/Developer/JointSCAD/spec/NyanCat.js"
+  ],
+  "reporters": [
+    {"name": "console", "options": {}},
+    {"name": "json", "options": {"dest": "E:/Developer/JointSCAD/spec/JsonOutput.json"}},
+    {"name": "CustomisedOutput", "options": {}},
+    {"name": "NyanCat", "options": {"anyGenericData": true}}
   ]
 }
 ```
@@ -98,20 +120,20 @@ Specification detail what assertions and tests to run. Let's look at the example
 
 ```javascript
 testSuite("JointSCAD", {
-    "use": [],
-    "include": ["JointSCAD.scad"]
+  "use": [],
+  "include": ["JointSCAD.scad"]
 }, function() {
-    it("should plot a shoulder's corners correctly", function() {
-        assert.openScadFunction("getShoulderCorners([5, 5, 5])").outputToBe("[[0, 0, 0], [5, 0, 0], [5, 0, 5], [0, 5, 0], [5, 5, 0], [5, 5, 5]]");
-        assert.openScadFunction("getShoulderCorners([3, 3, 3])").outputToBe("[[0, 0, 0], [3, 0, 0], [3, 0, 3], [0, 3, 0], [3, 3, 0], [3, 3, 3]]");
-    });
+  it("should plot a shoulder's corners correctly", function() {
+    assert.openScadFunction("getShoulderCorners([5, 5, 5])").outputToBe("[[0, 0, 0], [5, 0, 0], [5, 0, 5], [0, 5, 0], [5, 5, 0], [5, 5, 5]]");
+    assert.openScadFunction("getShoulderCorners([3, 3, 3])").outputToBe("[[0, 0, 0], [3, 0, 0], [3, 0, 3], [0, 3, 0], [3, 3, 0], [3, 3, 3]]");
+  });
 
-    it("should model a shoulder correctly", function() {
-        assert.openScadModule("shoulder([3, 3, 3])")
-        .toHaveVertexCountOf(6)
-        .and.toHaveTriangleCountOf(8)
-        .and.toBeWithinBoundingBox([[0, 0, 0], [3, 3, 3]]);
-    });
+  it("should model a shoulder correctly", function() {
+    assert.openScadModule("shoulder([3, 3, 3])")
+    .toHaveVertexCountOf(6)
+    .and.toHaveTriangleCountOf(8)
+    .and.toBeWithinBoundingBox([[0, 0, 0], [3, 3, 3]]);
+  });
 });
 ```
 
@@ -126,6 +148,56 @@ Within the callback function, we can declare as many tests as we like using the 
 Inside the test, we can test the outcome of an OpenSCAD function or module using `assert.openScadFunction` or `assert.openScadModule`. Both of these functions take a string which should be the OpenSCAD function or module respectively. They can then be chained with another function to test and assert the result with an expected outcome.
 
 While specific details can be found in the [API Reference](#api-reference).
+
+## Reporters
+Reporters can be customised and specified by two properties in the configuration file: `customReporters`, and `reporters`. 
+
+### Custom Reporters
+The `customReporters` field is used to include custom reporters into UnitTestSCAD. Within these files, there are several key points of note in order to correctly create a reporter.
+
+First, the reporter must be registered by using `global.ReporterRegistry.add(name, reportingCallback)`. This function takes two parameters: a name for the reporter, which will be needed to refer to later, and a function which executes the reporting itself. 
+
+The reporting function itself takes two parameters: the summary of test results, and additional options passed from the configuration file. The options are passed exactly as they are specified in configuration file. The following is an example of the summary format:
+
+```javascript
+{
+  "assertions": 3,
+  "failures": 0,
+  "testSuites": [
+    {
+      "name": "Shoulder",
+      "assertions": 3,
+      "failures": 0,
+      "tests": [
+        {
+          "name": "should have 6 corners",
+          "assertions": 2,
+          "failures": []
+        },
+        {
+          "name": "should print the corners of the shoulder",
+          "assertions": 1,
+          "failures": []
+        }
+      ]
+    }
+  ]
+}
+```
+
+Finally, as follows, is an example of a custom reporter's definition.
+
+```javascript
+global.ReporterRegistry.add('json', function(summary, options) {
+  fs.writeFileSync(options.dest, JSON.stringify(results, null, '  '));
+  console.log('Results written to ' + options.dest);
+});
+```
+### Reporters
+UnitTestSCAD comes with two reporters by default: `console`, and `json`. 
+
+`console` is a very simple reporter; It takes no options and simply prints the output to the console.
+`json` takes a `dest` option; This option should specify where to write the contents of the summary to on the file system.
 
 # Change Log
 See the [Change Log](../master/CHANGELOG.md) document for more information on changes.

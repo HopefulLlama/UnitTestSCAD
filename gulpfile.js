@@ -3,6 +3,10 @@ var jshint = require('gulp-jshint');
 var jasmine = require('gulp-jasmine');
 
 gulp.task('default', function() {
+	gulp.start('test');
+});
+
+gulp.task('test', function() {
 	gulp.start('lint');
 	gulp.start('unittest');
 });

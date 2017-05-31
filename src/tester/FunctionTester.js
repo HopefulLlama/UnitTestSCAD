@@ -6,7 +6,7 @@ var FunctionAssertions = require('./FunctionAssertions');
 var Tester = require('./Tester');
 
 function FunctionTester(testText, test) {
-	Tester.call(this, Tester.wrapWithMarker(testText) + Tester.failurePrevention, test, new FunctionAssertions());
+	Tester.call(this, Tester.wrapWithMarker(testText), test, new FunctionAssertions());
 }
 util.inherits(FunctionTester, Tester);
 

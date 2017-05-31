@@ -14,15 +14,16 @@ function Tester(testText, test, assertions) {
 
 Tester.START_MARKER = '"UnitTestSCAD __start_marker__"';
 Tester.END_MARKER = '"UnitTestSCAD __end_marker__"';
+Tester.FAILURE_PREVENTION = 'cube(1)';
 
 Tester.wrapWithMarker = function(text) {
   return [
     'echo(' + Tester.START_MARKER + ');', 
     'echo(' + text + ');', 
-    'echo(' + Tester.END_MARKER + ');'
+    'echo(' + Tester.END_MARKER + ');',
+    Tester.FAILURE_PREVENTION
   ].join(os.EOL);
 };
 
-Tester.failurePrevention = os.EOL + 'cube(1)';
 
 module.exports = Tester;

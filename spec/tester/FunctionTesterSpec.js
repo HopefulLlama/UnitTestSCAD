@@ -17,7 +17,6 @@ describe('FunctionTester', function() {
 
     it('should write a scad file and generate output', function() {
       var tester = new FunctionTester('"Hello"', TEST);
-      var path = './spec/resources/shouldwriteascadfileandgenerateoutput.scad';
 
       expect(tester.output).toBe('');
       tester.generateOutput('');
@@ -28,6 +27,9 @@ describe('FunctionTester', function() {
 
       if (fs.existsSync(tester.scadHandler.scad)) {
         fs.unlink(tester.scadHandler.scad);
+      }
+      if (fs.existsSync(tester.scadHandler.stl)) {
+        fs.unlink(tester.scadHandler.stl);
       }
     });
   });

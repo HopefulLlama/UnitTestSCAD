@@ -19,8 +19,10 @@ Tester.wrapWithMarker = function(text) {
   return [
     'echo(' + Tester.START_MARKER + ');', 
     'echo(' + text + ');', 
-    'echo(' + Tester.END_MARKER + ')'
+    'echo(' + Tester.END_MARKER + ');'
   ].join(os.EOL);
 };
+
+Tester.failurePrevention = os.EOL + 'cube(1)';
 
 module.exports = Tester;

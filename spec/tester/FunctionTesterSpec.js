@@ -21,9 +21,9 @@ describe('FunctionTester', function() {
       expect(tester.output).toBe('');
       tester.generateOutput('');
 
-      expect(tester.output.search(/UnitTestSCAD __start_marker__/) > 0).toBe(true);
-      expect(tester.output.search(/Hello/) > 0).toBe(true);
-      expect(tester.output.search(/UnitTestSCAD __end_marker__/) > 0).toBe(true);
+      expect(tester.output.search(/UnitTestSCAD __start_marker__/) > 0).toBe(true, 'Expected ' + tester.output + ' to contain UnitTestSCAD __start_marker__');
+      expect(tester.output.search(/Hello/) > 0).toBe(true, 'Expected ' + tester.output + ' to contain Hello');
+      expect(tester.output.search(/UnitTestSCAD __end_marker__/) > 0).toBe(true, 'Expected ' + tester.output + ' to contain UnitTestSCAD __end_marker__');
 
       if (fs.existsSync(tester.scadHandler.scad)) {
         fs.unlink(tester.scadHandler.scad);

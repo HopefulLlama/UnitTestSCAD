@@ -1,4 +1,6 @@
 # UnitTestSCAD
+
+[![Join the chat at https://gitter.im/UnitTestSCAD/Lobby](https://badges.gitter.im/UnitTestSCAD/Lobby.svg)](https://gitter.im/UnitTestSCAD/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Unit Testing for OpenSCAD
 
 ![UnitTestSCAD](../master/docs/banner.png)

@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [1.2.0]
+## [1.2.0] - 2017-06-01
 ### Added
 - Added reporters, and ability to add custom reporters.
 
@@ -26,7 +26,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Initial release hype!
 
-[Unreleased]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/HopefulLlama/UnitTestSCAD/compare/15ab1edb7d358de72afc3d664f776a2cf1e7e720...v1.0.0

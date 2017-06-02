@@ -126,12 +126,12 @@ testSuite("JointSCAD", {
   "include": ["JointSCAD.scad"]
 }, function() {
   it("should plot a shoulder's corners correctly", function() {
-    assert.openScadFunction("getShoulderCorners([5, 5, 5])").outputToBe("[[0, 0, 0], [5, 0, 0], [5, 0, 5], [0, 5, 0], [5, 5, 0], [5, 5, 5]]");
-    assert.openScadFunction("getShoulderCorners([3, 3, 3])").outputToBe("[[0, 0, 0], [3, 0, 0], [3, 0, 3], [0, 3, 0], [3, 3, 0], [3, 3, 3]]");
+    assert.openScadFunction("getShoulderCorners([5, 5, 5]);").outputToBe("[[0, 0, 0], [5, 0, 0], [5, 0, 5], [0, 5, 0], [5, 5, 0], [5, 5, 5]]");
+    assert.openScadFunction("getShoulderCorners([3, 3, 3]);").outputToBe("[[0, 0, 0], [3, 0, 0], [3, 0, 3], [0, 3, 0], [3, 3, 0], [3, 3, 3]]");
   });
 
   it("should model a shoulder correctly", function() {
-    assert.openScadModule("shoulder([3, 3, 3])")
+    assert.openScadModule("shoulder([3, 3, 3]);")
     .toHaveVertexCountOf(6)
     .and.toHaveTriangleCountOf(8)
     .and.toBeWithinBoundingBox([[0, 0, 0], [3, 3, 3]]);

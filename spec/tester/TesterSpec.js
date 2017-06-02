@@ -13,7 +13,7 @@ describe('Tester', function() {
           echo + Tester.START_MARKER + semicolon + os.EOL +
           echo + letter + semicolon + os.EOL +
           echo + Tester.END_MARKER + semicolon + os.EOL +
-          'cube(1)');
+          'cube(1);');
       });
 
     });

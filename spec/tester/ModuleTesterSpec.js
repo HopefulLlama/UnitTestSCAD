@@ -17,7 +17,7 @@ describe('ModuleTester', function() {
 
 		it('should store the output of the generated STL', function() {
 			var PATH = 'spec/resources/shouldstoretheoutputofthegeneratedSTL';
-			var tester = new ModuleTester('cube([5, 5, 5])', TEST);
+			var tester = new ModuleTester('cube([5, 5, 5]);', TEST);
 			tester.scadHandler.scad = PATH + '.scad';
 			tester.scadHandler.stl = PATH + '.stl';
 			tester.generateOutput('');

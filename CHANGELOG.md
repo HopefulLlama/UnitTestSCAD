@@ -5,7 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-- Nothing yet
+### Changed
+- Now allow for trailing semi-colons in assertion definitions.
 
 ## [1.2.0] - 2017-06-01
 ### Added

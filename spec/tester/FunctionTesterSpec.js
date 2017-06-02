@@ -1,10 +1,11 @@
 var fs = require('fs');
+var os = require('os');
 
 var FunctionTester = require('../../src/tester/FunctionTester');
 
 describe('FunctionTester', function() {
   describe('generateOutput', function() {
-    var TEST;
+    var TEST, tester;
     beforeEach(function() {
       TEST = {
         'testSuite': {
@@ -15,22 +16,23 @@ describe('FunctionTester', function() {
       };
     });
 
-    it('should write a scad file and generate output', function() {
-      var tester = new FunctionTester('"Hello"', TEST);
-
-      expect(tester.output).toBe('');
-      tester.generateOutput('');
-
-      expect(tester.output.search(/UnitTestSCAD __start_marker__/) > 0).toBe(true, 'Expected ' + tester.output + ' to contain UnitTestSCAD __start_marker__');
-      expect(tester.output.search(/Hello/) > 0).toBe(true, 'Expected ' + tester.output + ' to contain Hello');
-      expect(tester.output.search(/UnitTestSCAD __end_marker__/) > 0).toBe(true, 'Expected ' + tester.output + ' to contain UnitTestSCAD __end_marker__');
-
+    afterEach(function() {
       if (fs.existsSync(tester.scadHandler.scad)) {
         fs.unlink(tester.scadHandler.scad);
       }
       if (fs.existsSync(tester.scadHandler.stl)) {
         fs.unlink(tester.scadHandler.stl);
       }
+    });
+
+    it('should write a scad file and generate output', function() {
+      tester = new FunctionTester(null, '"Hello"', TEST);
+
+      expect(tester.output).toBe('');
+      tester.generateOutput('');
+
+      expect(fs.existsSync(tester.scadHandler.scad)).toBe(true);
+      expect(tester.output).toBe(['ECHO: "UnitTestSCAD __start_marker__"', 'ECHO: "Hello"', 'ECHO: "UnitTestSCAD __end_marker__"'].join(os.EOL) + os.EOL);
     });
   });
 });

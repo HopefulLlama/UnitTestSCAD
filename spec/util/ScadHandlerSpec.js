@@ -5,22 +5,34 @@ var ScadHandler = require('../../src/util/ScadHandler');
 
 describe('ScadHandler', function() {
   describe('writeScadFile', function() {
-    it('should write a .scad file', function() {
+    var HEADER = 'use <"Fake.scad">';
+    var BODY = 'cube([1, 1, 1]);';
+
+    beforeEach(function() {
       ScadHandler.scad = './spec/resources/itshouldwriteascadfile.scad';
+    });
 
-      var HEADER = 'use <"Fake.scad">';
-      var BODY = 'cube([1, 1, 1]);';
-      ScadHandler.writeScadFile(HEADER, BODY);
-      
-      expect(fs.existsSync(ScadHandler.scad)).toBe(true);
-      expect(fs.readFileSync(ScadHandler.scad, 'utf8')).toBe(HEADER + os.EOL + BODY);
-
+    afterEach(function() {
       if (fs.existsSync(ScadHandler.scad)) {
         fs.unlink(ScadHandler.scad);
       }
       if (fs.existsSync(ScadHandler.stl)) {
         fs.unlink(ScadHandler.stl);
       }
+    });
+
+    it('should write a .scad file=', function() {
+      ScadHandler.writeScadFile(HEADER, 'swag', BODY);
+      
+      expect(fs.existsSync(ScadHandler.scad)).toBe(true);
+      expect(fs.readFileSync(ScadHandler.scad, 'utf8')).toBe(HEADER + os.EOL + 'swag' + os.EOL + BODY);
+    });
+
+    it('should write a .scad file, ignoring set up', function() {
+      ScadHandler.writeScadFile(HEADER, null, BODY);
+      
+      expect(fs.existsSync(ScadHandler.scad)).toBe(true);
+      expect(fs.readFileSync(ScadHandler.scad, 'utf8')).toBe(HEADER + os.EOL + BODY);
     });
   });
 

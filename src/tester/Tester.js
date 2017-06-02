@@ -1,6 +1,7 @@
 var os = require('os');
 
-function Tester(testText, test, assertions) {
+function Tester(setUpText, testText, test, assertions) {
+  this.setUpText = setUpText;
   this.testText = testText;
   this.test = test;
 
@@ -17,10 +18,10 @@ Tester.END_MARKER = '"UnitTestSCAD __end_marker__"';
 Tester.FAILURE_PREVENTION = 'cube(1);';
 
 var removeTrailingSemicolon = function(text) {
-	if(text.charAt(text.length -1) === ';') {
-		text = text.substring(0, text.length -1);
-	}
-	return text;
+  if(text.charAt(text.length -1) === ';') {
+    text = text.substring(0, text.length -1);
+  }
+  return text;
 };
 
 Tester.wrapWithMarker = function(text) {

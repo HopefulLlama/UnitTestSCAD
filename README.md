@@ -221,6 +221,23 @@ See the [Change Log](../master/CHANGELOG.md) document for more information on ch
 | name | String | The name of the test. Used ot report failures. A descriptive name which describes the test is recommended. |
 | callback | Function |  A function which is used to specify the execution of the test. |
 
+## OpenSCAD Assertion Setup
+### `assert.withSetup(setupText)`
+
+** Returns:** 
+```javascript
+{
+  'openScadFunction': function(openScadFunction) {...},
+  'openScadModule': function(openScadModule) {...}
+}
+```
+
+Allows for the insertion of OpenSCAD code, prior to the assertion being tested.
+
+
+| Parameter | Data Type | Description |
+|---|---|---|
+| setupText | String | OpenSCAD code to be inserted before the assertion being tested. |
 
 ## OpenSCAD Function Assertions
 ### `assert.openScadFunction(openScadFunction)`

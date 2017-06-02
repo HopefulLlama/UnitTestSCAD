@@ -7,8 +7,12 @@ function ScadHandler() {
   this.stl = 'temp.stl';
 }
 
-ScadHandler.prototype.writeScadFile = function(header, testText) {
-  contents = header + os.EOL + testText;
+ScadHandler.prototype.writeScadFile = function(header, setUpText, testText) {
+  contents = header + os.EOL;
+  if(setUpText !== null) {
+  	contents += setUpText + os.EOL;
+  }
+  contents += testText;
   fs.writeFileSync(this.scad, contents);
 };
 

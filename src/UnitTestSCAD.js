@@ -2,6 +2,7 @@
 var fs = require('fs');
 var path = require('path');
 
+var AssertionGenerator = require('./tester/AssertionGenerator');
 var ErrorHandler = require('./util/ErrorHandler');
 var FunctionTester = require('./tester/FunctionTester');
 var ModuleTester = require('./tester/ModuleTester');
@@ -14,41 +15,30 @@ var TEST_RUNNER = require('./test/TestRunner');
 var CONFIG = {};
 var pathToConfig = process.argv[2];
 
-global.ReporterRegistry = require('./reporter/ReporterRegistry');
 
-global.testSuite = function(name, options, callback) {
-  var testSuite = new TestSuite(name, options.use, options.include);
+var setUpGlobals = function(config, testRunner) {
+  global.ReporterRegistry = require('./reporter/ReporterRegistry');
 
-  TEST_RUNNER.testSuites.push(testSuite);
-  TEST_RUNNER.current.testSuite = testSuite;
+  global.testSuite = function(name, options, callback) {
+    var testSuite = new TestSuite(name, options.use, options.include);
 
-  callback();
+    testRunner.testSuites.push(testSuite);
+    testRunner.current.testSuite = testSuite;
+
+    callback();
+  };
+
+  global.it = function(title, callback) {
+    var test = new Test(title, testRunner.current.testSuite);
+    
+    testRunner.current.testSuite.tests.push(test);
+    testRunner.current.test = test;
+    callback();
+  };
+
+  global.assert = new AssertionGenerator(config, testRunner);
 };
 
-global.it = function(title, callback) {
-  var test = new Test(title, TEST_RUNNER.current.testSuite);
-  
-  TEST_RUNNER.current.testSuite.tests.push(test);
-  TEST_RUNNER.current.test = test;
-  callback();
-};
-
-var functionTester = function(testText) {
-  var tester = new FunctionTester(testText, TEST_RUNNER.current.test);
-  tester.generateOutput(CONFIG.properties.openScadDirectory);
-	return tester.assertions;
-};
-
-var moduleTester = function(testText) {
-  var tester = new ModuleTester(testText + ';', TEST_RUNNER.current.test);
-  tester.generateOutput(CONFIG.properties.openScadDirectory);
-  return tester.assertions;
-};
-
-global.assert = {
-  'openScadFunction': functionTester,
-  'openScadModule': moduleTester
-};
 
 var readConfig = function(pathToConfig) {
   return {
@@ -66,12 +56,10 @@ var main = function(config, testRunner) {
 
   testRunner.runTests(config.properties.testFiles);
 
-  var reporters = (config.properties.reporters !== undefined) ? config.properties.reporters : [
-    {
-      'name': 'console',
-      'options': null
-    }
-  ];
+  var reporters = (config.properties.reporters !== undefined) ? config.properties.reporters : [{
+    'name': 'console',
+    'options': null
+  }];
   testRunner.report(reporters);
 
   if(testRunner.aggregateResults().failures > 0) {
@@ -80,7 +68,7 @@ var main = function(config, testRunner) {
 };
 
 process.on('exit', function(code) {
-	ScadHandler.cleanUp();
+  ScadHandler.cleanUp();
 });
 
 if(pathToConfig) {
@@ -93,4 +81,5 @@ if(pathToConfig) {
   ErrorHandler.throwErrorAndExit(ErrorHandler.REASONS.MISSING_CONFIG);
 }
 
+setUpGlobals(CONFIG, TEST_RUNNER);
 main(CONFIG, TEST_RUNNER);

@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var jshint = require('gulp-jshint');
 var jasmine = require('gulp-jasmine');
+var coverage = require('gulp-coverage');
 
 gulp.task('default', function() {
 	gulp.start('test');
@@ -23,5 +24,11 @@ gulp.task('lint', function() {
 
 gulp.task('unittest', function() {
 	return gulp.src('spec/**/*.js')
-	.pipe(jasmine());
+	.pipe(coverage.instrument({
+		pattern: ['src/**/*.js']
+	}))
+	.pipe(jasmine())
+	.pipe(coverage.gather())
+	.pipe(coverage.format())
+	.pipe(gulp.dest('reports'));
 });

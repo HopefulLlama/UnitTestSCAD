@@ -18,10 +18,10 @@ describe('TestRunner', function() {
           'assertions': assertions,
           'failures': failures,
           'getSummary': function() {
-          	return {
-          		'assertions': assertions,
-          		'failures': failures
-          	};
+            return {
+              'assertions': assertions,
+              'failures': failures
+            };
           }
         };
       }
@@ -46,6 +46,49 @@ describe('TestRunner', function() {
         expect(testSuite.getSummary).toHaveBeenCalled();
       });
 
+    });
+  });
+
+
+  describe('report', function() {
+    var RESULTS = {};
+    function MockReporter(name) {
+      this.name = name;
+      this.options = {
+        'mock': true
+      };
+      this.report = function() {};
+    }
+
+    it('should call every reporter listed', function() {
+      spyOn(testRunner, 'aggregateResults').and.callFake(function() {
+        return RESULTS;
+      });
+
+      var reporterNames = ['fake', 'mocked', 'hello'];
+      var reporterArray = reporterNames.reduce(function(previousValue, currentValue) {
+        previousValue.push(new MockReporter(currentValue));
+        return previousValue;
+      }, []);
+
+      global.ReporterRegistry = {
+        'reporters': reporterNames.reduce(function(previousValue, currentValue) {
+          previousValue[currentValue] = new MockReporter(currentValue);
+          return previousValue;
+        }, {})
+      };
+
+      reporterNames.forEach(function(reporter) {
+        spyOn(global.ReporterRegistry.reporters[reporter], 'report').and.stub();
+      });
+
+      testRunner.report(reporterArray);
+
+      expect(testRunner.aggregateResults).toHaveBeenCalled();
+      reporterNames.forEach(function(reporter) {
+        var testee = global.ReporterRegistry.reporters[reporter];
+        expect(testee.report).toHaveBeenCalledWith(RESULTS, testee.options);
+      });
     });
   });
 });

@@ -9,7 +9,7 @@ gulp.task('default', function() {
 
 gulp.task('test', function() {
 	gulp.start('lint');
-	gulp.start('unittest');
+	gulp.start('coverage');
 });
 
 gulp.task('lint', function() {
@@ -22,7 +22,7 @@ gulp.task('lint', function() {
 	.pipe(jshint.reporter('fail'));
 });
 
-gulp.task('unittest', function() {
+gulp.task('coverage', function() {
 	return gulp.src('spec/**/*.js')
 	.pipe(coverage.instrument({
 		pattern: ['src/**/*.js']
@@ -31,4 +31,9 @@ gulp.task('unittest', function() {
 	.pipe(coverage.gather())
 	.pipe(coverage.format())
 	.pipe(gulp.dest('reports'));
+});
+
+gulp.task('unittest', function() {
+	return gulp.src('spec/**/*.js')
+	.pipe(jasmine());
 });

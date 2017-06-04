@@ -7,7 +7,7 @@ Assertions.prototype.__test = function(actual, conjunction, expected, test) {
   this.tester.test.assertions++;
 
   if(this.__failsExpectation(test(this))) {
-  	var failureMessage = this.__buildFailureMessage(actual, conjunction, expected);
+    var failureMessage = this.__buildFailureMessage(actual, conjunction, expected);
     this.tester.test.failures.push(failureMessage);
   }
 
@@ -15,23 +15,9 @@ Assertions.prototype.__test = function(actual, conjunction, expected, test) {
 };
 
 Assertions.prototype.__testEquality = function(actual, expected) {
-	return this.__test(actual, 'to be', expected, function(dis) {
-		return actual === expected;
-	});
-};
-
-Assertions.prototype.__testContains = function(actual, expected) {
-	return this.__test(actual, 'to contain', expected, function(dis) {
-		return stringContainsSubstring(actual, expected);
-	});
-};
-
-var regexEscape = function(string) {
-  return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-};
-
-var stringContainsSubstring = function(string, substring) {
-  return string.search(new RegExp(regexEscape(substring))) >= 0;
+  return this.__test(actual, 'to be', expected, function(dis) {
+    return actual === expected;
+  });
 };
 
 Assertions.prototype.__buildFailureMessage = function(actual, conjunction, expected) {

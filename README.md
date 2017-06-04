@@ -3,7 +3,7 @@
 [![Join the chat at https://gitter.im/UnitTestSCAD/Lobby](https://badges.gitter.im/UnitTestSCAD/Lobby.svg)](https://gitter.im/UnitTestSCAD/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Unit Testing for OpenSCAD
 
-![UnitTestSCAD](../master/docs/banner.png)
+![UnitTestSCAD](../master/docs/banner.gif)
 
 UnitTestSCAD brings forth unit testing capabilities to OpenSCAD. Unit testing enables you to check for regressions, accuracy and robustness of code in a fast, repeatable manner. Speed of development increases as unit tests will worry about your regressions, and allow you to plow ahead with your vision.
 

@@ -2,12 +2,12 @@ var fs = require('fs');
 var os = require('os');
 var execSync = require('child_process').execSync;
 
-function ScadHandler() {
+function FileHandler() {
   this.scad = 'temp.scad';
   this.stl = 'temp.stl';
 }
 
-ScadHandler.prototype.writeScadFile = function(header, setUpText, testText) {
+FileHandler.prototype.writeScadFile = function(header, setUpText, testText) {
   contents = header + os.EOL;
   if(setUpText !== null) {
   	contents += setUpText + os.EOL;
@@ -16,12 +16,12 @@ ScadHandler.prototype.writeScadFile = function(header, setUpText, testText) {
   fs.writeFileSync(this.scad, contents);
 };
 
-ScadHandler.prototype.executeConversion = function() {
+FileHandler.prototype.executeConversion = function() {
   var COMMAND = 'openscad -o ' + this.stl + ' ' + this.scad;
   return execSync(COMMAND).toString();
 };
 
-ScadHandler.prototype.getOutputLine = function(output) {
+FileHandler.prototype.getOutputLine = function(output) {
   var marker = output.find(function(line) {
     return line.search(new RegExp('UnitTestSCAD')) >= 0;
   });
@@ -36,7 +36,7 @@ var getLinesWithVertex = function(contents) {
   });
 };
 
-ScadHandler.prototype.getVertices = function(contents) {
+FileHandler.prototype.getVertices = function(contents) {
   return getLinesWithVertex(contents)
   .filter(function(value, index, self) {
     return self.indexOf(value) === index;
@@ -53,7 +53,7 @@ ScadHandler.prototype.getVertices = function(contents) {
       }, []);
 };
 
-ScadHandler.prototype.countTriangles = function(contents) {
+FileHandler.prototype.countTriangles = function(contents) {
   return contents.split(os.EOL)
   .filter(function(line) {
     return line.match(/endfacet/);
@@ -61,7 +61,7 @@ ScadHandler.prototype.countTriangles = function(contents) {
   .length;
 };
 
-ScadHandler.prototype.cleanUp = function() {
+FileHandler.prototype.cleanUp = function() {
   if(fs.existsSync(this.scad)) {
     fs.unlinkSync(this.scad);
   }
@@ -70,4 +70,4 @@ ScadHandler.prototype.cleanUp = function() {
   }
 };
 
-module.exports = new ScadHandler();
+module.exports = new FileHandler();

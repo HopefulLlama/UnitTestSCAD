@@ -16,23 +16,23 @@ describe('ModuleTester', function() {
     });
 
     afterEach(function() {
-      if(fs.existsSync(tester.scadHandler.scad)) {
-        fs.unlink(tester.scadHandler.scad);
+      if(fs.existsSync(tester.FileHandler.scad)) {
+        fs.unlink(tester.FileHandler.scad);
       }
 
-      if(fs.existsSync(tester.scadHandler.stl)) {
-        fs.unlink(tester.scadHandler.stl);
+      if(fs.existsSync(tester.FileHandler.stl)) {
+        fs.unlink(tester.FileHandler.stl);
       }
     });
 
     it('should store the output of the generated STL', function() {
       var PATH = 'spec/resources/shouldstoretheoutputofthegeneratedSTL';
       tester = new ModuleTester(null, 'cube([5, 5, 5]);', TEST);
-      tester.scadHandler.scad = PATH + '.scad';
-      tester.scadHandler.stl = PATH + '.stl';
+      tester.FileHandler.scad = PATH + '.scad';
+      tester.FileHandler.stl = PATH + '.stl';
       tester.generateOutput('');
 
-      var expectedOutput = fs.readFileSync(tester.scadHandler.stl, 'utf8');
+      var expectedOutput = fs.readFileSync(tester.FileHandler.stl, 'utf8');
 
       expect(tester.output).toBe(expectedOutput);
     });

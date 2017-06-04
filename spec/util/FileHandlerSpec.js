@@ -1,51 +1,51 @@
 var fs = require('fs');
 var os = require('os');
 
-var ScadHandler = require('../../src/util/ScadHandler');
+var FileHandler = require('../../src/util/FileHandler');
 
-describe('ScadHandler', function() {
+describe('FileHandler', function() {
   describe('writeScadFile', function() {
     var HEADER = 'use <"Fake.scad">';
     var BODY = 'cube([1, 1, 1]);';
 
     beforeEach(function() {
-      ScadHandler.scad = './spec/resources/itshouldwriteascadfile.scad';
+      FileHandler.scad = './spec/resources/itshouldwriteascadfile.scad';
     });
 
     afterEach(function() {
-      if (fs.existsSync(ScadHandler.scad)) {
-        fs.unlink(ScadHandler.scad);
+      if (fs.existsSync(FileHandler.scad)) {
+        fs.unlink(FileHandler.scad);
       }
-      if (fs.existsSync(ScadHandler.stl)) {
-        fs.unlink(ScadHandler.stl);
+      if (fs.existsSync(FileHandler.stl)) {
+        fs.unlink(FileHandler.stl);
       }
     });
 
     it('should write a .scad file=', function() {
-      ScadHandler.writeScadFile(HEADER, 'swag', BODY);
+      FileHandler.writeScadFile(HEADER, 'swag', BODY);
       
-      expect(fs.existsSync(ScadHandler.scad)).toBe(true);
-      expect(fs.readFileSync(ScadHandler.scad, 'utf8')).toBe(HEADER + os.EOL + 'swag' + os.EOL + BODY);
+      expect(fs.existsSync(FileHandler.scad)).toBe(true);
+      expect(fs.readFileSync(FileHandler.scad, 'utf8')).toBe(HEADER + os.EOL + 'swag' + os.EOL + BODY);
     });
 
     it('should write a .scad file, ignoring set up', function() {
-      ScadHandler.writeScadFile(HEADER, null, BODY);
+      FileHandler.writeScadFile(HEADER, null, BODY);
       
-      expect(fs.existsSync(ScadHandler.scad)).toBe(true);
-      expect(fs.readFileSync(ScadHandler.scad, 'utf8')).toBe(HEADER + os.EOL + BODY);
+      expect(fs.existsSync(FileHandler.scad)).toBe(true);
+      expect(fs.readFileSync(FileHandler.scad, 'utf8')).toBe(HEADER + os.EOL + BODY);
     });
   });
 
   describe('executeConversion', function() {
     it('should capture the output of the scad -> stl command', function() {
-      ScadHandler.scad = './spec/resources/echo.scad';
-      ScadHandler.stl = './spec/resources/echo.stl';
+      FileHandler.scad = './spec/resources/echo.scad';
+      FileHandler.stl = './spec/resources/echo.stl';
 
-      var output = ScadHandler.executeConversion();
+      var output = FileHandler.executeConversion();
       expect(output.search(/If you can see this then it worked/) >= 0).toBe(true, 'Expected ' + output + ' to contain If you can see this then it worked');
 
-      if (fs.existsSync(ScadHandler.stl)) {
-        fs.unlink(ScadHandler.stl);
+      if (fs.existsSync(FileHandler.stl)) {
+        fs.unlink(FileHandler.stl);
       }
     });
   });
@@ -56,34 +56,34 @@ describe('ScadHandler', function() {
     }
 
     it('should delete the files associated', function() {
-      ScadHandler.scad = './spec/resources/delet-this.scad';
-      ScadHandler.stl = './spec/resources/delet-this.stl';
+      FileHandler.scad = './spec/resources/delet-this.scad';
+      FileHandler.stl = './spec/resources/delet-this.stl';
 
-      createTempFile(ScadHandler.scad);
-      createTempFile(ScadHandler.stl);
+      createTempFile(FileHandler.scad);
+      createTempFile(FileHandler.stl);
 
-      ScadHandler.cleanUp();
+      FileHandler.cleanUp();
 
-      expect(fs.existsSync(ScadHandler.scad)).toBe(false, 'scad file');
-      expect(fs.existsSync(ScadHandler.stl)).toBe(false, 'stl file');
+      expect(fs.existsSync(FileHandler.scad)).toBe(false, 'scad file');
+      expect(fs.existsSync(FileHandler.stl)).toBe(false, 'stl file');
     });
   });
 
   describe('getOutputLine', function() {
     it('should get the line after \'UnitTestSCAD\'', function() {
-      expect(ScadHandler.getOutputLine([
+      expect(FileHandler.getOutputLine([
         'Hi',
         'UnitTestSCAD',
         'Generic'
       ])).toBe('Generic');
 
-      expect(ScadHandler.getOutputLine([
+      expect(FileHandler.getOutputLine([
         'UnitTestSCAD',
         'Different',
         'Unique'
       ])).toBe('Different');
 
-      expect(ScadHandler.getOutputLine([
+      expect(FileHandler.getOutputLine([
         'Alex',
         'Comma',
         'UnitTestSCAD',
@@ -94,7 +94,7 @@ describe('ScadHandler', function() {
 
   describe('getVertices', function() {
     it('should return the vertices found in the form of \'vertex <int> <int> <int>\'', function() {
-      expect(ScadHandler.getVertices(
+      expect(FileHandler.getVertices(
         'hemlock' + os.EOL + 
         'clever' + os.EOL + 
         'vertex 5 4 3' + os.EOL + 
@@ -104,7 +104,7 @@ describe('ScadHandler', function() {
     });
 
     it('should uniquify the vertices in a given list', function() {
-      expect(ScadHandler.getVertices(
+      expect(FileHandler.getVertices(
         'vertex 5 4 3' + os.EOL + 
         'vertex 5 4 3' + os.EOL + 
         'vertex 5 4 3' + os.EOL + 
@@ -123,7 +123,7 @@ describe('ScadHandler', function() {
 
   describe('getTriangles', function() {
     it('should return the count of \'endfacet\' as a triangle count', function() {
-      expect(ScadHandler.countTriangles(
+      expect(FileHandler.countTriangles(
         'cortex' + os.EOL + 
         'corrosive' + os.EOL + 
         'endfacet' + os.EOL + 

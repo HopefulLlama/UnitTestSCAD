@@ -10,7 +10,7 @@ function Tester(setUpText, testText, test, assertions) {
   assertions.tester = this;
   this.assertions = assertions;
 
-  this.scadHandler = require('../util/ScadHandler');
+  this.FileHandler = require('../util/FileHandler');
 }
 
 Tester.START_MARKER = '"UnitTestSCAD __start_marker__"';

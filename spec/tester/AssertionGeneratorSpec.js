@@ -2,7 +2,7 @@ var fs = require('fs');
 var os = require('os');
 
 var AssertionGenerator = require('../../src/tester/AssertionGenerator');
-var ScadHandler = require('../../src/util/ScadHandler');
+var FileHandler = require('../../src/util/FileHandler');
 
 
 describe('AssertionGenerator', function() {
@@ -28,12 +28,12 @@ describe('AssertionGenerator', function() {
   });
 
   afterEach(function() {
-    if(fs.existsSync(ScadHandler.scad)) {
-      fs.unlink(ScadHandler.scad);
+    if(fs.existsSync(FileHandler.scad)) {
+      fs.unlink(FileHandler.scad);
     }
 
-    if(fs.existsSync(ScadHandler.stl)) {
-      fs.unlink(ScadHandler.stl);
+    if(fs.existsSync(FileHandler.stl)) {
+      fs.unlink(FileHandler.stl);
     }
   });
 
@@ -49,7 +49,7 @@ describe('AssertionGenerator', function() {
     var test = '"Hello";';
     var tester = assertionGenerator.withSetup(SETUP).openScadFunction(test).tester;
 
-    expect(fs.existsSync(ScadHandler.scad)).toBe(true);
+    expect(fs.existsSync(FileHandler.scad)).toBe(true);
     expect(tester.output).toEqual([
       'ECHO: "UnitTestSCAD __start_marker__"',
       'ECHO: "Hello"',
@@ -69,9 +69,9 @@ describe('AssertionGenerator', function() {
     var test = 'cube(1);';
     var tester = assertionGenerator.withSetup(SETUP).openScadModule(test).tester;
 
-    expect(fs.existsSync(ScadHandler.scad)).toBe(true);
-    expect(fs.existsSync(ScadHandler.stl)).toBe(true);
-    expect(tester.output).toEqual(fs.readFileSync(ScadHandler.stl, 'utf8'));
+    expect(fs.existsSync(FileHandler.scad)).toBe(true);
+    expect(fs.existsSync(FileHandler.stl)).toBe(true);
+    expect(tester.output).toEqual(fs.readFileSync(FileHandler.stl, 'utf8'));
 
     expect(tester.setUpText).toEqual(SETUP);
     expect(tester.testText).toEqual(test);

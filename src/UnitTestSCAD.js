@@ -6,7 +6,7 @@ var AssertionGenerator = require('./tester/AssertionGenerator');
 var ErrorHandler = require('./util/ErrorHandler');
 var FunctionTester = require('./tester/FunctionTester');
 var ModuleTester = require('./tester/ModuleTester');
-var ScadHandler = require('./util/ScadHandler');
+var FileHandler = require('./util/FileHandler');
 var Test = require('./test/Test');
 var TestSuite = require('./test/TestSuite');
 
@@ -68,7 +68,7 @@ var main = function(config, testRunner) {
 };
 
 process.on('exit', function(code) {
-  ScadHandler.cleanUp();
+  FileHandler.cleanUp();
 });
 
 if(pathToConfig) {

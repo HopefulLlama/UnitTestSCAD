@@ -3,7 +3,7 @@ var os = require('os');
 var util = require('util');
 
 var Assertions = require('./Assertions');
-var ScadHandler = require('../util/ScadHandler');
+var FileHandler = require('../util/FileHandler');
 var Tester = require('./Tester');
 
 function FunctionAssertions() {

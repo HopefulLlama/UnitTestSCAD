@@ -1,7 +1,7 @@
 var fs = require('fs');
 var util = require('util');
 
-var ScadHandler = require('../util/ScadHandler');
+var FileHandler = require('../util/FileHandler');
 var Assertions = require('./Assertions');
 
 function ModuleAssertions() {
@@ -15,11 +15,11 @@ ModuleAssertions.prototype.stlFileToBe = function(file) {
 };
 
 ModuleAssertions.prototype.toHaveVertexCountOf = function(expectedCount) {
-	return this.__testEquality(ScadHandler.getVertices(this.tester.output).length, expectedCount);
+	return this.__testEquality(FileHandler.getVertices(this.tester.output).length, expectedCount);
 };
 
 ModuleAssertions.prototype.toHaveTriangleCountOf = function(expectedCount) {
-	return this.__testEquality(ScadHandler.countTriangles(this.tester.output), expectedCount); 
+	return this.__testEquality(FileHandler.countTriangles(this.tester.output), expectedCount); 
 };
 
 var isCoordinateWithinBounds = function(coordinate, min, max) {
@@ -28,7 +28,7 @@ var isCoordinateWithinBounds = function(coordinate, min, max) {
 
 ModuleAssertions.prototype.toBeWithinBoundingBox = function(vectors) {
   var failingVertices = 0;
-  var vertices = ScadHandler.getVertices(this.tester.output);
+  var vertices = FileHandler.getVertices(this.tester.output);
 
   vertices.forEach(function(vertex) {
     vertex.forEach(function(coordinate, index) {

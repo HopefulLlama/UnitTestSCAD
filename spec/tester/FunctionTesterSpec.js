@@ -17,11 +17,11 @@ describe('FunctionTester', function() {
     });
 
     afterEach(function() {
-      if (fs.existsSync(tester.scadHandler.scad)) {
-        fs.unlink(tester.scadHandler.scad);
+      if (fs.existsSync(tester.FileHandler.scad)) {
+        fs.unlink(tester.FileHandler.scad);
       }
-      if (fs.existsSync(tester.scadHandler.stl)) {
-        fs.unlink(tester.scadHandler.stl);
+      if (fs.existsSync(tester.FileHandler.stl)) {
+        fs.unlink(tester.FileHandler.stl);
       }
     });
 
@@ -31,7 +31,7 @@ describe('FunctionTester', function() {
       expect(tester.output).toBe('');
       tester.generateOutput('');
 
-      expect(fs.existsSync(tester.scadHandler.scad)).toBe(true);
+      expect(fs.existsSync(tester.FileHandler.scad)).toBe(true);
       expect(tester.output).toBe(['ECHO: "UnitTestSCAD __start_marker__"', 'ECHO: "Hello"', 'ECHO: "UnitTestSCAD __end_marker__"'].join(os.EOL) + os.EOL);
     });
   });

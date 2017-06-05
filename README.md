@@ -68,7 +68,7 @@ To use UnitTestSCAD, you will first need a configuration file which will specify
 
 - `openScadDirectory`: This should be a string which points to the directory containing your OpenSCAD files. This can be a relative path (from the configuration file), or an absolute path.
 - `testFiles`: This should be an array of strings, which points to JavaScript specification files. These are the files which run your tests. These can be relative paths (from the configuration file), or an absolute path.
-- `customReporters`: This should be an array of strings, which points to JavaScript custom reporter files. These are the files which run your tests. These can be relative paths (from the configuration file), or an absolute path. More information can be found at [Reporters](#reporters).
+- `customReporters`: This should be an array of strings, which points to JavaScript custom reporter files. These are the files which specify how your custom reporter operates. These can be relative paths (from the configuration file), or an absolute path. More information can be found at [Reporters](#reporters).
 - `reporters`: This should be an array of objects, which specifies which reporters to use, along with additional options. These specify the output of the results of the test run. These can be relative paths (from the configuration file), or an absolute path. If omitted, this defaults to use the `console` reporter only. More information can be found at [Reporters](#reporters).
 
 Some example configuration files are provided.
@@ -224,7 +224,7 @@ See the [Change Log](../master/CHANGELOG.md) document for more information on ch
 ## OpenSCAD Assertion Setup
 ### `assert.withSetup(setupText)`
 
-** Returns:** 
+**Returns:** 
 ```javascript
 {
   'openScadFunction': function(openScadFunction) {...},
@@ -258,7 +258,7 @@ Begins an assertion or multiple assertions on an OpenSCAD function.
 
 ### `not()`
 
-**Returns**
+**Returns:**
 ```javascript
 {
   'not': function() {...},
@@ -290,7 +290,6 @@ Performs an equality check on the returned value of an OpenSCAD function.
 ### `assert.openScadModule(openScadModule)`
 
 **Returns:**
-
 ```javascript
 {
   'not': function(),
@@ -310,7 +309,6 @@ Begins an assertion or multiple assertions on an OpenSCAD module.
 ### `not()`
 
 **Returns:**
-
 ```javascript
 {
   'not': function(),
@@ -325,7 +323,6 @@ Inverts the expectation of the following assertion. This is used in a chain of c
 ### `stlFileToBe(expectedFilePath)`
 
 **Returns:**
-
 ```javascript
 {
   'and': {
@@ -347,7 +344,6 @@ Compares the generated STL file of the OpenSCAD file, with a pre-existing known 
 ### `toHaveVertexCountOf(expectedVertices)`
 
 **Returns:**
-
 ```javascript
 {
   'and': {
@@ -369,7 +365,6 @@ Compares the number of vertices produced by the module, against an expected valu
 ### `toHaveTriangleCountOf(expectedTriangle)`
 
 **Returns:**
-
 ```javascript
 {
   'and': {
@@ -391,7 +386,6 @@ Compares the number of 'triangles' created by the OpenSCAD module, against an ex
 ### `toBeWithinBoundingBox(bounds)`
 
 **Returns:**
-
 ```javascript
 {
   'and': {

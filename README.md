@@ -1,6 +1,7 @@
 # ![UnitTestSCAD Logo](../master/docs/UnitTestSCAD-32.png)UnitTestSCAD
 
-[![Join the chat at https://gitter.im/UnitTestSCAD/Lobby](https://badges.gitter.im/UnitTestSCAD/Lobby.svg)](https://gitter.im/UnitTestSCAD/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+![License](https://img.shields.io/npm/l/unittestscad.svg) [![NPM](https://img.shields.io/npm/v/unittestscad.svg)](https://www.npmjs.com/package/unittestscad) [![Code Climate](https://img.shields.io/codeclimate/github/HopefulLlama/UnitTestSCAD.svg)](https://codeclimate.com/github/HopefulLlama/UnitTestSCAD) [![Join the chat at https://gitter.im/UnitTestSCAD/Lobby](https://badges.gitter.im/UnitTestSCAD/Lobby.svg)](https://gitter.im/UnitTestSCAD/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Unit Testing for OpenSCAD
 
 ![UnitTestSCAD](../master/docs/banner.gif)

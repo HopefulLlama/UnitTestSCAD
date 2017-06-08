@@ -13,8 +13,10 @@ describe('ReporterRegistry', function() {
     expect(ReporterRegistry.reporters[reporter]).toBe(undefined);
   };
 
-  it('should have default reporters', function() {
-    ['console', 'json'].forEach(checkReporterExists);
+	['console', 'json', 'xml'].forEach(function(reporter) {
+		it('should have default reporters: ' + reporter, function() {
+			checkReporterExists(reporter);
+  	});
   });
 
   it('should add new reporters', function() {

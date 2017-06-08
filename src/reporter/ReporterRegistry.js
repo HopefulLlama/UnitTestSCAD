@@ -7,6 +7,7 @@ function ReporterRegistry() {
 
   this.add('console', require('./ConsoleReporter'));
   this.add('json', require('./JsonReporter'));
+  this.add('xml', require('./XmlReporter'));
 }
 
 ReporterRegistry.prototype.__addCustomReporters = function(files) {

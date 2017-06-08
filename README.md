@@ -89,6 +89,7 @@ Some example configuration files are provided.
   "reporters": [
     {"name": "console", "options": {}},
     {"name": "json", "options": {"dest": "./JsonOutput.json"}},
+    {"name": "xml", "options": {"dest": "./XmlOutput.xml"}},
     {"name": "CustomisedOutput", "options": {}},
     {"name": "NyanCat", "options": {"anyGenericData": true}}
   ]
@@ -111,6 +112,7 @@ Some example configuration files are provided.
   "reporters": [
     {"name": "console", "options": {}},
     {"name": "json", "options": {"dest": "E:/Developer/JointSCAD/spec/JsonOutput.json"}},
+    {"name": "xml", "options": {"dest": "E:/Developer/JointSCAD/spec/XmlOutput.xml"}},
     {"name": "CustomisedOutput", "options": {}},
     {"name": "NyanCat", "options": {"anyGenericData": true}}
   ]
@@ -196,10 +198,13 @@ global.ReporterRegistry.add('json', function(summary, options) {
 });
 ```
 ### Reporters
-UnitTestSCAD comes with two reporters by default: `console`, and `json`. 
+UnitTestSCAD comes with two reporters by default: `console`, `json`, and `xml`. 
 
 `console` is a very simple reporter; It takes no options and simply prints the output to the console.
+
 `json` takes a `dest` option; This option should specify where to write the contents of the summary to on the file system.
+
+`xml` takes a `dest` option; This option should specify where to write the contents of the summary to on the file system.
 
 # Change Log
 See the [Change Log](../master/CHANGELOG.md) document for more information on changes.

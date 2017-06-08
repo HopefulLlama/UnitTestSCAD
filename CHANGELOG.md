@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - `assert` now has an optional `withSetup(setupText)` to allow insertion of OpenSCAD code, prior to the test. Chains with both `openScadFunction()` and `openScadModule()`.
 - `assert.openScad2DModule()` now available, along with assertions for 2D modules.
+- `xml` reporter now available.
 
 ### Changed
 - Now allow for trailing semi-colons in assertion definitions.

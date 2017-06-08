@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Nothing yet
+
+## [2.0.0] - 2017-06-08
 ### Added
 - `assert` now has an optional `withSetup(setupText)` to allow insertion of OpenSCAD code, prior to the test. Chains with both `openScadFunction()` and `openScadModule()`.
 - `assert.openScad2DModule()` now available, along with assertions for 2D modules.
@@ -21,7 +24,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - `openScadFunction().outputToBe('...')` now performs a strict equality check, rather than weak containment check.
 
-
 ## [1.1.0] - 2017-05-28
 ### Added
 - `not()` function to both `openScadFunction()` and `openScadModule`. Inverts the expectation of the next chained assertion.
@@ -34,7 +36,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Initial release hype!
 
-[Unreleased]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v1.2.0...v2.0.0
 [1.2.0]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v1.0.0...v1.0.1

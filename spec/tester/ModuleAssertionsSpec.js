@@ -51,9 +51,10 @@ describe('ModuleAssertions', function() {
   };
 
   describe('with test file output', function() {
+    var actual = [[0, 0, 0], [3, 0, 3], [3, 3, 3]].toString();
     beforeEach(function() {
-      OUTPUT = ['garbage', 'vertex 0 0 0', 'vertex 3 0 3', 'endfacet', 'endfacet', 'vertex 3 3 3'].join(os.EOL);
-
+	    OUTPUT = ['garbage', 'vertex 0 0 0', 'vertex 3 0 3', 'endfacet', 'endfacet', 'vertex 3 3 3'].join(os.EOL);
+	    
       TESTER = {
         'output': OUTPUT,
         'test': {
@@ -128,14 +129,12 @@ describe('ModuleAssertions', function() {
     });
 
     it('should fail not if within bounds', function() {
-      var actual = [[0, 0, 0], [3, 0, 3], [3, 3, 3]].toString();
       var expected = [[0, 0, 0], [3, 3, 3]];
       assertNotBoundingBox(expected, 1, 1);
       expect(moduleAssertions.tester.test.failures[0]).toBe('Expected <' + actual + '> not to be within the bounds of <' + expected.toString() + '>.');
     });
 
     it('should pass if any point is outside the bounds', function() {
-      var actual = [[0, 0, 0], [3, 0, 3], [3, 3, 3]].toString();
       [
         [[1, 0, 0], [3, 3, 3]],
         [[0, 1, 0], [3, 3, 3]],
@@ -149,7 +148,6 @@ describe('ModuleAssertions', function() {
     });
 
     it('should fail if any point is outside the bounds', function() {
-      var actual = [[0, 0, 0], [3, 0, 3], [3, 3, 3]].toString();
       [
         [[1, 0, 0], [3, 3, 3]],
         [[0, 1, 0], [3, 3, 3]],

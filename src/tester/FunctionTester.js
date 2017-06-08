@@ -12,7 +12,7 @@ util.inherits(FunctionTester, Tester);
 
 FunctionTester.prototype.generateOutput = function(openScadDirectory) {
   this.FileHandler.writeScadFile(this.test.testSuite.getHeader(openScadDirectory), this.setUpText, this.testText);
-  this.output = this.FileHandler.executeConversion();
+  this.output = this.FileHandler.convertToStl();
 };
 
 module.exports = FunctionTester;

@@ -5,6 +5,7 @@ var execSync = require('child_process').execSync;
 function FileHandler() {
   this.scad = 'temp.scad';
   this.stl = 'temp.stl';
+  this.svg = 'temp.svg';
 }
 
 FileHandler.prototype.writeScadFile = function(header, setUpText, testText) {
@@ -16,8 +17,13 @@ FileHandler.prototype.writeScadFile = function(header, setUpText, testText) {
   fs.writeFileSync(this.scad, contents);
 };
 
-FileHandler.prototype.executeConversion = function() {
+FileHandler.prototype.convertToStl = function() {
   var COMMAND = 'openscad -o ' + this.stl + ' ' + this.scad;
+  return execSync(COMMAND).toString();
+};
+
+FileHandler.prototype.convertToSvg = function() {
+  var COMMAND = 'openscad -o ' + this.svg + ' ' + this.scad;
   return execSync(COMMAND).toString();
 };
 
@@ -42,15 +48,15 @@ FileHandler.prototype.getVertices = function(contents) {
     return self.indexOf(value) === index;
   })
   .reduce(function(accumulator, currentValue) {
-        // Last three elements should be the co-ordinates, as a string
-        var vertex = currentValue.split(' ')
-        .slice(-3)
-        .map(function(v) {
-          return parseInt(v, 10);
-        });
-        accumulator.push(vertex);
-        return accumulator;
-      }, []);
+    // Last three elements should be the co-ordinates, as a string
+    var vertex = currentValue.split(' ')
+    .slice(-3)
+    .map(function(v) {
+      return parseInt(v, 10);
+    });
+    accumulator.push(vertex);
+    return accumulator;
+  }, []);
 };
 
 FileHandler.prototype.countTriangles = function(contents) {
@@ -67,6 +73,9 @@ FileHandler.prototype.cleanUp = function() {
   }
   if(fs.existsSync(this.stl)) {
     fs.unlinkSync(this.stl);
+  }
+  if(fs.existsSync(this.svg)) {
+    fs.unlinkSync(this.svg);
   }
 };
 

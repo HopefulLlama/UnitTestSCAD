@@ -36,12 +36,12 @@ describe('FileHandler', function() {
     });
   });
 
-  describe('executeConversion', function() {
+  describe('convertToStl', function() {
     it('should capture the output of the scad -> stl command', function() {
       FileHandler.scad = './spec/resources/echo.scad';
       FileHandler.stl = './spec/resources/echo.stl';
 
-      var output = FileHandler.executeConversion();
+      var output = FileHandler.convertToStl();
       expect(output.search(/If you can see this then it worked/) >= 0).toBe(true, 'Expected ' + output + ' to contain If you can see this then it worked');
 
       if (fs.existsSync(FileHandler.stl)) {

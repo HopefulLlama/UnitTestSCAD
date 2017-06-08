@@ -5,7 +5,7 @@ var FileHandler = require('../util/FileHandler');
 var Assertions = require('./Assertions');
 
 function ModuleAssertions() {
-	Assertions.apply(this);
+  Assertions.apply(this);
 }
 
 util.inherits(ModuleAssertions, Assertions);
@@ -15,32 +15,14 @@ ModuleAssertions.prototype.stlFileToBe = function(file) {
 };
 
 ModuleAssertions.prototype.toHaveVertexCountOf = function(expectedCount) {
-	return this.__testEquality(FileHandler.getVertices(this.tester.output).length, expectedCount);
+  return this.__testEquality(FileHandler.getVertices(this.tester.output).length, expectedCount);
 };
 
 ModuleAssertions.prototype.toHaveTriangleCountOf = function(expectedCount) {
-	return this.__testEquality(FileHandler.countTriangles(this.tester.output), expectedCount); 
+  return this.__testEquality(FileHandler.countTriangles(this.tester.output), expectedCount); 
 };
-
-var isCoordinateWithinBounds = function(coordinate, min, max) {
-  return coordinate >= min && coordinate <= max;
-};
-
 ModuleAssertions.prototype.toBeWithinBoundingBox = function(vectors) {
-  var failingVertices = 0;
-  var vertices = FileHandler.getVertices(this.tester.output);
-
-  vertices.forEach(function(vertex) {
-    vertex.forEach(function(coordinate, index) {
-      if(!isCoordinateWithinBounds(coordinate, vectors[0][index], vectors[1][index])) {
-        failingVertices++;
-      }
-    });
-  });
-
-  return this.__test(vertices, 'to be within the bounds of', vectors, function(dis) {
-  	return failingVertices === 0;
-  });
+  return this.__testWithinBounds(FileHandler.getVertices(this.tester.output), vectors);
 };
 
 module.exports = ModuleAssertions;

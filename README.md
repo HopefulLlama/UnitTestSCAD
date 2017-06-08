@@ -246,6 +246,7 @@ Allows for the insertion of OpenSCAD code, prior to the assertion being tested.
 
 ```javascript
 {
+  'not': function() {...},
   'outputToBe': function(expectedOutput) {...}
 }
 ```
@@ -254,7 +255,7 @@ Begins an assertion or multiple assertions on an OpenSCAD function.
 
 | Parameter | Data Type | Description |
 |---|---|---|
-| openScadFunction | String | The OpenSCAD function to be run (excluding the line-ending semi-colon). e.g. `getShoulderCorners([3, 3, 3])` |
+| openScadFunction | String | The OpenSCAD function to be run. |
 
 ### `not()`
 
@@ -266,7 +267,7 @@ Begins an assertion or multiple assertions on an OpenSCAD function.
 }
 ```
 
-Inverts the expectation of the following assertion. This is used in a chain of commands such as `not().outputToBe()`.
+Negates the expectation of the following assertion. This is used in a chain of commands such as `not().outputToBe()`.
 
 ### `outputToBe(expectedOutput)`
 
@@ -286,13 +287,13 @@ Performs an equality check on the returned value of an OpenSCAD function.
 |---|---|---|
 | expectedOutput | String | The expected output of the previously specified OpenSCAD function as a string. |
 
-## OpenSCAD Module Assertions
-### `assert.openScadModule(openScadModule)`
+## OpenSCAD 3D Module Assertions
+### `assert.openScad3dModule(openScadModule)`
 
 **Returns:**
 ```javascript
 {
-  'not': function(),
+  'not': function() {...},
   'stlFileToBe': function(expectedFile) {...},
   'toHaveTriangleCountOf': function(expectedTriangles) {...},
   'toHaveVertexCountOf': function(expectedVertices) {...},
@@ -300,25 +301,25 @@ Performs an equality check on the returned value of an OpenSCAD function.
 }
 ```
 
-Begins an assertion or multiple assertions on an OpenSCAD module.
+Begins an assertion or multiple assertions on an OpenSCAD module. This is used for modules which result in 3D shapes.
 
 | Parameter | Data Type | Description |
 |---|---|---|
-| openScadModule | String | The OpenSCAD module to be run (excluding the line-ending semi-colon). e.g. `shoulder([3, 3, 3])` |
+| openScadModule | String | The OpenSCAD module to be run. |
 
 ### `not()`
 
 **Returns:**
 ```javascript
 {
-  'not': function(),
+  'not': function() {...},
   'stlFileToBe': function(expectedFile) {...},
   'toHaveTriangleCountOf': function(expectedTriangles) {...},
   'toHaveVertexCountOf': function(expectedVertices) {...},
   'toBeWithinBoundingBox': function(bounds) {...}
 }
 ```
-Inverts the expectation of the following assertion. This is used in a chain of commands such as `not().stlFileToBe()`.
+Negates the expectation of the following assertion. This is used in a chain of commands such as `not().stlFileToBe()`.
 
 ### `stlFileToBe(expectedFilePath)`
 
@@ -326,7 +327,7 @@ Inverts the expectation of the following assertion. This is used in a chain of c
 ```javascript
 {
   'and': {
-    'not': function(),
+    'not': function() {...},
     'stlFileToBe': function(expectedFile) {...},
     'toHaveTriangleCountOf': function(expectedTriangles) {...},
     'toHaveVertexCountOf': function(expectedVertices) {...},
@@ -347,7 +348,7 @@ Compares the generated STL file of the OpenSCAD file, with a pre-existing known 
 ```javascript
 {
   'and': {
-    'not': function(),
+    'not': function() {...},
     'stlFileToBe': function(expectedFile) {...},
     'toHaveTriangleCountOf': function(expectedTriangles) {...},
     'toHaveVertexCountOf': function(expectedVertices) {...},
@@ -368,7 +369,7 @@ Compares the number of vertices produced by the module, against an expected valu
 ```javascript
 {
   'and': {
-    'not': function(),
+    'not': function() {...},
     'stlFileToBe': function(expectedFile) {...},
     'toHaveTriangleCountOf': function(expectedTriangles) {...},
     'toHaveVertexCountOf': function(expectedVertices) {...},
@@ -389,7 +390,7 @@ Compares the number of 'triangles' created by the OpenSCAD module, against an ex
 ```javascript
 {
   'and': {
-    'not': function(),
+    'not': function() {...},
     'stlFileToBe': function(expectedFile) {...},
     'toHaveTriangleCountOf': function(expectedTriangles) {...},
     'toHaveVertexCountOf': function(expectedVertices) {...},
@@ -403,6 +404,154 @@ Checks that every vertex produced by the OpenSCAD module lie between two bounds 
 | Parameter | Data Type | Description |
 |---|---|---|
 | bounds | Array<Array<Integer>[3]>[2] | The bounds, described by an array, of two arrays of three integers. The array follows the format of `[[minX, minY, minZ], [maxX, maxY, maxZ]]`. The model will be considered within bounds if ALL vertices are within or equal to either bounds. |
+
+## OpenSCAD 2D Module Assertions
+### `assert.openScad2DModule(openScadModul)e`
+**Returns:**
+```javascript
+{
+  'not': function() {...},
+  'svgFileToBe': function(expectedFile) {...},
+  'heightToBe': function(expectedHeight) {...},
+  'widthToBe': function(expectedWidth) {...},
+  'toHaveVertexCountOf': function(expectedVertices) {...},
+  'toBeWithinBoundingBox': function(bounds) {...}
+}
+```
+
+Begins an assertion or multiple assertions on an OpenSCAD module. This is used for modules that output 2D shapes.
+
+| Parameter | Data Type | Description |
+|---|---|---|
+| openScadModule | String | The OpenSCAD module to be run. |
+
+
+
+### `not()`
+
+**Returns:**
+```javascript
+{
+  'not': function() {...},
+  'svgFileToBe': function(expectedFile) {...},
+  'heightToBe': function(expectedHeight) {...},
+  'widthToBe': function(expectedWidth) {...},
+  'toHaveVertexCountOf': function(expectedVertices) {...},
+  'toBeWithinBoundingBox': function(bounds) {...}
+}
+```
+Negates the expectation of the following assertion. This is used in a chain of commands such as `not().svgFileToBe()`.
+
+### `svgFileToBe(expectedFilePath)`
+
+**Returns:**
+```javascript
+{
+  'and' {
+    'not': function() {...},
+    'svgFileToBe': function(expectedFile) {...},
+    'heightToBe': function(expectedHeight) {...},
+    'widthToBe': function(expectedWidth) {...},
+    'toHaveVertexCountOf': function(expectedVertices) {...},
+    'toBeWithinBoundingBox': function(bounds) {...}
+  }
+}
+```
+
+Compares the generated SVG file of the OpenSCAD file, with a pre-existing known file.
+
+| Parameter | Data Type | Description |
+|---|---|---|
+| expectedFilePath | String | Path to an SVG file. The OpenSCAD module will be converted to an SVG, and the compared to the given file for equality. |
+
+### `heightToBe(expectedHeight)`
+
+**Returns:**
+```javascript
+{
+  'and' {
+    'not': function() {...},
+    'svgFileToBe': function(expectedFile) {...},
+    'heightToBe': function(expectedHeight) {...},
+    'widthToBe': function(expectedWidth) {...},
+    'toHaveVertexCountOf': function(expectedVertices) {...},
+    'toBeWithinBoundingBox': function(bounds) {...}
+  }
+}
+```
+
+Compares the reported height of the shape produced by the module, against an expected value.
+
+| Parameter | Data Type | Description |
+|---|---|---|
+| expectedHeight | Integer | The expected height, to be compared against the model created by the given OpenSCAD module. |
+
+### `widthToBe(expectedHeight)`
+
+**Returns:**
+```javascript
+{
+  'and' {
+    'not': function() {...},
+    'svgFileToBe': function(expectedFile) {...},
+    'heightToBe': function(expectedHeight) {...},
+    'widthToBe': function(expectedWidth) {...},
+    'toHaveVertexCountOf': function(expectedVertices) {...},
+    'toBeWithinBoundingBox': function(bounds) {...}
+  }
+}
+```
+
+Compares the reported width of the shape produced by the module, against an expected value.
+
+| Parameter | Data Type | Description |
+|---|---|---|
+| expectedWidth | Integer | The expected width, to be compared against the model created by the given OpenSCAD module. |
+
+### `toHaveVertexCountOf(expectedVertices)`
+
+**Returns:**
+```javascript
+{
+  'and' {
+    'not': function() {...},
+    'svgFileToBe': function(expectedFile) {...},
+    'heightToBe': function(expectedHeight) {...},
+    'widthToBe': function(expectedWidth) {...},
+    'toHaveVertexCountOf': function(expectedVertices) {...},
+    'toBeWithinBoundingBox': function(bounds) {...}
+  }
+}
+```
+
+Compares the number of vertices produced by the module, against an expected value.
+
+| Parameter | Data Type | Description |
+|---|---|---|
+| expectedVertices | Integer | The expected number of vertices, to be compared against the model created by the given OpenSCAD module. |
+
+### `toBeWithinBoundingBox(bounds)`
+
+**Returns:**
+```javascript
+{
+  'and' {
+    'not': function() {...},
+    'svgFileToBe': function(expectedFile) {...},
+    'heightToBe': function(expectedHeight) {...},
+    'widthToBe': function(expectedWidth) {...},
+    'toHaveVertexCountOf': function(expectedVertices) {...},
+    'toBeWithinBoundingBox': function(bounds) {...}
+  }
+}
+```
+
+Checks that every vertex produced by the OpenSCAD module lie between two bounds in each dimension ([x, y]).
+
+| Parameter | Data Type | Description |
+|---|---|---|
+| bounds | Array<Array<Integer>[2]>[2] | The bounds, described by an array, of two arrays of three integers. The array follows the format of `[[minX, minY], [maxX, maxY]]`. The model will be considered within bounds if ALL vertices are within or equal to either bounds. |
+
 
 # Uninstalling
 To uninstall UnitTestSCAD, run the command:

@@ -20,6 +20,26 @@ Assertions.prototype.__testEquality = function(actual, expected) {
   });
 };
 
+
+function isCoordinateWithinBounds(coordinate, min, max) {
+  return coordinate >= min && coordinate <= max;
+}
+
+Assertions.prototype.__testWithinBounds = function(actual, expected) {
+  var failingVertices = actual.reduce(function(previousValue, vertex) {
+  	return previousValue += vertex.reduce(function(prevValue, coordinate, index) {
+  		if(!isCoordinateWithinBounds(coordinate, expected[0][index], expected[1][index])) {
+  			prevValue++;
+  		}
+  		return prevValue;
+  	}, 0);
+  }, 0);
+
+  return this.__test(actual, 'to be within the bounds of', expected, function(dis) {
+    return failingVertices === 0;
+  });
+};
+
 Assertions.prototype.__buildFailureMessage = function(actual, conjunction, expected) {
   var message = 'Expected <' + actual + '> ';
   if(!this.positiveAssertion) {

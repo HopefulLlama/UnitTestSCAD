@@ -233,7 +233,8 @@ See the [Change Log](../master/CHANGELOG.md) document for more information on ch
 ```javascript
 {
   'openScadFunction': function(openScadFunction) {...},
-  'openScadModule': function(openScadModule) {...}
+  'openScad2DModule': function(openScadModule) {...}
+  'openScad3DModule': function(openScadModule) {...}
 }
 ```
 

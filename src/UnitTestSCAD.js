@@ -4,9 +4,10 @@ var path = require('path');
 
 var AssertionGenerator = require('./tester/AssertionGenerator');
 var ErrorHandler = require('./util/ErrorHandler');
+var FileHandler = require('./util/FileHandler');
 var FunctionTester = require('./tester/FunctionTester');
 var ModuleTester = require('./tester/ModuleTester');
-var FileHandler = require('./util/FileHandler');
+var ReporterRegistry = require('./reporter/ReporterRegistry');
 var Test = require('./test/Test');
 var TestSuite = require('./test/TestSuite');
 
@@ -17,7 +18,7 @@ var pathToConfig = process.argv[2];
 
 
 var setUpGlobals = function(config, testRunner) {
-  global.ReporterRegistry = require('./reporter/ReporterRegistry');
+  global.ReporterRegistry = ReporterRegistry;
 
   global.testSuite = function(name, options, callback) {
     var testSuite = new TestSuite(name, options.use, options.include);
@@ -63,7 +64,7 @@ var main = function(config, testRunner) {
   testRunner.report(reporters);
 
   if(testRunner.aggregateResults().failures > 0) {
-    ErrorHandler.throwErrorAndExit(ErrorHandler.REASONS.ASSERTION_FAILURES);
+    ErrorHandler.throwErrorAndSetExitCode(ErrorHandler.REASONS.ASSERTION_FAILURES);
   }
 };
 
@@ -74,12 +75,13 @@ process.on('exit', function(code) {
 if(pathToConfig) {
   try {
     CONFIG = readConfig(pathToConfig);
+
+
+    setUpGlobals(CONFIG, TEST_RUNNER);
+    main(CONFIG, TEST_RUNNER);
   } catch (a) {
-    ErrorHandler.throwErrorAndExit(ErrorHandler.REASONS.INVALID_CONFIG);
+    ErrorHandler.throwErrorAndSetExitCode(ErrorHandler.REASONS.INVALID_CONFIG);
   }
 } else {
-  ErrorHandler.throwErrorAndExit(ErrorHandler.REASONS.MISSING_CONFIG);
+  ErrorHandler.throwErrorAndSetExitCode(ErrorHandler.REASONS.MISSING_CONFIG);
 }
-
-setUpGlobals(CONFIG, TEST_RUNNER);
-main(CONFIG, TEST_RUNNER);

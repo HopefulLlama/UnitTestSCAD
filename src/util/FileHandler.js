@@ -8,6 +8,12 @@ function FileHandler() {
   this.svg = 'temp.svg';
 }
 
+FileHandler.prototype.executeNodeFiles = function(files) {
+	files.forEach(function(file) {
+    require(path.resolve(file));
+  });
+};
+
 FileHandler.prototype.writeScadFile = function(header, setUpText, testText) {
   contents = header + os.EOL;
   if(setUpText !== null) {

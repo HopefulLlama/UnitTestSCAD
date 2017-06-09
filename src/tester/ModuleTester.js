@@ -10,7 +10,7 @@ function ModuleTester(setUpText, testText, test) {
 util.inherits(ModuleTester, Tester);
 
 ModuleTester.prototype.generateOutput = function(openScadDirectory) {
-  this.FileHandler.writeScadFile(this.test.testSuite.getHeader(openScadDirectory), this.setUpText, this.testText);
+  this.generateScadFile(openScadDirectory);
   this.FileHandler.convertToStl();
   this.output = fs.readFileSync(this.FileHandler.stl, 'utf8');
 };

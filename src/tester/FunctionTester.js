@@ -11,7 +11,7 @@ function FunctionTester(setUpText, testText, test) {
 util.inherits(FunctionTester, Tester);
 
 FunctionTester.prototype.generateOutput = function(openScadDirectory) {
-  this.FileHandler.writeScadFile(this.test.testSuite.getHeader(openScadDirectory), this.setUpText, this.testText);
+  this.generateScadFile(openScadDirectory);
   this.output = this.FileHandler.convertToStl();
 };
 

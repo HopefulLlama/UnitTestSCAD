@@ -1,5 +1,7 @@
 var path = require('path');
 
+var FileHandler = require('../util/FileHandler');
+
 function TestRunner() {
   this.testSuites = [];
   this.current = {
@@ -9,9 +11,7 @@ function TestRunner() {
 }
 
 TestRunner.prototype.runTests = function(testFiles) {
-  testFiles.forEach(function(file) {
-    require(path.resolve(file));
-  });
+  FileHandler.executeNodeFiles(files);
 };
 
 TestRunner.prototype.aggregateResults = function() {

@@ -14,35 +14,29 @@ AssertionGenerator.prototype.withSetup = function(text) {
   return this;
 };
 
-AssertionGenerator.prototype.openScadFunction = function(testText) {
-  var tester = new FunctionTester(this.__setUp, testText, this.__testRunner.current.test);
+AssertionGenerator.prototype.createAssertions = function(clazz, testText) {
+  var tester = new clazz(this.__setUp, testText, this.__testRunner.current.test);
   tester.generateOutput(this.__config.properties.openScadDirectory);
 
   this.__setUp = null;
 
   return tester.assertions;
+};
+
+AssertionGenerator.prototype.openScadFunction = function(testText) {
+  return this.createAssertions(FunctionTester, testText);
 };
 
 AssertionGenerator.prototype.openScadModule = function(testText) {
-  var tester = new ModuleTester(this.__setUp, testText, this.__testRunner.current.test);
-  tester.generateOutput(this.__config.properties.openScadDirectory);
-
-  this.__setUp = null;
-
-  return tester.assertions;
+  return this.createAssertions(ModuleTester, testText);
 };
 
 AssertionGenerator.prototype.openScad3DModule = function(testText) {
-	return this.openScadModule(testText);
+  return this.openScadModule(testText);
 };
 
 AssertionGenerator.prototype.openScad2DModule = function(testText) {
-	var tester = new TwoDModuleTester(this.__setUp, testText, this.__testRunner.current.test);
-	tester.generateOutput(this.__config.properties.openScadDirectory);
-
-	this.__setUp = null;
-
-	return tester.assertions;
+  return this.createAssertions(TwoDModuleTester, testText);
 };
 
 module.exports = AssertionGenerator;

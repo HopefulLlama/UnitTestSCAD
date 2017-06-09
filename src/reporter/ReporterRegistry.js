@@ -1,19 +1,21 @@
 var path = require('path');
 
+var ConsoleReporter = require('./ConsoleReporter');
+var FileHandler = require('../util/FileHandler');
+var JsonReporter = require('./JsonReporter');
 var Reporter = require('./Reporter');
+var XmlReporter = require('./XmlReporter');
 
 function ReporterRegistry() {
   this.reporters = {};
 
-  this.add('console', require('./ConsoleReporter'));
-  this.add('json', require('./JsonReporter'));
-  this.add('xml', require('./XmlReporter'));
+  this.add('console', ConsoleReporter);
+  this.add('json', JsonReporter);
+  this.add('xml', XmlReporter);
 }
 
 ReporterRegistry.prototype.__addCustomReporters = function(files) {
-  files.forEach(function(file) {
-    require(path.resolve(file));
-  });
+  FileHandler.executeNodeFiles(files);
 };
 
 ReporterRegistry.prototype.add = function(name, report) {

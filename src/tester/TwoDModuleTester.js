@@ -11,15 +11,15 @@ function TwoDModuleTester(setUpText, testText, test) {
 util.inherits(TwoDModuleTester, Tester);
 
 TwoDModuleTester.prototype.generateOutput = function(openScadDirectory) {
-  this.FileHandler.writeScadFile(this.test.testSuite.getHeader(openScadDirectory), this.setUpText, this.testText);
+  this.generateScadFile(openScadDirectory);
   this.FileHandler.convertToSvg();
   this.output = fs.readFileSync(this.FileHandler.svg, 'utf8');
 
   var result = '';
-	xml2js.parseString(this.output, function(err, res) {
-		result = res.svg;
-	});
-	this.parsedOutput = result;
+  xml2js.parseString(this.output, function(err, res) {
+    result = res.svg;
+  });
+  this.parsedOutput = result;
 };
 
 module.exports = TwoDModuleTester;

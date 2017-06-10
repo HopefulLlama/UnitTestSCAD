@@ -27,12 +27,13 @@ function isCoordinateWithinBounds(coordinate, min, max) {
 
 Assertions.prototype.__testWithinBounds = function(actual, expected) {
   var failingVertices = actual.reduce(function(previousValue, vertex) {
-  	return previousValue += vertex.reduce(function(prevValue, coordinate, index) {
+  	previousValue += vertex.reduce(function(prevValue, coordinate, index) {
   		if(!isCoordinateWithinBounds(coordinate, expected[0][index], expected[1][index])) {
   			prevValue++;
   		}
   		return prevValue;
   	}, 0);
+    return previousValue;
   }, 0);
 
   return this.__test(actual, 'to be within the bounds of', expected, function(dis) {

@@ -23,14 +23,17 @@ FileHandler.prototype.writeScadFile = function(header, setUpText, testText) {
   fs.writeFileSync(this.scad, contents);
 };
 
-FileHandler.prototype.convertToStl = function() {
-  var COMMAND = 'openscad -o ' + this.stl + ' ' + this.scad;
+FileHandler.prototype.convert = function(destination) {
+  var COMMAND = 'openscad -o ' + destination + ' ' + this.scad;
   return execSync(COMMAND).toString();
 };
 
+FileHandler.prototype.convertToStl = function() {
+  return this.convert(this.stl);
+};
+
 FileHandler.prototype.convertToSvg = function() {
-  var COMMAND = 'openscad -o ' + this.svg + ' ' + this.scad;
-  return execSync(COMMAND).toString();
+  return this.convert(this.svg);
 };
 
 FileHandler.prototype.getOutputLine = function(output) {

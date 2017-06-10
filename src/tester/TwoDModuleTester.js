@@ -17,7 +17,11 @@ TwoDModuleTester.prototype.generateOutput = function(openScadDirectory) {
 
   var result = '';
   xml2js.parseString(this.output, function(err, res) {
-    result = res.svg;
+    if(err) {
+      throw new Error();
+    } else {
+      result = res.svg;      
+    }
   });
   this.parsedOutput = result;
 };

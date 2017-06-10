@@ -4,7 +4,6 @@ var os = require('os');
 var AssertionGenerator = require('../../src/tester/AssertionGenerator');
 var FileHandler = require('../../src/util/FileHandler');
 
-
 describe('AssertionGenerator', function() {
   var assertionGenerator;
 
@@ -34,6 +33,10 @@ describe('AssertionGenerator', function() {
 
     if(fs.existsSync(FileHandler.stl)) {
       fs.unlink(FileHandler.stl);
+    }
+
+    if(fs.existsSync(FileHandler.svg)) {
+      fs.unlink(FileHandler.svg);
     }
   });
 
@@ -65,15 +68,30 @@ describe('AssertionGenerator', function() {
     ].join(os.EOL));
   });
 
-  it('should create a ModuleTester with correct values', function() {
-    var test = 'cube(1);';
-    var tester = assertionGenerator.withSetup(SETUP).openScadModule(test).tester;
+  ['openScadModule', 'openScad3DModule'].forEach(function(func) {
+    it('should create a ModuleTester using ' + func + ' with correct values', function() {
+      var test = 'cube(1);';
+      var tester = assertionGenerator.withSetup(SETUP)[func](test).tester;
+
+      expect(fs.existsSync(FileHandler.scad)).toBe(true);
+      expect(fs.existsSync(FileHandler.stl)).toBe(true);
+      expect(tester.output).toEqual(fs.readFileSync(FileHandler.stl, 'utf8'));
+
+      expect(tester.setUpText).toEqual(SETUP);
+      expect(tester.testText).toEqual(test);
+    });
+  });
+
+  it('should create a TwoDModuleTester with correct values', function() {
+    var setup = 'translate([5, 5]) {square(1);}';
+    var test = 'square(1);';
+    var tester = assertionGenerator.withSetup(setup).openScad2DModule(test).tester;
 
     expect(fs.existsSync(FileHandler.scad)).toBe(true);
-    expect(fs.existsSync(FileHandler.stl)).toBe(true);
-    expect(tester.output).toEqual(fs.readFileSync(FileHandler.stl, 'utf8'));
+    expect(fs.existsSync(FileHandler.svg)).toBe(true);
+    expect(tester.output).toEqual(fs.readFileSync(FileHandler.svg, 'utf8'));
 
-    expect(tester.setUpText).toEqual(SETUP);
+    expect(tester.setUpText).toEqual(setup);
     expect(tester.testText).toEqual(test);
   });
 });

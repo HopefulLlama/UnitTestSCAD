@@ -3,7 +3,19 @@ var os = require('os');
 var ModuleAssertions = require('../../src/tester/ModuleAssertions');
 
 describe('ModuleAssertions', function() {
-  var moduleAssertions, TESTER, OUTPUT;
+  var moduleAssertions, OUTPUT;
+
+  var FILE = 'spec/resources/garbage.stl';
+
+  function generateTester(output) {
+    return {
+      'output': output,
+      'test': {
+        'assertions': 0,
+        'failures': []
+      }
+    };
+  }
 
   var assertAssertionsAndFailures = function(assertions, failures) {
     expect(moduleAssertions.tester.test.assertions).toBe(assertions, 'assertions');
@@ -54,29 +66,21 @@ describe('ModuleAssertions', function() {
     var actual = [[0, 0, 0], [3, 0, 3], [3, 3, 3]].toString();
     beforeEach(function() {
 	    OUTPUT = ['garbage', 'vertex 0 0 0', 'vertex 3 0 3', 'endfacet', 'endfacet', 'vertex 3 3 3'].join(os.EOL);
-	    
-      TESTER = {
-        'output': OUTPUT,
-        'test': {
-          'assertions': 0,
-          'failures': []
-        }
-      };
 
       moduleAssertions = new ModuleAssertions();
-      moduleAssertions.tester = TESTER;
+      moduleAssertions.tester = generateTester(OUTPUT);
     });
 
     it('should fail to compare STL files', function() {
       for (var i = 1; i <= 3; i++) {
-        assertStlFile('spec/resources/garbage.stl', i, i);
+        assertStlFile(FILE, i, i);
         expect(moduleAssertions.tester.test.failures[i-1]).toBe('Expected <' + moduleAssertions.tester.output + '> to be <garbage>.');
       }
     });
 
     it('should pass on not STL files', function() {
       for (var i = 1; i <= 3; i++) {
-        assertNotStlFile('spec/resources/garbage.stl', i, 0);
+        assertNotStlFile(FILE, i, 0);
       }
     });
 
@@ -162,28 +166,20 @@ describe('ModuleAssertions', function() {
     });
   });
 
-  describe('with stl file output', function() {
+  describe('with mock file output', function() {
     beforeEach(function() {
       OUTPUT = 'garbage';
 
-      TESTER = {
-        'output': OUTPUT,
-        'test': {
-          'assertions': 0,
-          'failures': []
-        }
-      };
-
       moduleAssertions = new ModuleAssertions();
-      moduleAssertions.tester = TESTER;
+      moduleAssertions.tester = generateTester(OUTPUT);
     });
 
     it('should compare stl successfully', function() {
-      assertStlFile('spec/resources/garbage.stl', 1, 0);
+      assertStlFile(FILE, 1, 0);
     });
 
     it('should fail stl not comparison', function() {
-      assertNotStlFile('spec/resources/garbage.stl', 1, 1);
+      assertNotStlFile(FILE, 1, 1);
       expect(moduleAssertions.tester.test.failures[0]).toBe('Expected <' + moduleAssertions.tester.output + '> not to be <garbage>.');
     });
   });

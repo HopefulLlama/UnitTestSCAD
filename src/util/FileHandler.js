@@ -9,7 +9,7 @@ function FileHandler() {
 }
 
 FileHandler.prototype.executeNodeFiles = function(files) {
-	files.forEach(function(file) {
+  files.forEach(function(file) {
     require(path.resolve(file));
   });
 };
@@ -17,7 +17,7 @@ FileHandler.prototype.executeNodeFiles = function(files) {
 FileHandler.prototype.writeScadFile = function(header, setUpText, testText) {
   contents = header + os.EOL;
   if(setUpText !== null) {
-  	contents += setUpText + os.EOL;
+    contents += setUpText + os.EOL;
   }
   contents += testText;
   fs.writeFileSync(this.scad, contents);

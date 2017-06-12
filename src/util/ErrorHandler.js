@@ -10,7 +10,7 @@ ErrorHandler.prototype.REASONS = {
   ASSERTION_FAILURES: "Exiting with error, due to failing test assertions."
 };
 
-ErrorHandler.prototype.throwErrorAndExit = function(reason) {
+ErrorHandler.prototype.throwErrorAndSetExitCode = function(reason) {
   console.log(reason);
   process.exitCode = 1;
 };

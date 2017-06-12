@@ -11,7 +11,7 @@ function TestRunner() {
 }
 
 TestRunner.prototype.runTests = function(testFiles) {
-  FileHandler.executeNodeFiles(files);
+  FileHandler.executeNodeFiles(testFiles);
 };
 
 TestRunner.prototype.aggregateResults = function() {

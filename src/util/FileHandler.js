@@ -1,6 +1,7 @@
+var execSync = require('child_process').execSync;
 var fs = require('fs');
 var os = require('os');
-var execSync = require('child_process').execSync;
+var path = require('path');
 
 function FileHandler() {
   this.scad = 'temp.scad';

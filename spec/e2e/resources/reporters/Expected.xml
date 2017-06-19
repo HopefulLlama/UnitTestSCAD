@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<root>
+  <assertions>1</assertions>
+  <failures>0</failures>
+  <testSuites>
+    <name>reporters</name>
+    <assertions>1</assertions>
+    <failures>0</failures>
+    <tests>
+      <name>should add reporters correctly</name>
+      <assertions>1</assertions>
+    </tests>
+  </testSuites>
+</root>

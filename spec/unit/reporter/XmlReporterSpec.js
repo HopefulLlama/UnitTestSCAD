@@ -1,7 +1,7 @@
 var fs = require('fs');
 var os = require('os');
 
-var XmlReporter = require('../../src/reporter/XmlReporter');
+var XmlReporter = require('../../../src/reporter/XmlReporter');
 
 describe('XmlReporter', function() {
   it('should write a XML file', function() {

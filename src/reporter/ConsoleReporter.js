@@ -1,20 +1,14 @@
 var os = require('os');
 
-var TAB = '    ';
-
-var TERMINAL = {
-  'GREEN': '\x1b[32m',
-  'RED': '\x1b[31m',
-  'RESET': '\x1b[0m'
-};
+var TERMINAL = require('../util/Terminal');
 
 var report = function(results) {
   results.testSuites.forEach(function(testSuiteSummary) {
     console.log(testSuiteSummary.name + ': ');
 
     testSuiteSummary.tests.forEach(function(testSummary) {
-      console.log(TAB + testSummary.name + ': ');
-      var summary = TAB.repeat(2);
+      console.log(TERMINAL.TAB + testSummary.name + ': ');
+      var summary = TERMINAL.TAB.repeat(2);
       if(testSummary.failures.length === 0) {
         summary += TERMINAL.GREEN;
       } else {
@@ -24,7 +18,7 @@ var report = function(results) {
       console.log(summary);
 
       if(testSummary.failures.length > 0) {
-        console.log(TAB.repeat(2) + testSummary.failures.join(os.EOL + TAB.repeat(2)));
+        console.log(TERMINAL.TAB.repeat(2) + testSummary.failures.join(os.EOL + TERMINAL.TAB.repeat(2)));
       }
     });
   });

@@ -1,6 +1,6 @@
 var fs = require('fs');
 
-var JsonReporter = require('../../src/reporter/JsonReporter');
+var JsonReporter = require('../../../src/reporter/JsonReporter');
 
 describe('JsonReporter', function() {
   it('should write a JSON file', function() {

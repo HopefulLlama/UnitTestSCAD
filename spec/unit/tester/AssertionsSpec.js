@@ -1,4 +1,4 @@
-var Assertions = require('../../src/tester/Assertions');
+var Assertions = require('../../../src/tester/Assertions');
 
 var assertions;
 function getNewTester() {

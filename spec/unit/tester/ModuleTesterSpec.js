@@ -1,6 +1,6 @@
 var fs = require('fs');
 
-var ModuleTester = require('../../src/tester/ModuleTester');
+var ModuleTester = require('../../../src/tester/ModuleTester');
 
 describe('ModuleTester', function() {
   describe('generateOutput', function() {
@@ -26,7 +26,7 @@ describe('ModuleTester', function() {
     });
 
     it('should store the output of the generated STL', function() {
-      var PATH = 'spec/resources/shouldstoretheoutputofthegeneratedSTL';
+      var PATH = 'spec/unit/resources/shouldstoretheoutputofthegeneratedSTL';
       tester = new ModuleTester(null, 'cube([5, 5, 5]);', TEST);
       tester.FileHandler.scad = PATH + '.scad';
       tester.FileHandler.stl = PATH + '.stl';

@@ -1,7 +1,7 @@
 var fs = require('fs');
 var os = require('os');
 
-var FileHandler = require('../../src/util/FileHandler');
+var FileHandler = require('../../../src/util/FileHandler');
 
 describe('FileHandler', function() {
   describe('writeScadFile', function() {
@@ -9,7 +9,7 @@ describe('FileHandler', function() {
     var BODY = 'cube([1, 1, 1]);';
 
     beforeEach(function() {
-      FileHandler.scad = './spec/resources/itshouldwriteascadfile.scad';
+      FileHandler.scad = './spec/unit/resources/itshouldwriteascadfile.scad';
     });
 
     afterEach(function() {
@@ -38,8 +38,8 @@ describe('FileHandler', function() {
 
   describe('convertToStl', function() {
     it('should capture the output of the scad -> stl command', function() {
-      FileHandler.scad = './spec/resources/echo.scad';
-      FileHandler.stl = './spec/resources/echo.stl';
+      FileHandler.scad = './spec/unit/resources/echo.scad';
+      FileHandler.stl = './spec/unit/resources/echo.stl';
 
       var output = FileHandler.convertToStl();
       expect(output.search(/If you can see this then it worked/) >= 0).toBe(true, 'Expected ' + output + ' to contain If you can see this then it worked');
@@ -56,8 +56,8 @@ describe('FileHandler', function() {
     }
 
     it('should delete the files associated', function() {
-      FileHandler.scad = './spec/resources/delet-this.scad';
-      FileHandler.stl = './spec/resources/delet-this.stl';
+      FileHandler.scad = './spec/unit/resources/delet-this.scad';
+      FileHandler.stl = './spec/unit/resources/delet-this.stl';
 
       createTempFile(FileHandler.scad);
       createTempFile(FileHandler.stl);

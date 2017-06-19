@@ -1,6 +1,6 @@
 var os = require('os');
 
-var Tester = require('../../src/tester/Tester');
+var Tester = require('../../../src/tester/Tester');
 
 describe('Tester', function() {
   describe('wrapWithText', function() {

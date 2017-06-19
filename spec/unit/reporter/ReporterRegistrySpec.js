@@ -2,7 +2,7 @@ var ReporterRegistry;
 
 describe('ReporterRegistry', function() {
   beforeEach(function() {
-    ReporterRegistry = require('../../src/reporter/ReporterRegistry');
+    ReporterRegistry = require('../../../src/reporter/ReporterRegistry');
   });
 
   var checkReporterExists = function(reporter) {

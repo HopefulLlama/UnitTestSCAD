@@ -16,7 +16,6 @@ var TEST_RUNNER = require('./test/TestRunner');
 var CONFIG = {};
 var pathToConfig = process.argv[2];
 
-
 var setUpGlobals = function(config, testRunner) {
   global.ReporterRegistry = ReporterRegistry;
 
@@ -39,7 +38,6 @@ var setUpGlobals = function(config, testRunner) {
 
   global.assert = new AssertionGenerator(config, testRunner);
 };
-
 
 var readConfig = function(pathToConfig) {
   return {
@@ -75,7 +73,6 @@ process.on('exit', function(code) {
 if(pathToConfig) {
   try {
     CONFIG = readConfig(pathToConfig);
-
 
     setUpGlobals(CONFIG, TEST_RUNNER);
     main(CONFIG, TEST_RUNNER);

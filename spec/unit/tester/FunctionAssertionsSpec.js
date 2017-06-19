@@ -1,7 +1,7 @@
 var os = require('os');
 
-var FunctionAssertions = require('../../src/tester/FunctionAssertions');
-var Tester = require('../../src/tester/Tester');
+var FunctionAssertions = require('../../../src/tester/FunctionAssertions');
+var Tester = require('../../../src/tester/Tester');
 
 describe('FunctionAssertions', function() {
   var functionAssertions, TESTER;

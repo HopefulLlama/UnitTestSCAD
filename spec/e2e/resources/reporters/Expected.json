@@ -1,0 +1,18 @@
+{
+  "assertions": 1,
+  "failures": 0,
+  "testSuites": [
+    {
+      "name": "reporters",
+      "assertions": 1,
+      "failures": 0,
+      "tests": [
+        {
+          "name": "should add reporters correctly",
+          "assertions": 1,
+          "failures": []
+        }
+      ]
+    }
+  ]
+}

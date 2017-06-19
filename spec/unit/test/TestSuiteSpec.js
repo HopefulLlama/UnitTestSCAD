@@ -1,6 +1,6 @@
 var os = require('os');
 
-var TestSuite = require('../../src/test/TestSuite');
+var TestSuite = require('../../../src/test/TestSuite');
 
 describe('TestSuite', function() {
   describe('getHeader()', function() {

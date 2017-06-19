@@ -2,7 +2,7 @@ var testRunner;
 
 describe('TestRunner', function() {
   beforeEach(function() {
-    testRunner = require('../../src/test/TestRunner');
+    testRunner = require('../../../src/test/TestRunner');
   });
   
   describe('runTests', function() {

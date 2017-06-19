@@ -1,8 +1,8 @@
 var fs = require('fs');
 var os = require('os');
 
-var AssertionGenerator = require('../../src/tester/AssertionGenerator');
-var FileHandler = require('../../src/util/FileHandler');
+var AssertionGenerator = require('../../../src/tester/AssertionGenerator');
+var FileHandler = require('../../../src/util/FileHandler');
 
 describe('AssertionGenerator', function() {
   var assertionGenerator;

@@ -1,7 +1,7 @@
 var fs = require('fs');
 var os = require('os');
 
-var FunctionTester = require('../../src/tester/FunctionTester');
+var FunctionTester = require('../../../src/tester/FunctionTester');
 
 describe('FunctionTester', function() {
   describe('generateOutput', function() {

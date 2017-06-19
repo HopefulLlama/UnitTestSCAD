@@ -1,11 +1,11 @@
 var os = require('os');
 
-var TwoDModuleAssertions = require('../../src/tester/TwoDModuleAssertions');
+var TwoDModuleAssertions = require('../../../src/tester/TwoDModuleAssertions');
 
 describe('TwoDModuleAssertions', function() {
   var twoDModuleAssertions;
 
-  var FILE = 'spec/resources/garbage.svg';
+  var FILE = 'spec/unit/resources/garbage.svg';
 
   function generateTester(output, parsedOutput) {
     return {

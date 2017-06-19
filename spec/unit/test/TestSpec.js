@@ -1,6 +1,6 @@
 var os = require('os');
 
-var Test = require('../../src/test/Test');
+var Test = require('../../../src/test/Test');
 
 var TEST_SUITE = {
   'name': 'Mock Test Suite'

@@ -1,11 +1,11 @@
 var os = require('os');
 
-var ModuleAssertions = require('../../src/tester/ModuleAssertions');
+var ModuleAssertions = require('../../../src/tester/ModuleAssertions');
 
 describe('ModuleAssertions', function() {
   var moduleAssertions, OUTPUT;
 
-  var FILE = 'spec/resources/garbage.stl';
+  var FILE = 'spec/unit/resources/garbage.stl';
 
   function generateTester(output) {
     return {

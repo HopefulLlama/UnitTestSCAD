@@ -3,6 +3,8 @@ var jshint = require('gulp-jshint');
 var jasmine = require('gulp-jasmine');
 var coverage = require('gulp-coverage');
 
+var E2E = require('./spec/e2e/E2E.js');
+
 gulp.task('default', ['test']);
 gulp.task('test', ['lint', 'unit-coverage', 'e2e']);
 
@@ -33,8 +35,7 @@ gulp.task('unit-coverage', function() {
 });
 
 gulp.task('e2e', function(done) {
-  var failures = require('./spec/e2e/E2E.js');
-  
+  var failures = E2E();
   failures.forEach(function(failure) {
     console.log(failure);
   });

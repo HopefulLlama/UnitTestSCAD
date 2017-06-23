@@ -1,26 +1,40 @@
+var fs = require('fs');
 var os = require('os');
 
 var E2eUtils = require('../util/E2eUtils');
+var E2eValues = require('../util/E2eValues');
 
 function E2eRunner(tests) {
   this.tests = (tests !== undefined) ? tests : [];
 }
 
+function outputResult(failures) {
+  if(failures === 0) {
+    process.stdout.write('.');
+  } else {
+    process.stdout.write('F');
+  } 
+}
+
 E2eRunner.prototype.execute = function() {
   this.tests.forEach(function(test) {
-    test.execute();
-    if(test.failures.length === 0) {
-    	process.stdout.write('.');
-    } else {
-    	process.stdout.write('F');
-    }
+    test.executeCli();
+    outputResult(test.cliFailures.length);
+    test.executeRequire();
+    outputResult(test.requireFailures.length);
   });
-  console.log(os.EOL + this.aggregateFailures().length + ' failures in ' + this.tests.length + ' tests.');
+  
+  if(fs.existsSync(E2eValues.TEMP_REQUIRE)) {
+    fs.unlink(E2eValues.TEMP_REQUIRE);
+  }
+  console.log(os.EOL + this.aggregateFailures().length + ' failures in ' + this.tests.length * 2 + ' tests.');
 };
 
 E2eRunner.prototype.aggregateFailures = function() {
   return this.tests.reduce(function(previousValue, currentValue) {
-    return previousValue.concat(currentValue.failures);
+    previousValue = previousValue.concat(currentValue.cliFailures);
+    previousValue = previousValue.concat(currentValue.requireFailures);
+    return previousValue;
   }, []);
 };
 

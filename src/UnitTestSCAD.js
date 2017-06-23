@@ -14,9 +14,8 @@ var TestSuite = require('./test/TestSuite');
 var TEST_RUNNER = require('./test/TestRunner');
 
 var CONFIG = {};
-var pathToConfig = process.argv[2];
 
-var setUpGlobals = function(config, testRunner) {
+function setUpGlobals(config, testRunner) {
   global.ReporterRegistry = ReporterRegistry;
 
   global.testSuite = function(name, options, callback) {
@@ -37,16 +36,16 @@ var setUpGlobals = function(config, testRunner) {
   };
 
   global.assert = new AssertionGenerator(config, testRunner);
-};
+}
 
-var readConfig = function(pathToConfig) {
+function readConfig(pathToConfig) {
   return {
     'path': pathToConfig,
     'properties': JSON.parse(fs.readFileSync(pathToConfig, 'utf8'))
   };
-};
+}
 
-var main = function(config, testRunner) {
+function main(config, testRunner) {
   process.chdir(path.dirname(pathToConfig));
 
   if(config.properties.customReporters !== undefined) {
@@ -64,22 +63,32 @@ var main = function(config, testRunner) {
   if(testRunner.aggregateResults().failures > 0) {
     ErrorHandler.throwErrorAndSetExitCode(ErrorHandler.REASONS.ASSERTION_FAILURES);
   }
-};
+}
 
-process.on('exit', function(code) {
-  FileHandler.cleanUp();
-});
+function run(pathToConfig) {
+  process.on('exit', function(code) {
+    FileHandler.cleanUp();
+  });
 
-if(pathToConfig) {
-  try {
-    CONFIG = readConfig(pathToConfig);
-  } catch(err) {
-    ErrorHandler.throwErrorAndSetExitCode(ErrorHandler.REASONS.INVALID_CONFIG);
-    return;
+  if(pathToConfig) {
+    try {
+      CONFIG = readConfig(pathToConfig);
+    } catch(err) {
+      ErrorHandler.throwErrorAndSetExitCode(ErrorHandler.REASONS.INVALID_CONFIG);
+      return;
+    }
+
+    setUpGlobals(CONFIG, TEST_RUNNER);
+    main(CONFIG, TEST_RUNNER);
+  } else {
+    ErrorHandler.throwErrorAndSetExitCode(ErrorHandler.REASONS.MISSING_CONFIG);
   }
+}
 
-  setUpGlobals(CONFIG, TEST_RUNNER);
-  main(CONFIG, TEST_RUNNER);
+if (require.main === module) {
+  var pathToConfig = process.argv[2];
+
+  run(pathToConfig);
 } else {
-  ErrorHandler.throwErrorAndSetExitCode(ErrorHandler.REASONS.MISSING_CONFIG);
+  module.exports = run;
 }

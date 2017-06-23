@@ -53,35 +53,30 @@ function runE2e() {
       'Results written to JsonOutput.json',
       'Results written to XmlOutput.xml',
       'Hello, custom reporter working.'
-    ], 0, [function(test) {
+    ], 0, [function(test, prefix, failures) {
       var base = './spec/e2e/resources/reporters/';
       var utf8 = 'utf8';
 
-      if(fs.existsSync(base + 'JsonOutput.json')) {
-        var json = fs.readFileSync(base + 'JsonOutput.json', utf8);
-        var expectedJson = fs.readFileSync(base + 'Expected.json', utf8);
+      var assertions = [{
+        file: 'JsonOutput.json',
+        expected: 'Expected.json'
+      }, {
+        file: 'XmlOutput.xml',
+        expected: 'Expected.xml'
+      }].forEach(function(assertion) {
+        if(fs.existsSync(base + assertion.file)) {
+          var json = fs.readFileSync(base + assertion.file, utf8);
+          var expectedJson = fs.readFileSync(base + assertion.expected, utf8);
 
-        if(json !== expectedJson) {
-          test.failures.push(test.name + ': Expected JsonOutput.json to match Expected.json');
+          if(json !== expectedJson) {
+            failures.push(test.name + ': ' + prefix + ': Expected ' + assertion.file + ' to match ' + assertion.expected);
+          }
+
+          fs.unlink(base + assertion.file);
+        } else {
+          failures.push(test.name + ': ' + prefix + ':  Expected ' + assertion.file + ' to be written');
         }
-
-        fs.unlink(base + 'JsonOutput.json');
-      } else {
-        test.failures.push(test.name + ': Expected JsonOutput.json to be written');
-      }
-
-      if(fs.existsSync(base + 'XmlOutput.xml')) {
-        var xml = fs.readFileSync(base + 'XmlOutput.xml', utf8);
-        var expectedXml = fs.readFileSync(base + 'Expected.xml', utf8);
-
-        if(xml !== expectedXml) {
-          test.failures.push(test.name + ': Expected XmlOutput.xml to match Expected.xml');
-        }
-
-        fs.unlink(base + 'XmlOutput.xml');
-      } else {
-        test.failures.push(test.name + ': Expected XmlOutput.xml to be written');
-      }
+      });
     }])
   ]);
 

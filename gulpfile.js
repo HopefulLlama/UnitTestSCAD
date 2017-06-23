@@ -12,7 +12,8 @@ gulp.task('lint', function() {
   return gulp.src([
     'src/**/*.js',
     'spec/**/*.js',
-    '!spec/e2e/resources/**/*.js'
+    '!spec/e2e/resources/**/*.js',
+    '!spec/e2e/RequireTemplate.js'
   ])
   .pipe(jshint())
   .pipe(jshint.reporter('default'))

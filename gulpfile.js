@@ -11,7 +11,8 @@ gulp.task('test', ['lint', 'unit-coverage', 'e2e']);
 gulp.task('lint', function() {
   return gulp.src([
     'src/**/*.js',
-    'spec/**/*.js'
+    'spec/**/*.js',
+    '!spec/e2e/resources/**/*.js'
   ])
   .pipe(jshint())
   .pipe(jshint.reporter('default'))

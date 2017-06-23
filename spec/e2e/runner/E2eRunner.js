@@ -15,7 +15,7 @@ E2eRunner.prototype.execute = function() {
     	process.stdout.write('F');
     }
   });
-  console.log(os.EOL + this.aggregateFailures.length + ' failures in ' + this.tests.length + ' tests.');
+  console.log(os.EOL + this.aggregateFailures().length + ' failures in ' + this.tests.length + ' tests.');
 };
 
 E2eRunner.prototype.aggregateFailures = function() {

@@ -1,9 +1,9 @@
 testSuite('reporters', {
-	'use': [],
-	'include': []
+  'use': [],
+  'include': []
 }, function() {
-	it('should add reporters correctly', function() {
-		assert.openScadModule('cube(1);')
-		.toHaveVertexCountOf(8);
-	});
+  it('should add reporters correctly', function() {
+    assert.openScadModule('cube(1);')
+    .toHaveVertexCountOf(8);
+  });
 });

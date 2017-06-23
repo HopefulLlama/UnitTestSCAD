@@ -18,9 +18,17 @@ function runE2e() {
       USAGE,
       'The supplied path to the configuration file does not point to a valid configuration file.'
     ], 1),
-    new E2eTest('should say it is invalid', 'invalid.json', [
+    new E2eTest('should say it is invalid', 'cli/invalid.json', [
       USAGE, 
       'The supplied path to the configuration file does not point to a valid configuration file.'
+    ], 1),
+    new E2eTest('should say there is an error in the spec file', 'cli/errorInSpec.json', [
+      'SyntaxError', 
+      'errorInSpec.js'
+    ], 1),
+    new E2eTest('should say there is an error in the custom reporter file', 'cli/errorInReporter.json', [
+      'SyntaxError', 
+      'faultyReporter.js'
     ], 1),
     new E2eTest('should report failures', 'fail/config.json', [
       'fail:',

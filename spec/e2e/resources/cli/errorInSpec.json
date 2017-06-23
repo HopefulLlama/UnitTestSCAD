@@ -1,0 +1,6 @@
+{
+  "openScadDirectory": "",
+  "testFiles": [
+    "errorInSpec.js"
+  ]
+}

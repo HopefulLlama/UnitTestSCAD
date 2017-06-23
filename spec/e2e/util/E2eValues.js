@@ -5,7 +5,7 @@ function E2eValues() {
 }
 
 E2eValues.prototype.getCommand = function(config) {
-	return [this.APP, this.UNITTESTSCAD, config].join(' ');
+	return [this.APP, this.UNITTESTSCAD, config, '2>&1'].join(' ');
 };
 
 module.exports = new E2eValues();

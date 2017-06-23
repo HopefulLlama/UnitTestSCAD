@@ -73,12 +73,13 @@ process.on('exit', function(code) {
 if(pathToConfig) {
   try {
     CONFIG = readConfig(pathToConfig);
-
-    setUpGlobals(CONFIG, TEST_RUNNER);
-    main(CONFIG, TEST_RUNNER);
-  } catch (a) {
+  } catch(err) {
     ErrorHandler.throwErrorAndSetExitCode(ErrorHandler.REASONS.INVALID_CONFIG);
+    return;
   }
+
+  setUpGlobals(CONFIG, TEST_RUNNER);
+  main(CONFIG, TEST_RUNNER);
 } else {
   ErrorHandler.throwErrorAndSetExitCode(ErrorHandler.REASONS.MISSING_CONFIG);
 }

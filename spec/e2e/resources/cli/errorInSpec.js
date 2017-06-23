@@ -1,0 +1,1 @@
+testSuite('sfdsfs', function{}());

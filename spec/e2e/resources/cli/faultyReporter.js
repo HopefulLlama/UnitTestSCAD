@@ -1,0 +1,1 @@
+global.ReporterRegistry.add('FaultyReporter', function{}());

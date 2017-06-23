@@ -1,0 +1,11 @@
+{
+	"openScadDirectory": "",
+	"testFiles": [
+		"errorInReporter.js"
+	],
+	"customReporters": ["faultyReporter.js"],
+	"reporters": [
+		{"name": "console", "options": {}},
+		{"name": "FaultyReporter", "options": {}}
+	]
+}

@@ -20,7 +20,7 @@ testSuite('pass', {
 		.and.heightToBe(6)
 		.and.widthToBe(6)
 		.and.toHaveVertexCountOf(8)
-		.and.toBeWithinBoundingBox([[-6, -6], [6, 6]])
+		.and.toBeWithinBoundingBox([[0, -6], [6, 0]])
 		.and.not().heightToBe(7)
 		.and.not().widthToBe(7)
 		.and.not().toHaveVertexCountOf(9)

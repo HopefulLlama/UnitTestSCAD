@@ -23,17 +23,17 @@ TestCase.prototype.reset = function() {
   this.actualExitCode = undefined;
 };
 
-TestCase.prototype.assert = function(prefix, failures) {
+TestCase.prototype.assert = function(prefix, failures, actual) {
   var _this = this;
 
   this.expectedOutput.forEach(function(expected) {
     expected = expected.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-    if(_this.actualOutput.match(expected) === null) {
-      failures.push(_this.name + ': ' + prefix + ': Expected ' + _this.actualOutput + ' to contain ' + expected);
+    if(actual.output.match(expected) === null) {
+      failures.push(_this.name + ': ' + prefix + ': Expected ' + actual.output + ' to contain ' + expected);
     }
   });
-  if(this.actualExitCode !== this.expectedExitCode) {
-    failures.push(this.name + ': ' + prefix + ': Expected ' + this.actualExitCode + ' to be ' + this.expectedExitCode);
+  if(actual.exitCode !== this.expectedExitCode) {
+    failures.push(this.name + ': ' + prefix + ': Expected ' + actual.exitCode + ' to be ' + this.expectedExitCode);
   }
 
   this.callbacks.forEach(function(callback) {
@@ -44,14 +44,19 @@ TestCase.prototype.assert = function(prefix, failures) {
 };
 
 TestCase.prototype.executeCli = function() {
+  var actual = {
+    output: undefined,
+    exitCode: undefined
+  };
+
   try {
-    this.actualOutput = E2eUtils.executeCli(this.config).toString();
-    this.actualExitCode = 0;
+    actual.output = E2eUtils.executeCli(this.config).toString();
+    actual.exitCode = 0;
   } catch(a) {
-    this.actualOutput = a.stdout.toString();
-    this.actualExitCode = a.status;
+    actual.output = a.stdout.toString();
+    actual.exitCode = a.status;
   } finally {
-    this.assert('cli', this.cliFailures);
+    this.assert('cli', this.cliFailures, actual);
   }
 };
 
@@ -59,17 +64,24 @@ TestCase.prototype.executeRequire = function() {
   var template = 'spec/e2e/RequireTemplate.js';
   
   var contents = fs.readFileSync(template, 'utf8');
-  contents = contents.replace('<config>', this.config);
+  var replacement = (this.config !== undefined) ? "'" + this.config + "'" : '';
+  contents = contents.replace('<config>', replacement);
 
   fs.writeFileSync(E2eValues.TEMP_REQUIRE, contents);
+
+  var actual = {
+    output: undefined,
+    exitCode: undefined
+  };
+
   try {
-    this.actualOutput = E2eUtils.executeCli(this.config).toString();
-    this.actualExitCode = 0;
+    actual.output = E2eUtils.executeRequire(this.config).toString();
+    actual.exitCode = 0;
   } catch(a) {
-    this.actualOutput = a.stdout.toString();
-    this.actualExitCode = a.status;
+    actual.output = a.stdout.toString();
+    actual.exitCode = a.status;
   } finally {
-    this.assert('require', this.requireFailures);
+    this.assert('require', this.requireFailures, actual);
   }
 };
 

@@ -64,6 +64,24 @@ The supplied path to the configuration file does not point to a valid configurat
 Congratulations! UnitTestSCAD has successfully been installed.
 
 # Usage
+## Command Line Usage
+You can use UnitTestSCAD through the command line as simply as calling `unittestscad <configuration file>`. The path to the configuration file should be either:
+- Relative from the current working directory
+- Absolute
+
+## Require Usage
+You can also use UnitTestSCAD from within another NodeJS file.
+
+
+```javascript
+var UnitTestSCAD = require('unittestscad');
+UnitTestSCAD(configFile);
+```
+
+The path to the configuration file should be either:
+- Relative from the directory which the script is called from
+- Absolute
+
 ## Configuration File
 To use UnitTestSCAD, you will first need a configuration file which will specify which files to run. The configuration file should be in the JSON format, and contain the following properties:
 

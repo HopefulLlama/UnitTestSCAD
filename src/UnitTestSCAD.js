@@ -46,7 +46,7 @@ function readConfig(pathToConfig) {
 }
 
 function main(config, testRunner) {
-  process.chdir(path.dirname(pathToConfig));
+  process.chdir(path.dirname(config.path));
 
   if(config.properties.customReporters !== undefined) {
     global.ReporterRegistry.__addCustomReporters(config.properties.customReporters);

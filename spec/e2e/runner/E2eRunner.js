@@ -25,7 +25,7 @@ E2eRunner.prototype.execute = function() {
   });
   
   if(fs.existsSync(E2eValues.TEMP_REQUIRE)) {
-    fs.unlink(E2eValues.TEMP_REQUIRE);
+    fs.unlinkSync(E2eValues.TEMP_REQUIRE);
   }
   console.log(os.EOL + this.aggregateFailures().length + ' failures in ' + this.tests.length * 2 + ' tests.');
 };

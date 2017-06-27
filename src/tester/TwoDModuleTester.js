@@ -2,8 +2,9 @@ var fs = require('fs');
 var util = require('util');
 var xml2js = require('xml2js');
 
-var TwoDModuleAssertions = require('./TwoDModuleAssertions');
+var FileHandler = require('../util/FileHandler');
 var Tester = require('./Tester');
+var TwoDModuleAssertions = require('./TwoDModuleAssertions');
 
 function TwoDModuleTester(setUpText, testText, test) {
   Tester.call(this, setUpText, testText, test, new TwoDModuleAssertions());
@@ -12,8 +13,7 @@ util.inherits(TwoDModuleTester, Tester);
 
 TwoDModuleTester.prototype.generateOutput = function(openScadDirectory) {
   this.generateScadFile(openScadDirectory);
-  this.FileHandler.convertToSvg();
-  this.output = fs.readFileSync(this.FileHandler.svg, 'utf8');
+  this.output = FileHandler.getSvgContent();
 
   var result = '';
   xml2js.parseString(this.output, function(err, res) {

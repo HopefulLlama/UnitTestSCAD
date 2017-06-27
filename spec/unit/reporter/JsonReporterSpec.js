@@ -19,7 +19,7 @@ describe('JsonReporter', function() {
       var contents = fs.readFileSync(options.dest, 'utf8');
       expect(report).toEqual(JSON.parse(contents));
 
-      fs.unlink(options.dest);
+      fs.unlinkSync(options.dest);
     } else {
       fail('File not written.');
     }

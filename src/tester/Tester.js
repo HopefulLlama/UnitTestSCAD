@@ -11,8 +11,6 @@ function Tester(setUpText, testText, test, assertions) {
 
   assertions.tester = this;
   this.assertions = assertions;
-
-  this.FileHandler = FileHandler;
 }
 
 Tester.START_MARKER = '"UnitTestSCAD __start_marker__"';
@@ -36,7 +34,7 @@ Tester.wrapWithMarker = function(text) {
 };
 
 Tester.prototype.generateScadFile = function(directory) {
-  this.FileHandler.writeScadFile(this.test.testSuite.getHeader(directory), this.setUpText, this.testText);
+  FileHandler.writeScadFile(this.test.testSuite.getHeader(directory), this.setUpText, this.testText);
 };
 
 module.exports = Tester;

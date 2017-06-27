@@ -21,7 +21,7 @@ describe('XmlReporter', function() {
       expect(contents).toContain('<Yolo>Swag</Yolo>');
       expect(contents).toContain('<MoneyMoney>Yeah</MoneyMoney>');
 
-      fs.unlink(options.dest);
+      fs.unlinkSync(options.dest);
     } else {
       fail('File not written.');
     }

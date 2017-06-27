@@ -72,7 +72,7 @@ function runE2e() {
             failures.push(test.name + ': ' + prefix + ': Expected ' + assertion.file + ' to match ' + assertion.expected);
           }
 
-          fs.unlink(base + assertion.file);
+          fs.unlinkSync(base + assertion.file);
         } else {
           failures.push(test.name + ': ' + prefix + ':  Expected ' + assertion.file + ' to be written');
         }

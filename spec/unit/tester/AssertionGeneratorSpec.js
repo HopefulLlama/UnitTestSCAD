@@ -27,17 +27,11 @@ describe('AssertionGenerator', function() {
   });
 
   afterEach(function() {
-    if(fs.existsSync(FileHandler.scad)) {
-      fs.unlink(FileHandler.scad);
-    }
-
-    if(fs.existsSync(FileHandler.stl)) {
-      fs.unlink(FileHandler.stl);
-    }
-
-    if(fs.existsSync(FileHandler.svg)) {
-      fs.unlink(FileHandler.svg);
-    }
+  	[FileHandler.scad, FileHandler.stl, FileHandler.svg].forEach(function(file) {
+	    if(fs.existsSync(file)) {
+	      fs.unlinkSync(file);
+	    }
+	  });
   });
 
   it('should return itself and setup', function() {

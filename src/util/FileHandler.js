@@ -37,56 +37,22 @@ FileHandler.prototype.convertToSvg = function() {
   return this.convert(this.svg);
 };
 
-FileHandler.prototype.getOutputLine = function(output) {
-  var marker = output.find(function(line) {
-    return line.search(new RegExp('UnitTestSCAD')) >= 0;
-  });
-
-  return output[output.indexOf(marker) + 1];
+FileHandler.prototype.getStlConversionOutput = FileHandler.prototype.convertToStl;
+FileHandler.prototype.getStlContent = function() {
+  this.convertToStl();
+  return fs.readFileSync(this.stl, 'utf8');
 };
-
-var getLinesWithVertex = function(contents) {
-  return contents.split(os.EOL)
-  .filter(function(line) {
-    return line.match(/vertex([ ]{1}[0-9]*){3}/);
-  });
-};
-
-FileHandler.prototype.getVertices = function(contents) {
-  return getLinesWithVertex(contents)
-  .filter(function(value, index, self) {
-    return self.indexOf(value) === index;
-  })
-  .reduce(function(accumulator, currentValue) {
-    // Last three elements should be the co-ordinates, as a string
-    var vertex = currentValue.split(' ')
-    .slice(-3)
-    .map(function(v) {
-      return parseInt(v, 10);
-    });
-    accumulator.push(vertex);
-    return accumulator;
-  }, []);
-};
-
-FileHandler.prototype.countTriangles = function(contents) {
-  return contents.split(os.EOL)
-  .filter(function(line) {
-    return line.match(/endfacet/);
-  })
-  .length;
+FileHandler.prototype.getSvgContent = function() {
+  this.convertToSvg();
+  return fs.readFileSync(this.svg, 'utf8');
 };
 
 FileHandler.prototype.cleanUp = function() {
-  if(fs.existsSync(this.scad)) {
-    fs.unlinkSync(this.scad);
-  }
-  if(fs.existsSync(this.stl)) {
-    fs.unlinkSync(this.stl);
-  }
-  if(fs.existsSync(this.svg)) {
-    fs.unlinkSync(this.svg);
-  }
+  [this.scad, this.stl, this.svg].forEach(function(file) {
+    if(fs.existsSync(file)) {
+      fs.unlinkSync(file);
+    }
+  });
 };
 
 module.exports = new FileHandler();

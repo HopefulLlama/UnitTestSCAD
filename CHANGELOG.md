@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Can now invoke `unittestscad` through NodeJS `require`.
 
+### Fixed 
+- Exceptions from user specs now correctly bubble up.
+
 ## [2.0.0] - 2017-06-08
 ### Added
 - `assert` now has an optional `withSetup(setupText)` to allow insertion of OpenSCAD code, prior to the test. Chains with both `openScadFunction()` and `openScadModule()`.

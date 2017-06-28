@@ -4,9 +4,10 @@ var os = require('os');
 var path = require('path');
 
 function FileHandler() {
-  this.scad = 'temp.scad';
-  this.stl = 'temp.stl';
-  this.svg = 'temp.svg';
+  var _this = this;
+  ['scad', 'stl', 'svg'].forEach(function(format) {
+    _this[format] = ['UnitTestSCAD', '48967', 'TEMP', 'DELETE-ME', format.toUpperCase()].join('_') + '.' + format;
+  });
 }
 
 FileHandler.prototype.executeNodeFiles = function(files) {

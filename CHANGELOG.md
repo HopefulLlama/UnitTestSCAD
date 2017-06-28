@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Nothing yet
+
+## [2.0.1] - 2017-06-28
 ### Added
 - Can now invoke `unittestscad` through NodeJS `require`.
 
@@ -40,7 +43,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Initial release hype!
 
-[Unreleased]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v2.0.1...HEAD
+[2.0.1]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v1.2.0...v2.0.0
 [1.2.0]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v1.0.1...v1.1.0

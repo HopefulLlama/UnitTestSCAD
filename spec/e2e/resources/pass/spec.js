@@ -8,9 +8,15 @@ testSuite('pass', {
     .and.toHaveVertexCountOf(8)
     .and.toHaveTriangleCountOf(12)
     .and.toBeWithinBoundingBox([[0, 0, 0], [1, 1, 1]])
+    .and.widthToBe(1)
+    .and.heightToBe(1)
+    .and.depthToBe(1)
     .and.not().toHaveVertexCountOf(1)
     .and.not().toHaveTriangleCountOf(3)
-    .and.not().toBeWithinBoundingBox([[0, 0, 0], [0, 0, 0]]);
+    .and.not().toBeWithinBoundingBox([[0, 0, 0], [0, 0, 0]])
+    .and.not().widthToBe(2)
+    .and.not().heightToBe(2)
+    .and.not().depthToBe(2);
   });
 
   it('openScad2DModule', function() {

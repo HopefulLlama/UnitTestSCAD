@@ -43,6 +43,34 @@ function countTriangles(contents) {
   .length;
 }
 
+function getDimensionSize(contents, index) {
+	var min = Number.POSITIVE_INFINITY;
+	var max = Number.NEGATIVE_INFINITY;
+
+	getVertices(contents).forEach(function(vertex) {
+		if(vertex[index] < min) {
+			min = vertex[index];
+		}
+		if(vertex[index] > max) {
+			max = vertex[index];
+		}
+	});
+
+	return max - min;
+}
+
+function getWidth(contents) {
+	return getDimensionSize(contents, 0);
+}
+
+function getHeight(contents) {
+	return getDimensionSize(contents, 1);
+}
+
+function getDepth(contents) {
+	return getDimensionSize(contents, 2);
+}
+
 ModuleAssertions.prototype.stlFileToBe = function(file) {
   return this.__testEquality(this.tester.output, fs.readFileSync(file, 'utf8'));
 };
@@ -54,8 +82,21 @@ ModuleAssertions.prototype.toHaveVertexCountOf = function(expectedCount) {
 ModuleAssertions.prototype.toHaveTriangleCountOf = function(expectedCount) {
   return this.__testEquality(countTriangles(this.tester.output), expectedCount); 
 };
+
 ModuleAssertions.prototype.toBeWithinBoundingBox = function(vectors) {
   return this.__testWithinBounds(getVertices(this.tester.output), vectors);
+};
+
+ModuleAssertions.prototype.widthToBe = function(expectedWidth) {
+	return this.__testEquality(getWidth(this.tester.output), expectedWidth);
+};
+
+ModuleAssertions.prototype.heightToBe = function(expectedHeight) {
+	return this.__testEquality(getHeight(this.tester.output), expectedHeight);
+};
+
+ModuleAssertions.prototype.depthToBe = function(expectedDepth) {
+	return this.__testEquality(getDepth(this.tester.output), expectedDepth);
 };
 
 module.exports = ModuleAssertions;

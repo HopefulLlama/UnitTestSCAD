@@ -41,10 +41,10 @@ function runE2e() {
     new E2eTest('should pass', 'pass/config.json', [
       'pass:',
       'should pass:',
-      TERMINAL.GREEN + '0 failures' + TERMINAL.RESET + ' in 7 assertions.',
+      TERMINAL.GREEN + '0 failures' + TERMINAL.RESET + ' in 13 assertions.',
       'openScad2DModule:',
       TERMINAL.GREEN + '0 failures' + TERMINAL.RESET + ' in 9 assertions.',
-      TERMINAL.GREEN + '0 total failures' + TERMINAL.RESET + ' in 16 total assertions.'
+      TERMINAL.GREEN + '0 total failures' + TERMINAL.RESET + ' in 22 total assertions.'
     ]),
     new E2eTest('should use and include correctly', 'use-include/config.json', [
       TERMINAL.GREEN + '0 total failures' + TERMINAL.RESET + ' in 3 total assertions.'

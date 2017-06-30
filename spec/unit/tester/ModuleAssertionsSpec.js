@@ -7,6 +7,14 @@ describe('ModuleAssertions', function() {
 
   var FILE = 'spec/unit/resources/garbage.stl';
 
+  var STL_FILE = 'stlFileToBe';
+  var VERTEX_COUNT = 'toHaveVertexCountOf';
+  var TRIANGLE_COUNT = 'toHaveTriangleCountOf';
+  var BOUNDING_BOX = 'toBeWithinBoundingBox';
+  var WIDTH = 'widthToBe';
+  var HEIGHT = 'heightToBe';
+  var DEPTH = 'depthToBe';
+
   function generateTester(output) {
     return {
       'output': output,
@@ -17,55 +25,53 @@ describe('ModuleAssertions', function() {
     };
   }
 
-  var assertAssertionsAndFailures = function(assertions, failures) {
+  function assertAssertionsAndFailures(assertions, failures) {
     expect(moduleAssertions.tester.test.assertions).toBe(assertions, 'assertions');
     expect(moduleAssertions.tester.test.failures.length).toBe(failures, 'failures');
-  };
+  }
 
-  var assertStlFile = function(filePath, assertions, failures) {
-    expect(moduleAssertions.stlFileToBe(filePath)).toEqual({'and': moduleAssertions});
+  function assert(func, expectation, assertions, failures) {
+    expect(moduleAssertions[func](expectation)).toEqual({'and': moduleAssertions});
     assertAssertionsAndFailures(assertions, failures);
-  };
+  }
 
-  var assertNotStlFile = function(filePath, assertions, failures) {
-    expect(moduleAssertions.not().stlFileToBe(filePath)).toEqual({'and': moduleAssertions});
+  function assertNot(func, expectation, assertions, failures) {
+    expect(moduleAssertions.not()[func](expectation)).toEqual({'and': moduleAssertions});
     assertAssertionsAndFailures(assertions, failures);
-  };
+  }
 
-  var assertVertexCount = function(vertices, assertions, failures) {
-    expect(moduleAssertions.toHaveVertexCountOf(vertices)).toEqual({'and': moduleAssertions});
-    assertAssertionsAndFailures(assertions, failures);
-  };
+  function TestCase(func, pass, fail) {
+    this.func = func;
+    this.pass = pass;
+    this.fail = fail;
+  }
 
-  var assertNotVertexCount = function(vertices, assertions, failures) {
-    expect(moduleAssertions.not().toHaveVertexCountOf(vertices)).toEqual({'and': moduleAssertions});
-    assertAssertionsAndFailures(assertions, failures);
-  };
+  TestCase.prototype.doTests = function() {
+    var test = this;
 
-  var assertTriangleCount = function(triangles, assertions, failures) {
-    expect(moduleAssertions.toHaveTriangleCountOf(triangles)).toEqual({'and': moduleAssertions});
-    assertAssertionsAndFailures(assertions, failures);
-  };
+    it(test.func + ' should pass', function() {
+      assert(test.func, test.pass, 1, 0);
+    });
 
-  var assertNotTriangleCount = function(triangles, assertions, failures) {
-    expect(moduleAssertions.not().toHaveTriangleCountOf(triangles)).toEqual({'and': moduleAssertions});
-    assertAssertionsAndFailures(assertions, failures);
-  };
+    it(test.func + ' should fail', function() {
+      assert(test.func, test.fail, 1, 1);
+      expect(moduleAssertions.tester.test.failures[0]).toBe('Expected <' + test.pass + '> to be <' + test.fail + '>.');
+    });
 
-  var assertBoundingBox = function(bounds, assertions, failures) {
-    expect(moduleAssertions.toBeWithinBoundingBox(bounds)).toEqual({'and': moduleAssertions});
-    assertAssertionsAndFailures(assertions, failures);
-  };
+    it('not ' + test.func + ' should pass', function() {
+      assertNot(test.func, test.fail, 1, 0);
+    });
 
-  var assertNotBoundingBox = function(bounds, assertions, failures) {
-    expect(moduleAssertions.not().toBeWithinBoundingBox(bounds)).toEqual({'and': moduleAssertions});
-    assertAssertionsAndFailures(assertions, failures);
+    it('not ' + test.func + ' should fail', function() {
+      assertNot(test.func, test.pass, 1, 1);
+      expect(moduleAssertions.tester.test.failures[0]).toBe('Expected <' + test.pass + '> not to be <' + test.pass + '>.');
+    });
   };
 
   describe('with test file output', function() {
     var actual = [[0, 0, 0], [3, 0, 3], [3, 3, 3]].toString();
     beforeEach(function() {
-	    OUTPUT = ['garbage', 'vertex 0 0 0', 'vertex 3 0 3', 'endfacet', 'endfacet', 'vertex 3 3 3'].join(os.EOL);
+      OUTPUT = ['garbage', 'vertex 0 0 0', 'vertex 3 0 3', 'endfacet', 'endfacet', 'vertex 3 3 3'].join(os.EOL);
 
       moduleAssertions = new ModuleAssertions();
       moduleAssertions.tester = generateTester(OUTPUT);
@@ -73,68 +79,31 @@ describe('ModuleAssertions', function() {
 
     it('should fail to compare STL files', function() {
       for (var i = 1; i <= 3; i++) {
-        assertStlFile(FILE, i, i);
+        assert(STL_FILE, FILE, i, i);
         expect(moduleAssertions.tester.test.failures[i-1]).toBe('Expected <' + moduleAssertions.tester.output + '> to be <garbage>.');
       }
     });
 
     it('should pass on not STL files', function() {
       for (var i = 1; i <= 3; i++) {
-        assertNotStlFile(FILE, i, 0);
+        assertNot(STL_FILE, FILE, i, 0);
       }
     });
 
-    it('should correctly count the number of vertices', function() {
-      assertVertexCount(3, 1, 0);
-    });
-
-    it('should fail on not counting the number of vertices', function() {
-      assertNotVertexCount(3, 1, 1);
-      expect(moduleAssertions.tester.test.failures[0]).toBe('Expected <3> not to be <3>.');
-    });
-
-    it('should pass if the count of vertices does not match', function() {
-      for(var i = 1; i <= 10; i++) {
-        assertNotVertexCount(5, i, 0);
-      }
-    });
-
-    it('should fail if the count of vertices does not match', function() {
-      for(var i = 1; i <= 10; i++) {
-        assertVertexCount(5, i, i);
-        expect(moduleAssertions.tester.test.failures[i-1]).toBe('Expected <3> to be <5>.');
-      }
-    });
-
-    it('should correctly count the number of triangles', function() {
-      assertTriangleCount(2, 1, 0);
-    });
-
-    it('should fail not if the count of number of triangles matches', function() {
-      assertNotTriangleCount(2, 1, 1);
-      expect(moduleAssertions.tester.test.failures[0]).toBe('Expected <2> not to be <2>.');
-    });
-
-    it('should pass if the count of triangles does not match', function () {
-      for(var i = 1; i <= 10; i++) {
-        assertNotTriangleCount(5, i, 0);
-      }
-    });
-
-    it('should fail if the count of triangles does not match', function() {
-      for(var i = 1; i <= 10; i++) {
-        assertTriangleCount(5, i, i);
-        expect(moduleAssertions.tester.test.failures[i-1]).toBe('Expected <2> to be <5>.');
-      }
+    [
+      new TestCase(VERTEX_COUNT, 3, 5),
+      new TestCase(TRIANGLE_COUNT, 2, 5)
+    ].forEach(function(testCase) {
+      testCase.doTests();
     });
 
     it('should correctly be within bounds', function() {
-      assertBoundingBox([[0, 0, 0], [3, 3, 3]], 1, 0);
+      assert(BOUNDING_BOX, [[0, 0, 0], [3, 3, 3]], 1, 0);
     });
 
     it('should fail not if within bounds', function() {
       var expected = [[0, 0, 0], [3, 3, 3]];
-      assertNotBoundingBox(expected, 1, 1);
+      assertNot(BOUNDING_BOX, expected, 1, 1);
       expect(moduleAssertions.tester.test.failures[0]).toBe('Expected <' + actual + '> not to be within the bounds of <' + expected.toString() + '>.');
     });
 
@@ -147,7 +116,7 @@ describe('ModuleAssertions', function() {
         [[0, 0, 0], [3, 2, 3]],
         [[0, 0, 0], [3, 3, 2]]
       ].forEach(function(testCase, index) {
-        assertNotBoundingBox(testCase, index+1, 0);
+        assertNot(BOUNDING_BOX, testCase, index+1, 0);
       });
     });
 
@@ -160,9 +129,26 @@ describe('ModuleAssertions', function() {
         [[0, 0, 0], [3, 2, 3]],
         [[0, 0, 0], [3, 3, 2]]
       ].forEach(function(testCase, index) {
-        assertBoundingBox(testCase, index+1, index+1);
+        assert(BOUNDING_BOX, testCase, index+1, index+1);
         expect(moduleAssertions.tester.test.failures[index]).toBe('Expected <' + actual + '> to be within the bounds of <' + testCase + '>.');
       });
+    });
+  });
+
+  describe('with different file output', function() {
+    beforeEach(function() {
+      OUTPUT = ['vertex 0 0 0', 'vertex 3 0 3', 'vertex 4 5 6'].join(os.EOL);
+
+      moduleAssertions = new ModuleAssertions();
+      moduleAssertions.tester = generateTester(OUTPUT);
+    });
+
+    [
+      new TestCase(WIDTH, 4, 10),
+      new TestCase(HEIGHT, 5, 10),
+      new TestCase(DEPTH, 6, 10)
+    ].forEach(function(testCase) {
+      testCase.doTests();
     });
   });
 
@@ -175,11 +161,11 @@ describe('ModuleAssertions', function() {
     });
 
     it('should compare stl successfully', function() {
-      assertStlFile(FILE, 1, 0);
+      assert(STL_FILE, FILE, 1, 0);
     });
 
     it('should fail stl not comparison', function() {
-      assertNotStlFile(FILE, 1, 1);
+      assertNot(STL_FILE, FILE, 1, 1);
       expect(moduleAssertions.tester.test.failures[0]).toBe('Expected <' + moduleAssertions.tester.output + '> not to be <garbage>.');
     });
   });

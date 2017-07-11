@@ -4,7 +4,7 @@ var os = require('os');
 var E2eTest = require('./runner/E2eTest');
 var E2eRunner = require('./runner/E2eRunner');
 
-var TERMINAL = require('../../src/util/Terminal');
+var TERMINAL = require('../../src/constants/Terminal');
 
 var USAGE = 'usage: unittestscad <file>';
 
@@ -44,7 +44,9 @@ function runE2e() {
       TERMINAL.GREEN + '0 failures' + TERMINAL.RESET + ' in 13 assertions.',
       'openScad2DModule:',
       TERMINAL.GREEN + '0 failures' + TERMINAL.RESET + ' in 9 assertions.',
-      TERMINAL.GREEN + '0 total failures' + TERMINAL.RESET + ' in 22 total assertions.'
+      'openScadFunction:',
+      TERMINAL.GREEN + '0 failures' + TERMINAL.RESET + ' in 32 assertions.',
+      TERMINAL.GREEN + '0 total failures' + TERMINAL.RESET + ' in 54 total assertions.'
     ]),
     new E2eTest('should use and include correctly', 'use-include/config.json', [
       TERMINAL.GREEN + '0 total failures' + TERMINAL.RESET + ' in 3 total assertions.'

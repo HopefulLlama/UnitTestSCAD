@@ -47,11 +47,7 @@ describe('AssertionGenerator', function() {
     var tester = assertionGenerator.withSetup(SETUP).openScadFunction(test).tester;
 
     expect(fs.existsSync(FileHandler.scad)).toBe(true);
-    expect(tester.output).toEqual([
-      'ECHO: "UnitTestSCAD __start_marker__"',
-      'ECHO: "Hello"',
-      'ECHO: "UnitTestSCAD __end_marker__"'
-    ].join(os.EOL) + os.EOL);
+    expect(tester.output).toEqual('"Hello"');
 
     expect(tester.setUpText).toEqual(SETUP);
     expect(tester.testText).toEqual([

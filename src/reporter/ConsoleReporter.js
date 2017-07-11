@@ -1,6 +1,6 @@
 var os = require('os');
 
-var TERMINAL = require('../util/Terminal');
+var TERMINAL = require('../constants/Terminal');
 
 var report = function(results) {
   results.testSuites.forEach(function(testSuiteSummary) {

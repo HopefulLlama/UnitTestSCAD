@@ -10,12 +10,14 @@ var ModuleTester = require('./tester/ModuleTester');
 var ReporterRegistry = require('./reporter/ReporterRegistry');
 var Test = require('./test/Test');
 var TestSuite = require('./test/TestSuite');
+var OpenScadType = require('./constants/OpenScadType');
 
 var TEST_RUNNER = require('./test/TestRunner');
 
 var CONFIG = {};
 
 function setUpGlobals(config, testRunner) {
+	global.OpenScadType = OpenScadType;
   global.ReporterRegistry = ReporterRegistry;
 
   global.testSuite = function(name, options, callback) {

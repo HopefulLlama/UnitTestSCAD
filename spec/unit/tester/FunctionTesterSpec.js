@@ -32,7 +32,7 @@ describe('FunctionTester', function() {
       tester.generateOutput('');
 
       expect(fs.existsSync(FileHandler.scad)).toBe(true);
-      expect(tester.output).toBe(['ECHO: "UnitTestSCAD __start_marker__"', 'ECHO: "Hello"', 'ECHO: "UnitTestSCAD __end_marker__"'].join(os.EOL) + os.EOL);
+      expect(tester.output).toBe('"Hello"');
     });
   });
 });

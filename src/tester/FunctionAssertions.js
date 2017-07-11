@@ -5,6 +5,7 @@ var util = require('util');
 var Assertions = require('./Assertions');
 var FileHandler = require('../util/FileHandler');
 var Tester = require('./Tester');
+var TypeConverter = require('../util/TypeConverter');
 
 function FunctionAssertions() {
   Assertions.apply(this);
@@ -13,19 +14,11 @@ function FunctionAssertions() {
 util.inherits(FunctionAssertions, Assertions);
 
 FunctionAssertions.prototype.outputToBe = function(expectedText) {
-  var ECHO = 'ECHO: ';
+  return this.__testEquality(this.tester.output, expectedText);
+};
 
-  var content = this.tester.output.split(os.EOL);
-  content = content.slice(
-    content.indexOf(ECHO + Tester.START_MARKER) + 1,
-    content.indexOf(ECHO + Tester.END_MARKER)
-  )
-  .map(function(line) {
-    return line.slice(ECHO.length);
-  })
-  .join(os.EOL);
-  
-  return this.__testEquality(content, expectedText);
+FunctionAssertions.prototype.typeToBe = function(expectedType) {
+	return this.__testEquality(TypeConverter(this.tester.output), expectedType);
 };
 
 module.exports = FunctionAssertions;

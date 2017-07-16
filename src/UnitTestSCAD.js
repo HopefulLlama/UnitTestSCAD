@@ -17,7 +17,7 @@ var TEST_RUNNER = require('./test/TestRunner');
 var CONFIG = {};
 
 function setUpGlobals(config, testRunner) {
-	global.OpenScadType = OpenScadType;
+  global.OpenScadType = OpenScadType;
   global.ReporterRegistry = ReporterRegistry;
 
   global.testSuite = function(name, options, callback) {

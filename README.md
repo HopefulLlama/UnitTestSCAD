@@ -268,11 +268,11 @@ Allows for the insertion of OpenSCAD code, prior to the assertion being tested.
 ### `assert.openScadFunction(openScadFunction)`
 
 **Returns:**
-
 ```javascript
 {
   'not': function() {...},
-  'outputToBe': function(expectedOutput) {...}
+  'outputToBe': function(expectedOutput) {...},
+  'typeToBe': function(expectedType) {...}
 }
 ```
 
@@ -288,7 +288,8 @@ Begins an assertion or multiple assertions on an OpenSCAD function.
 ```javascript
 {
   'not': function() {...},
-  'outputToBe': function(expectedOutput) {...}
+  'outputToBe': function(expectedOutput) {...},
+  'typeToBe': function(expectedType) {...}
 }
 ```
 
@@ -301,7 +302,8 @@ Negates the expectation of the following assertion. This is used in a chain of c
 {
   'and': {
     'not': function() {...},
-    'outputToBe': function(expectedOutput) {...}
+    'outputToBe': function(expectedOutput) {...},
+    'typeToBe': function(expectedType) {...}
   }
 }
 ```
@@ -311,6 +313,39 @@ Performs an equality check on the returned value of an OpenSCAD function.
 | Parameter | Data Type | Description |
 |---|---|---|
 | expectedOutput | String | The expected output of the previously specified OpenSCAD function as a string. |
+
+
+### `typeToBe(expectedType)`
+
+**Returns:** {
+```javascript
+{
+  'and': {
+    'not': function() {...},
+    'outputToBe': function(expectedOutput) {...},
+    'typeToBe': function(expectedType) {...}
+  }
+}
+```
+
+Performs an equality check on the type of the returned value of an OpenSCAD function. Use by asserting against the global object `OpenScadType` as seen below.
+
+| Parameter | Data Type | Description |
+|---|---|---|
+| expectedType | String | The expected type of the output of the previously specified OpenSCAD function as a string. Use with `OpenScadType` to ensure correctness. |
+
+```javascript
+OpenScadType = {
+  BOOLEAN: 'boolean',
+  INF: 'inf',
+  NAN: 'nan',
+  NUMBER: 'number',
+  RANGE: 'range',
+  STRING: 'string',
+  UNDEF: 'undef',
+  VECTOR: 'vector'
+}
+```
 
 ## OpenSCAD 3D Module Assertions
 ### `assert.openScad3dModule(openScadModule)`

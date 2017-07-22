@@ -14,7 +14,7 @@ util.inherits(ModuleAssertions, Assertions);
 function getLinesWithVertex(contents) {
   return contents.split(os.EOL)
   .filter(function(line) {
-    return line.match(/vertex([ ]{1}[0-9]*){3}/);
+    return line.match(/vertex([ ]{1}[0-9]+[.]*[0-9]*){3}/);
   });
 }
 
@@ -28,7 +28,7 @@ function getVertices(contents) {
     var vertex = currentValue.split(' ')
     .slice(-3)
     .map(function(v) {
-      return parseInt(v, 10);
+      return parseFloat(v, 10);
     });
     accumulator.push(vertex);
     return accumulator;

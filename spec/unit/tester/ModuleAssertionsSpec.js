@@ -68,10 +68,38 @@ describe('ModuleAssertions', function() {
     });
   };
 
+  describe('testGetVertices', function() {
+  	beforeEach(function() {
+  		OUTPUT = [
+  			'vertex 0 0 0',
+  			'vertex 1 2 3',
+  			'vertex 1.1 2.2 3.3',
+  			'vertex 11.11 22.22 33.33',
+  			'vertex 11.1111 22.222222 33.33333'
+  		].join(os.EOL);
+
+      moduleAssertions = new ModuleAssertions();
+      moduleAssertions.tester = generateTester(OUTPUT);
+  	});
+
+  	it('should get the correct number of vertices', function() {
+  		var testCase = new TestCase(VERTEX_COUNT, 5, 6);
+  		testCase.doTests();
+  	});
+  });
+
+
   describe('with test file output', function() {
     var actual = [[0, 0, 0], [3, 0, 3], [3, 3, 3]].toString();
     beforeEach(function() {
-      OUTPUT = ['garbage', 'vertex 0 0 0', 'vertex 3 0 3', 'endfacet', 'endfacet', 'vertex 3 3 3'].join(os.EOL);
+      OUTPUT = [
+      	'garbage', 
+      	'vertex 0 0 0', 
+      	'vertex 3 0 3', 
+      	'endfacet', 
+      	'endfacet', 
+      	'vertex 3 3 3'
+    	].join(os.EOL);
 
       moduleAssertions = new ModuleAssertions();
       moduleAssertions.tester = generateTester(OUTPUT);

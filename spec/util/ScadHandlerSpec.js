@@ -87,8 +87,17 @@ describe('ScadHandler', function() {
         'clever' + os.EOL + 
         'vertex 5 4 3' + os.EOL + 
         'swag' + os.EOL + 
-        'vertex 10 0 5'
-      )).toEqual([[5, 4, 3], [10, 0, 5]]);
+        'vertex 10 0 5' + os.EOL + 
+        'vertex 1.1 2.2 3.3' + os.EOL + 
+        'vertex 11.11 22.22 33.33' + os.EOL + 
+        'vertex 11.11111 22.22222 33.33333'
+      )).toEqual([
+      	[5, 4, 3], 
+      	[10, 0, 5],
+      	[1.1, 2.2, 3.3],
+      	[11.11, 22.22, 33.33],
+      	[11.11111, 22.22222, 33.33333]
+      ]);
     });
 
     it('should uniquify the vertices in a given list', function() {

@@ -28,7 +28,7 @@ ScadHandler.prototype.getOutputLine = function(output) {
 var getLinesWithVertex = function(contents) {
   return contents.split(os.EOL)
   .filter(function(line) {
-    return line.match(/vertex([ ]{1}[0-9]*){3}/);
+    return line.match(/vertex([ ]{1}[0-9]+[.]*[0-9]*){3}/);
   });
 };
 
@@ -38,15 +38,15 @@ ScadHandler.prototype.getVertices = function(contents) {
     return self.indexOf(value) === index;
   })
   .reduce(function(accumulator, currentValue) {
-        // Last three elements should be the co-ordinates, as a string
-        var vertex = currentValue.split(' ')
-        .slice(-3)
-        .map(function(v) {
-          return parseInt(v, 10);
-        });
-        accumulator.push(vertex);
-        return accumulator;
-      }, []);
+    // Last three elements should be the co-ordinates, as a string
+    var vertex = currentValue.split(' ')
+    .slice(-3)
+    .map(function(v) {
+      return parseFloat(v, 10);
+    });
+    accumulator.push(vertex);
+    return accumulator;
+  }, []);
 };
 
 ScadHandler.prototype.countTriangles = function(contents) {

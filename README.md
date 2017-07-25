@@ -355,6 +355,9 @@ OpenScadType = {
 {
   'not': function() {...},
   'stlFileToBe': function(expectedFile) {...},
+    'widthToBe': function(expectedWidth) {...},
+    'heightToBe': function(expectedHeight) {...},
+    'depthToBe': function(expectedDepth) {...}
   'toHaveTriangleCountOf': function(expectedTriangles) {...},
   'toHaveVertexCountOf': function(expectedVertices) {...},
   'toBeWithinBoundingBox': function(bounds) {...}
@@ -374,11 +377,15 @@ Begins an assertion or multiple assertions on an OpenSCAD module. This is used f
 {
   'not': function() {...},
   'stlFileToBe': function(expectedFile) {...},
+    'widthToBe': function(expectedWidth) {...},
+    'heightToBe': function(expectedHeight) {...},
+    'depthToBe': function(expectedDepth) {...}
   'toHaveTriangleCountOf': function(expectedTriangles) {...},
   'toHaveVertexCountOf': function(expectedVertices) {...},
   'toBeWithinBoundingBox': function(bounds) {...}
 }
 ```
+
 Negates the expectation of the following assertion. This is used in a chain of commands such as `not().stlFileToBe()`.
 
 ### `stlFileToBe(expectedFilePath)`
@@ -389,6 +396,9 @@ Negates the expectation of the following assertion. This is used in a chain of c
   'and': {
     'not': function() {...},
     'stlFileToBe': function(expectedFile) {...},
+    'widthToBe': function(expectedWidth) {...},
+    'heightToBe': function(expectedHeight) {...},
+    'depthToBe': function(expectedDepth) {...}
     'toHaveTriangleCountOf': function(expectedTriangles) {...},
     'toHaveVertexCountOf': function(expectedVertices) {...},
     'toBeWithinBoundingBox': function(bounds) {...}
@@ -402,6 +412,78 @@ Compares the generated STL file of the OpenSCAD file, with a pre-existing known 
 |---|---|---|
 | expectedFilePath | String | Path to an STL file. The OpenSCAD module will be converted to an STL, and the compared to the given file for equality. |
 
+### `widthToBe(expectedWidth)`
+
+**Returns:**
+```javascript
+{
+  'and': {
+    'not': function() {...},
+    'stlFileToBe': function(expectedFile) {...},
+    'widthToBe': function(expectedWidth) {...},
+    'heightToBe': function(expectedHeight) {...},
+    'depthToBe': function(expectedDepth) {...}
+    'toHaveTriangleCountOf': function(expectedTriangles) {...},
+    'toHaveVertexCountOf': function(expectedVertices) {...},
+    'toBeWithinBoundingBox': function(bounds) {...}
+  }
+}
+```
+
+Compares the reported width of the shape produced by the module, against an expected value.
+
+| Parameter | Data Type | Description |
+|---|---|---|
+| expectedWidth | Integer | The expected width, to be compared against the model created by the given OpenSCAD module. |
+
+### `heightToBe(expectedHeight)`
+
+**Returns:**
+```javascript
+{
+  'and': {
+    'not': function() {...},
+    'stlFileToBe': function(expectedFile) {...},
+    'heightToBe': function(expectedWidth) {...},
+    'heightToBe': function(expectedHeight) {...},
+    'depthToBe': function(expectedDepth) {...}
+    'toHaveTriangleCountOf': function(expectedTriangles) {...},
+    'toHaveVertexCountOf': function(expectedVertices) {...},
+    'toBeWithinBoundingBox': function(bounds) {...}
+  }
+}
+```
+
+Compares the reported height of the shape produced by the module, against an expected value.
+
+| Parameter | Data Type | Description |
+|---|---|---|
+| expectedHeight | Integer | The expected height, to be compared against the model created by the given OpenSCAD module. |
+
+### `depthToBe(expectedDepth)`
+
+**Returns:**
+```javascript
+{
+  'and': {
+    'not': function() {...},
+    'stlFileToBe': function(expectedFile) {...},
+    'depthToBe': function(expectedWidth) {...},
+    'heightToBe': function(expectedHeight) {...},
+    'depthToBe': function(expectedDepth) {...}
+    'toHaveTriangleCountOf': function(expectedTriangles) {...},
+    'toHaveVertexCountOf': function(expectedVertices) {...},
+    'toBeWithinBoundingBox': function(bounds) {...}
+  }
+}
+```
+
+Compares the reported depth of the shape produced by the module, against an expected value.
+
+| Parameter | Data Type | Description |
+|---|---|---|
+| expectedDepth | Integer | The expected depth, to be compared against the model created by the given OpenSCAD module. |
+
 ### `toHaveVertexCountOf(expectedVertices)`
 
 **Returns:**
@@ -410,6 +492,9 @@ Compares the generated STL file of the OpenSCAD file, with a pre-existing known 
   'and': {
     'not': function() {...},
     'stlFileToBe': function(expectedFile) {...},
+    'widthToBe': function(expectedWidth) {...},
+    'heightToBe': function(expectedHeight) {...},
+    'depthToBe': function(expectedDepth) {...}
     'toHaveTriangleCountOf': function(expectedTriangles) {...},
     'toHaveVertexCountOf': function(expectedVertices) {...},
     'toBeWithinBoundingBox': function(bounds) {...}
@@ -423,6 +508,8 @@ Compares the number of vertices produced by the module, against an expected valu
 |---|---|---|
 | expectedVertices | Integer | The expected number of vertices, to be compared against the model created by the given OpenSCAD module. |
 
+
+
 ### `toHaveTriangleCountOf(expectedTriangle)`
 
 **Returns:**
@@ -431,6 +518,9 @@ Compares the number of vertices produced by the module, against an expected valu
   'and': {
     'not': function() {...},
     'stlFileToBe': function(expectedFile) {...},
+    'widthToBe': function(expectedWidth) {...},
+    'heightToBe': function(expectedHeight) {...},
+    'depthToBe': function(expectedDepth) {...}
     'toHaveTriangleCountOf': function(expectedTriangles) {...},
     'toHaveVertexCountOf': function(expectedVertices) {...},
     'toBeWithinBoundingBox': function(bounds) {...}
@@ -452,6 +542,9 @@ Compares the number of 'triangles' created by the OpenSCAD module, against an ex
   'and': {
     'not': function() {...},
     'stlFileToBe': function(expectedFile) {...},
+    'widthToBe': function(expectedWidth) {...},
+    'heightToBe': function(expectedHeight) {...},
+    'depthToBe': function(expectedDepth) {...}
     'toHaveTriangleCountOf': function(expectedTriangles) {...},
     'toHaveVertexCountOf': function(expectedVertices) {...},
     'toBeWithinBoundingBox': function(bounds) {...}
@@ -524,6 +617,29 @@ Compares the generated SVG file of the OpenSCAD file, with a pre-existing known 
 |---|---|---|
 | expectedFilePath | String | Path to an SVG file. The OpenSCAD module will be converted to an SVG, and the compared to the given file for equality. |
 
+
+### `widthToBe(expectedWidth)`
+
+**Returns:**
+```javascript
+{
+  'and' {
+    'not': function() {...},
+    'svgFileToBe': function(expectedFile) {...},
+    'widthToBe': function(expectedWidth) {...},
+    'heightToBe': function(expectedHeight) {...},
+    'toHaveVertexCountOf': function(expectedVertices) {...},
+    'toBeWithinBoundingBox': function(bounds) {...}
+  }
+}
+```
+
+Compares the reported width of the shape produced by the module, against an expected value.
+
+| Parameter | Data Type | Description |
+|---|---|---|
+| expectedWidth | Integer | The expected width, to be compared against the model created by the given OpenSCAD module. |
+
 ### `heightToBe(expectedHeight)`
 
 **Returns:**
@@ -545,28 +661,6 @@ Compares the reported height of the shape produced by the module, against an exp
 | Parameter | Data Type | Description |
 |---|---|---|
 | expectedHeight | Integer | The expected height, to be compared against the model created by the given OpenSCAD module. |
-
-### `widthToBe(expectedHeight)`
-
-**Returns:**
-```javascript
-{
-  'and' {
-    'not': function() {...},
-    'svgFileToBe': function(expectedFile) {...},
-    'heightToBe': function(expectedHeight) {...},
-    'widthToBe': function(expectedWidth) {...},
-    'toHaveVertexCountOf': function(expectedVertices) {...},
-    'toBeWithinBoundingBox': function(bounds) {...}
-  }
-}
-```
-
-Compares the reported width of the shape produced by the module, against an expected value.
-
-| Parameter | Data Type | Description |
-|---|---|---|
-| expectedWidth | Integer | The expected width, to be compared against the model created by the given OpenSCAD module. |
 
 ### `toHaveVertexCountOf(expectedVertices)`
 

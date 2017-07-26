@@ -67,6 +67,11 @@ describe('FileHandler', function() {
       return 'Expected ' + output + ' to contain If you can see this then it worked';
     };
 
+    beforeEach(function() {
+      FileHandler.stl = STL;
+      FileHandler.svg = SVG;
+    });
+
     afterEach(function() {
       cleanUp([STL, SVG]);
       resetFileHandler();
@@ -74,7 +79,6 @@ describe('FileHandler', function() {
 
     it('should capture the output of convertToStl', function() {
       FileHandler.scad = './spec/unit/resources/echo.scad';
-      FileHandler.stl = STL;
 
       var output = FileHandler.convertToStl();
       expect(output.search(SEARCH) >= 0).toBe(true, expectation(output));
@@ -83,11 +87,21 @@ describe('FileHandler', function() {
 
     it('should capture the output of convertToSvg', function() {
       FileHandler.scad = './spec/unit/resources/echo-again.scad';
-      FileHandler.svg = SVG;
 
       var output = FileHandler.convertToSvg();
       expect(output.search(SEARCH) >= 0).toBe(true, expectation(output));
       expect(fs.existsSync(FileHandler.svg)).toBe(true, FileHandler.svg);
+    });
+
+    [
+      FileHandler.convertToStl,
+      FileHandler.convertToSvg
+    ].forEach(function(func) {
+      it('should throw on conversion attempt', function() {
+        FileHandler.scad = './spec/unit/resources/garbage.scad';
+
+        expect(func).toThrow();
+      }); 
     });
   });
   

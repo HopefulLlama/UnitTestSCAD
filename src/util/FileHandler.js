@@ -12,7 +12,12 @@ function FileHandler() {
 
 FileHandler.prototype.executeNodeFiles = function(files) {
   files.forEach(function(file) {
-    require(path.resolve(file));
+    try {
+      require(path.resolve(file));
+    } catch(error) {
+      console.log('ERROR: Unexpected exception occurred in file: ' + file);
+      throw error;
+    }
   });
 };
 
@@ -27,7 +32,20 @@ FileHandler.prototype.writeScadFile = function(header, setUpText, testText) {
 
 FileHandler.prototype.convert = function(destination) {
   var COMMAND = 'openscad -o ' + destination + ' ' + this.scad;
-  return execSync(COMMAND).toString();
+  try {
+    return execSync(COMMAND).toString();
+  } catch(commandError) {
+    console.log([
+      'ERROR: Found an error compiling OpenSCAD command given.',
+      'See below for output.',
+      '',
+      'Begin OpenSCAD output',
+      commandError.stdout.toString(),
+      'End OpenSCAD output',
+      ''
+    ].join(os.EOL));
+    throw commandError;
+  }
 };
 
 FileHandler.prototype.convertToStl = function() {

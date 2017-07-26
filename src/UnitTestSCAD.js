@@ -50,11 +50,17 @@ function readConfig(pathToConfig) {
 function main(config, testRunner) {
   process.chdir(path.dirname(config.path));
 
-  if(config.properties.customReporters !== undefined) {
-    global.ReporterRegistry.__addCustomReporters(config.properties.customReporters);
-  }
+  try {
+    if(config.properties.customReporters !== undefined) {
+      global.ReporterRegistry.__addCustomReporters(config.properties.customReporters);
+    }
 
-  testRunner.runTests(config.properties.testFiles);
+    testRunner.runTests(config.properties.testFiles);
+  } catch(error) {
+    console.log(error.name + ': ' + error.message);
+    ErrorHandler.throwErrorAndSetExitCode(ErrorHandler.REASONS.FILE_EXECUTION_ERROR);
+    return;
+  }
 
   var reporters = (config.properties.reporters !== undefined) ? config.properties.reporters : [{
     'name': 'console',

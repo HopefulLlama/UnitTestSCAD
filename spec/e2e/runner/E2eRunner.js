@@ -1,5 +1,6 @@
 var fs = require('fs');
 var os = require('os');
+var winston = require('winston');
 
 var E2eUtils = require('../util/E2eUtils');
 var E2eValues = require('../util/E2eValues');
@@ -27,7 +28,7 @@ E2eRunner.prototype.execute = function() {
   if(fs.existsSync(E2eValues.TEMP_REQUIRE)) {
     fs.unlinkSync(E2eValues.TEMP_REQUIRE);
   }
-  console.log(os.EOL + this.aggregateFailures().length + ' failures in ' + this.tests.length * 2 + ' tests.');
+  winston.info(os.EOL + this.aggregateFailures().length + ' failures in ' + this.tests.length * 2 + ' tests.');
 };
 
 E2eRunner.prototype.aggregateFailures = function() {

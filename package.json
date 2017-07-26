@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/HopefulLlama/UnitTestSCAD#readme",
   "dependencies": {
+    "winston": "^2.3.1",
     "xml2js": "^0.4.17"
   },
   "devDependencies": {

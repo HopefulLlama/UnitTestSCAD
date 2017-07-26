@@ -2,6 +2,7 @@ var execSync = require('child_process').execSync;
 var fs = require('fs');
 var os = require('os');
 var path = require('path');
+var winston = require('winston');
 
 function FileHandler() {
   var _this = this;
@@ -15,7 +16,7 @@ FileHandler.prototype.executeNodeFiles = function(files) {
     try {
       require(path.resolve(file));
     } catch(error) {
-      console.log('ERROR: Unexpected exception occurred in file: ' + file);
+      winston.error('ERROR: Unexpected exception occurred in file: ' + file);
       throw error;
     }
   });
@@ -35,7 +36,7 @@ FileHandler.prototype.convert = function(destination) {
   try {
     return execSync(COMMAND).toString();
   } catch(commandError) {
-    console.log([
+    winston.error([
       'ERROR: Found an error compiling OpenSCAD command given.',
       'See below for output.',
       '',

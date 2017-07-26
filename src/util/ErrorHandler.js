@@ -1,4 +1,5 @@
 var os = require('os');
+var winston = require('winston');
 
 var USAGE = 'usage: unittestscad <file>';
 
@@ -12,7 +13,7 @@ ErrorHandler.prototype.REASONS = {
 };
 
 ErrorHandler.prototype.throwErrorAndSetExitCode = function(reason) {
-  console.log(reason);
+  winston.error(reason);
   process.exitCode = 1;
 };
 

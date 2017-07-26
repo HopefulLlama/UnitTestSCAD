@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 var fs = require('fs');
 var path = require('path');
+var winston = require('winston');
 
 var AssertionGenerator = require('./tester/AssertionGenerator');
 var ErrorHandler = require('./util/ErrorHandler');
@@ -15,6 +16,10 @@ var OpenScadType = require('./constants/OpenScadType');
 var TEST_RUNNER = require('./test/TestRunner');
 
 var CONFIG = {};
+
+winston
+.remove(winston.transports.Console)
+.add(winston.transports.Console, {'showLevel': false});
 
 function setUpGlobals(config, testRunner) {
   global.OpenScadType = OpenScadType;
@@ -57,7 +62,7 @@ function main(config, testRunner) {
 
     testRunner.runTests(config.properties.testFiles);
   } catch(error) {
-    console.log(error.name + ': ' + error.message);
+    winston.error(error.name + ': ' + error.message);
     ErrorHandler.throwErrorAndSetExitCode(ErrorHandler.REASONS.FILE_EXECUTION_ERROR);
     return;
   }

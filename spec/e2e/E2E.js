@@ -62,36 +62,36 @@ function runE2e() {
     ]),
     new E2eTest('should use and include correctly', 'use-include/config.json', [
       TERMINAL.GREEN + '0 total failures' + TERMINAL.RESET + ' in 3 total assertions.'
-    ])
-    // new E2eTest('should report', 'reporters/config.json', [
-    //   'Results written to JsonOutput.json',
-    //   'Results written to XmlOutput.xml',
-    //   'Hello, custom reporter working.'
-    // ], 0, [function(test, prefix, failures) {
-    //   var base = './spec/e2e/resources/reporters/';
-    //   var utf8 = 'utf8';
+    ]),
+    new E2eTest('should report', 'reporters/config.json', [
+      'Results written to JsonOutput.json',
+      'Results written to XmlOutput.xml',
+      'Hello, custom reporter working.'
+    ], 0, [function(test, prefix, failures) {
+      var base = './spec/e2e/resources/reporters/';
+      var utf8 = 'utf8';
 
-    //   var assertions = [{
-    //     file: 'JsonOutput.json',
-    //     expected: 'Expected.json'
-    //   }, {
-    //     file: 'XmlOutput.xml',
-    //     expected: 'Expected.xml'
-    //   }].forEach(function(assertion) {
-    //     if(fs.existsSync(base + assertion.file)) {
-    //       var json = fs.readFileSync(base + assertion.file, utf8);
-    //       var expectedJson = fs.readFileSync(base + assertion.expected, utf8);
+      var assertions = [{
+        file: 'JsonOutput.json',
+        expected: 'Expected.json'
+      }, {
+        file: 'XmlOutput.xml',
+        expected: 'Expected.xml'
+      }].forEach(function(assertion) {
+        if(fs.existsSync(base + assertion.file)) {
+          var actual = fs.readFileSync(base + assertion.file, utf8).replace(/\n/g, '\r\n'); // Normalize line endings to match
+          var expected = fs.readFileSync(base + assertion.expected, utf8);
 
-    //       if(json !== expectedJson) {
-    //         failures.push(test.name + ': ' + prefix + ': Expected ' + assertion.file + ' to match ' + assertion.expected);
-    //       }
+          if(actual !== expected) {
+            failures.push(test.name + ': ' + prefix + ': Expected ' + assertion.file + ' to match ' + assertion.expected);
+          }
 
-    //       fs.unlinkSync(base + assertion.file);
-    //     } else {
-    //       failures.push(test.name + ': ' + prefix + ':  Expected ' + assertion.file + ' to be written');
-    //     }
-    //   });
-    // }])
+          fs.unlinkSync(base + assertion.file);
+        } else {
+          failures.push(test.name + ': ' + prefix + ':  Expected ' + assertion.file + ' to be written');
+        }
+      });
+    }])
   ]);
 
   runner.execute();

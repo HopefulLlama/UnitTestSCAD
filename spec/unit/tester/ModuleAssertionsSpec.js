@@ -14,6 +14,8 @@ describe('ModuleAssertions', function() {
   var WIDTH = 'widthToBe';
   var HEIGHT = 'heightToBe';
   var DEPTH = 'depthToBe';
+  var CONTAINING_VERTICES = 'toContainVertices';
+  var EXACT_VERTICES = 'toHaveExactVertices';
 
   function generateTester(output) {
     return {
@@ -40,10 +42,11 @@ describe('ModuleAssertions', function() {
     assertAssertionsAndFailures(assertions, failures);
   }
 
-  function TestCase(func, pass, fail) {
+  function TestCase(func, pass, fail, conjunction) {
     this.func = func;
     this.pass = pass;
     this.fail = fail;
+    this.conjunction = (conjunction !== undefined) ? conjunction : 'to be';
   }
 
   TestCase.prototype.doTests = function() {
@@ -55,7 +58,7 @@ describe('ModuleAssertions', function() {
 
     it(test.func + ' should fail', function() {
       assert(test.func, test.fail, 1, 1);
-      expect(moduleAssertions.tester.test.failures[0]).toBe('Expected <' + test.pass + '> to be <' + test.fail + '>.');
+      expect(moduleAssertions.tester.test.failures[0]).toBe('Expected <' + test.pass + '> ' + test.conjunction + ' <' + test.fail + '>.');
     });
 
     it('not ' + test.func + ' should pass', function() {
@@ -64,28 +67,28 @@ describe('ModuleAssertions', function() {
 
     it('not ' + test.func + ' should fail', function() {
       assertNot(test.func, test.pass, 1, 1);
-      expect(moduleAssertions.tester.test.failures[0]).toBe('Expected <' + test.pass + '> not to be <' + test.pass + '>.');
+      expect(moduleAssertions.tester.test.failures[0]).toBe('Expected <' + test.pass + '> not ' + test.conjunction + ' <' + test.pass + '>.');
     });
   };
 
   describe('testGetVertices', function() {
-  	beforeEach(function() {
-  		OUTPUT = [
-  			'vertex 0 0 0',
-  			'vertex 1 2 3',
-  			'vertex 1.1 2.2 3.3',
-  			'vertex 11.11 22.22 33.33',
-  			'vertex 11.1111 22.222222 33.33333'
-  		].join(os.EOL);
+    beforeEach(function() {
+      OUTPUT = [
+        'vertex 0 0 0',
+        'vertex 1 2 3',
+        'vertex 1.1 2.2 3.3',
+        'vertex 11.11 22.22 33.33',
+        'vertex 11.1111 22.222222 33.33333'
+      ].join(os.EOL);
 
       moduleAssertions = new ModuleAssertions();
       moduleAssertions.tester = generateTester(OUTPUT);
-  	});
+    });
 
-  	it('should get the correct number of vertices', function() {
-  		var testCase = new TestCase(VERTEX_COUNT, 5, 6);
-  		testCase.doTests();
-  	});
+    it('should get the correct number of vertices', function() {
+      var testCase = new TestCase(VERTEX_COUNT, 5, 6);
+      testCase.doTests();
+    });
   });
 
 
@@ -93,13 +96,13 @@ describe('ModuleAssertions', function() {
     var actual = [[0, 0, 0], [3, 0, 3], [3, 3, 3]].toString();
     beforeEach(function() {
       OUTPUT = [
-      	'garbage', 
-      	'vertex 0 0 0', 
-      	'vertex 3 0 3', 
-      	'endfacet', 
-      	'endfacet', 
-      	'vertex 3 3 3'
-    	].join(os.EOL);
+        'garbage', 
+        'vertex 0 0 0', 
+        'vertex 3 0 3', 
+        'endfacet', 
+        'endfacet', 
+        'vertex 3 3 3'
+      ].join(os.EOL);
 
       moduleAssertions = new ModuleAssertions();
       moduleAssertions.tester = generateTester(OUTPUT);
@@ -120,7 +123,22 @@ describe('ModuleAssertions', function() {
 
     [
       new TestCase(VERTEX_COUNT, 3, 5),
-      new TestCase(TRIANGLE_COUNT, 2, 5)
+      new TestCase(TRIANGLE_COUNT, 2, 5),
+      new TestCase(CONTAINING_VERTICES, [
+        [0, 0, 0],
+        [3, 0, 3], 
+        [3, 3, 3]
+      ], [
+        [4, 5, 6]
+      ], 'to contain all vertices in'),
+      new TestCase(EXACT_VERTICES, [
+        [0, 0, 0], 
+        [3, 0, 3], 
+        [3, 3, 3]
+      ], [
+        [0, 0, 0], 
+        [3, 0, 3]
+      ], 'to have exactly all vertices in')
     ].forEach(function(testCase) {
       testCase.doTests();
     });

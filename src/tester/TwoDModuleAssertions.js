@@ -27,7 +27,10 @@ function getVertices(parsedOutput) {
     return previousValue.concat(currentValue.$.d.match(/(\-*\d+,\-*\d+)/g));
   }, [])
   .map(function(value) {
-    return value.split(',');
+    return value.split(',')
+    .map(function(point) {
+    	return parseFloat(point);
+    });
   });
 }
 
@@ -37,6 +40,14 @@ TwoDModuleAssertions.prototype.toHaveVertexCountOf = function(count) {
 
 TwoDModuleAssertions.prototype.toBeWithinBoundingBox = function(vectors) {
   return this.__testWithinBounds(getVertices(this.tester.parsedOutput), vectors);
+};
+
+TwoDModuleAssertions.prototype.toContainVertices = function(subsetVertices) {
+	return this.__testAsymmetricDifference(getVertices(this.tester.parsedOutput), subsetVertices);
+};
+
+TwoDModuleAssertions.prototype.toHaveExactVertices = function(expectedVertices) {
+	return this.__testSymmetricDifference(getVertices(this.tester.parsedOutput), expectedVertices);
 };
 
 module.exports = TwoDModuleAssertions;

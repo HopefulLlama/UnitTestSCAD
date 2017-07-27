@@ -44,31 +44,31 @@ function countTriangles(contents) {
 }
 
 function getDimensionSize(contents, index) {
-	var min = Number.POSITIVE_INFINITY;
-	var max = Number.NEGATIVE_INFINITY;
+  var min = Number.POSITIVE_INFINITY;
+  var max = Number.NEGATIVE_INFINITY;
 
-	getVertices(contents).forEach(function(vertex) {
-		if(vertex[index] < min) {
-			min = vertex[index];
-		}
-		if(vertex[index] > max) {
-			max = vertex[index];
-		}
-	});
+  getVertices(contents).forEach(function(vertex) {
+    if(vertex[index] < min) {
+      min = vertex[index];
+    }
+    if(vertex[index] > max) {
+      max = vertex[index];
+    }
+  });
 
-	return max - min;
+  return max - min;
 }
 
 function getWidth(contents) {
-	return getDimensionSize(contents, 0);
+  return getDimensionSize(contents, 0);
 }
 
 function getHeight(contents) {
-	return getDimensionSize(contents, 1);
+  return getDimensionSize(contents, 1);
 }
 
 function getDepth(contents) {
-	return getDimensionSize(contents, 2);
+  return getDimensionSize(contents, 2);
 }
 
 ModuleAssertions.prototype.stlFileToBe = function(file) {
@@ -88,15 +88,23 @@ ModuleAssertions.prototype.toBeWithinBoundingBox = function(vectors) {
 };
 
 ModuleAssertions.prototype.widthToBe = function(expectedWidth) {
-	return this.__testEquality(getWidth(this.tester.output), expectedWidth);
+  return this.__testEquality(getWidth(this.tester.output), expectedWidth);
 };
 
 ModuleAssertions.prototype.heightToBe = function(expectedHeight) {
-	return this.__testEquality(getHeight(this.tester.output), expectedHeight);
+  return this.__testEquality(getHeight(this.tester.output), expectedHeight);
 };
 
 ModuleAssertions.prototype.depthToBe = function(expectedDepth) {
-	return this.__testEquality(getDepth(this.tester.output), expectedDepth);
+  return this.__testEquality(getDepth(this.tester.output), expectedDepth);
+};
+
+ModuleAssertions.prototype.toContainVertices = function(subsetVertices) {
+  return this.__testAsymmetricDifference(getVertices(this.tester.output), subsetVertices);
+};
+
+ModuleAssertions.prototype.toHaveExactVertices = function(expectedVertices) {
+  return this.__testSymmetricDifference(getVertices(this.tester.output), expectedVertices);
 };
 
 module.exports = ModuleAssertions;

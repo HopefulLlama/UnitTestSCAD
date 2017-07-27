@@ -27,17 +27,48 @@ function isCoordinateWithinBounds(coordinate, min, max) {
 
 Assertions.prototype.__testWithinBounds = function(actual, expected) {
   var failingVertices = actual.reduce(function(previousValue, vertex) {
-  	previousValue += vertex.reduce(function(prevValue, coordinate, index) {
-  		if(!isCoordinateWithinBounds(coordinate, expected[0][index], expected[1][index])) {
-  			prevValue++;
-  		}
-  		return prevValue;
-  	}, 0);
+    previousValue += vertex.reduce(function(prevValue, coordinate, index) {
+      if(!isCoordinateWithinBounds(coordinate, expected[0][index], expected[1][index])) {
+        prevValue++;
+      }
+      return prevValue;
+    }, 0);
     return previousValue;
   }, 0);
 
   return this.__test(actual, 'to be within the bounds of', expected, function(dis) {
     return failingVertices === 0;
+  });
+};
+
+function compareArrays(actualArray, expectedArray) {
+  return actualArray.every(function(element, index) {
+    return element === expectedArray[index];
+  });
+}
+
+function filterNestedArrays(arrayOne, arrayTwo) {
+  return arrayOne.filter(function(itemOne) {
+    var found = false;
+    arrayTwo.forEach(function(arrayTwo) {
+      found = found || compareArrays(arrayTwo, itemOne);
+    });
+    return !found;
+  });
+}
+
+Assertions.prototype.__testAsymmetricDifference = function(actualArray, expectedArray) {
+  var difference = filterNestedArrays(expectedArray, actualArray);
+  return this.__test(actualArray, 'to contain all vertices in', expectedArray, function(dis) {
+    return difference.length === 0;
+  });
+};
+
+Assertions.prototype.__testSymmetricDifference = function(actualArray, expectedArray) {
+  var difference = filterNestedArrays(actualArray, expectedArray)
+  .concat(filterNestedArrays(expectedArray, actualArray));
+  return this.__test(actualArray, 'to have exactly all vertices in', expectedArray, function(dis) {
+    return difference.length === 0;
   });
 };
 

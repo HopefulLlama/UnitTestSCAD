@@ -11,12 +11,16 @@ testSuite('pass', {
     .and.widthToBe(1)
     .and.heightToBe(1)
     .and.depthToBe(1)
+    .and.toContainVertices([[0, 0, 0], [1, 1, 1]])
+    .and.toHaveExactVertices([[0, 0, 0], [0, 0, 1], [0, 1, 0], [1, 0, 0], [0, 1, 1], [1, 0, 1], [1, 1, 0], [1, 1, 1]])
     .and.not().toHaveVertexCountOf(1)
     .and.not().toHaveTriangleCountOf(3)
     .and.not().toBeWithinBoundingBox([[0, 0, 0], [0, 0, 0]])
     .and.not().widthToBe(2)
     .and.not().heightToBe(2)
-    .and.not().depthToBe(2);
+    .and.not().depthToBe(2)
+    .and.not().toContainVertices([[3, 3, 3]])
+    .and.not().toContainVertices([[3, 3, 3]]);
   });
 
   it('openScad2DModule', function() {
@@ -27,12 +31,15 @@ testSuite('pass', {
     .and.widthToBe(6)
     .and.toHaveVertexCountOf(8)
     .and.toBeWithinBoundingBox([[0, -6], [6, 0]])
+    .and.toContainVertices([[6, -6], [1, 0]])
+    .and.toHaveExactVertices([[6, -6], [5, -6], [5,-5], [6, -5], [1, -1], [0, -1], [0, 0], [1, 0]])
     .and.not().heightToBe(7)
     .and.not().widthToBe(7)
     .and.not().toHaveVertexCountOf(9)
-    .and.not().toBeWithinBoundingBox([[0, 0], [0, 0]]);
+    .and.not().toBeWithinBoundingBox([[0, 0], [0, 0]])
+    .and.not().toContainVertices([[10, 10]])
+    .and.not().toHaveExactVertices([[10, 10]]);
   });
-
   it('openScadFunction', function() {
     assert.openScadFunction('"Hello"')
     .outputToBe('"Hello"')

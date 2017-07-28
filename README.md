@@ -252,7 +252,7 @@ See the [Change Log](../master/CHANGELOG.md) document for more information on ch
 ```javascript
 {
   'openScadFunction': function(openScadFunction) {...},
-  'openScad2DModule': function(openScadModule) {...}
+  'openScad2DModule': function(openScadModule) {...},
   'openScad3DModule': function(openScadModule) {...}
 }
 ```
@@ -355,12 +355,14 @@ OpenScadType = {
 {
   'not': function() {...},
   'stlFileToBe': function(expectedFile) {...},
-    'widthToBe': function(expectedWidth) {...},
-    'heightToBe': function(expectedHeight) {...},
-    'depthToBe': function(expectedDepth) {...}
+  'widthToBe': function(expectedWidth) {...},
+  'heightToBe': function(expectedHeight) {...},
+  'depthToBe': function(expectedDepth) {...}
   'toHaveTriangleCountOf': function(expectedTriangles) {...},
   'toHaveVertexCountOf': function(expectedVertices) {...},
-  'toBeWithinBoundingBox': function(bounds) {...}
+  'toBeWithinBoundingBox': function(bounds) {...},
+    'toContainVertices': function(expectedVertices) {...},
+    'toHaveExactVertices': function(expectedVertices) {...}
 }
 ```
 
@@ -377,12 +379,14 @@ Begins an assertion or multiple assertions on an OpenSCAD module. This is used f
 {
   'not': function() {...},
   'stlFileToBe': function(expectedFile) {...},
-    'widthToBe': function(expectedWidth) {...},
-    'heightToBe': function(expectedHeight) {...},
-    'depthToBe': function(expectedDepth) {...}
+  'widthToBe': function(expectedWidth) {...},
+  'heightToBe': function(expectedHeight) {...},
+  'depthToBe': function(expectedDepth) {...}
   'toHaveTriangleCountOf': function(expectedTriangles) {...},
   'toHaveVertexCountOf': function(expectedVertices) {...},
-  'toBeWithinBoundingBox': function(bounds) {...}
+  'toBeWithinBoundingBox': function(bounds) {...},
+    'toContainVertices': function(expectedVertices) {...},
+    'toHaveExactVertices': function(expectedVertices) {...}
 }
 ```
 
@@ -401,7 +405,9 @@ Negates the expectation of the following assertion. This is used in a chain of c
     'depthToBe': function(expectedDepth) {...}
     'toHaveTriangleCountOf': function(expectedTriangles) {...},
     'toHaveVertexCountOf': function(expectedVertices) {...},
-    'toBeWithinBoundingBox': function(bounds) {...}
+    'toBeWithinBoundingBox': function(bounds) {...},
+    'toContainVertices': function(expectedVertices) {...},
+    'toHaveExactVertices': function(expectedVertices) {...}
   }
 }
 ```
@@ -425,7 +431,9 @@ Compares the generated STL file of the OpenSCAD file, with a pre-existing known 
     'depthToBe': function(expectedDepth) {...}
     'toHaveTriangleCountOf': function(expectedTriangles) {...},
     'toHaveVertexCountOf': function(expectedVertices) {...},
-    'toBeWithinBoundingBox': function(bounds) {...}
+    'toBeWithinBoundingBox': function(bounds) {...},
+    'toContainVertices': function(expectedVertices) {...},
+    'toHaveExactVertices': function(expectedVertices) {...}
   }
 }
 ```
@@ -449,7 +457,9 @@ Compares the reported width of the shape produced by the module, against an expe
     'depthToBe': function(expectedDepth) {...}
     'toHaveTriangleCountOf': function(expectedTriangles) {...},
     'toHaveVertexCountOf': function(expectedVertices) {...},
-    'toBeWithinBoundingBox': function(bounds) {...}
+    'toBeWithinBoundingBox': function(bounds) {...},
+    'toContainVertices': function(expectedVertices) {...},
+    'toHaveExactVertices': function(expectedVertices) {...}
   }
 }
 ```
@@ -473,7 +483,9 @@ Compares the reported height of the shape produced by the module, against an exp
     'depthToBe': function(expectedDepth) {...}
     'toHaveTriangleCountOf': function(expectedTriangles) {...},
     'toHaveVertexCountOf': function(expectedVertices) {...},
-    'toBeWithinBoundingBox': function(bounds) {...}
+    'toBeWithinBoundingBox': function(bounds) {...},
+    'toContainVertices': function(expectedVertices) {...},
+    'toHaveExactVertices': function(expectedVertices) {...}
   }
 }
 ```
@@ -497,7 +509,9 @@ Compares the reported depth of the shape produced by the module, against an expe
     'depthToBe': function(expectedDepth) {...}
     'toHaveTriangleCountOf': function(expectedTriangles) {...},
     'toHaveVertexCountOf': function(expectedVertices) {...},
-    'toBeWithinBoundingBox': function(bounds) {...}
+    'toBeWithinBoundingBox': function(bounds) {...},
+    'toContainVertices': function(expectedVertices) {...},
+    'toHaveExactVertices': function(expectedVertices) {...}
   }
 }
 ```
@@ -523,7 +537,9 @@ Compares the number of vertices produced by the module, against an expected valu
     'depthToBe': function(expectedDepth) {...}
     'toHaveTriangleCountOf': function(expectedTriangles) {...},
     'toHaveVertexCountOf': function(expectedVertices) {...},
-    'toBeWithinBoundingBox': function(bounds) {...}
+    'toBeWithinBoundingBox': function(bounds) {...},
+    'toContainVertices': function(expectedVertices) {...},
+    'toHaveExactVertices': function(expectedVertices) {...}
   }
 }
 ```
@@ -547,7 +563,9 @@ Compares the number of 'triangles' created by the OpenSCAD module, against an ex
     'depthToBe': function(expectedDepth) {...}
     'toHaveTriangleCountOf': function(expectedTriangles) {...},
     'toHaveVertexCountOf': function(expectedVertices) {...},
-    'toBeWithinBoundingBox': function(bounds) {...}
+    'toBeWithinBoundingBox': function(bounds) {...},
+    'toContainVertices': function(expectedVertices) {...},
+    'toHaveExactVertices': function(expectedVertices) {...}
   }
 }
 ```
@@ -558,8 +576,60 @@ Checks that every vertex produced by the OpenSCAD module lie between two bounds 
 |---|---|---|
 | bounds | Array<Array<Integer>[3]>[2] | The bounds, described by an array, of two arrays of three integers. The array follows the format of `[[minX, minY, minZ], [maxX, maxY, maxZ]]`. The model will be considered within bounds if ALL vertices are within or equal to either bounds. |
 
+### `toContainVertices`
+
+**Returns:**
+```javascript
+{
+  'and': {
+    'not': function() {...},
+    'stlFileToBe': function(expectedFile) {...},
+    'widthToBe': function(expectedWidth) {...},
+    'heightToBe': function(expectedHeight) {...},
+    'depthToBe': function(expectedDepth) {...}
+    'toHaveTriangleCountOf': function(expectedTriangles) {...},
+    'toHaveVertexCountOf': function(expectedVertices) {...},
+    'toBeWithinBoundingBox': function(bounds) {...},
+    'toContainVertices': function(expectedVertices) {...},
+    'toHaveExactVertices': function(expectedVertices) {...}
+  }
+}
+```
+
+Checks that every vertex given is present in the model. This assertion passes as long as the all expected vertices are in the model, not vice versa.
+
+| Parameter | Data Type | Description |
+|---|---|---|
+| expectedVertices | Array<Array<Integer>[3]>[] | A list of 3D vertices (described by `[x, y, z]`) to check for. |
+
+### `toHaveExactVertices`
+
+**Returns:**
+```javascript
+{
+  'and': {
+    'not': function() {...},
+    'stlFileToBe': function(expectedFile) {...},
+    'widthToBe': function(expectedWidth) {...},
+    'heightToBe': function(expectedHeight) {...},
+    'depthToBe': function(expectedDepth) {...}
+    'toHaveTriangleCountOf': function(expectedTriangles) {...},
+    'toHaveVertexCountOf': function(expectedVertices) {...},
+    'toBeWithinBoundingBox': function(bounds) {...},
+    'toContainVertices': function(expectedVertices) {...},
+    'toHaveExactVertices': function(expectedVertices) {...}
+  }
+}
+```
+
+Checks that every vertex given is present in the model. This assertion passes if the expected vertices match all vertices in the model exactly.
+
+| Parameter | Data Type | Description |
+|---|---|---|
+| expectedVertices | Array<Array<Integer>[3]>[] | A list of 3D vertices (described by `[x, y, z]`) to check for. |
+
 ## OpenSCAD 2D Module Assertions
-### `assert.openScad2DModule(openScadModul)e`
+### `assert.openScad2DModule(openScadModule)`
 **Returns:**
 ```javascript
 {
@@ -568,7 +638,9 @@ Checks that every vertex produced by the OpenSCAD module lie between two bounds 
   'heightToBe': function(expectedHeight) {...},
   'widthToBe': function(expectedWidth) {...},
   'toHaveVertexCountOf': function(expectedVertices) {...},
-  'toBeWithinBoundingBox': function(bounds) {...}
+  'toBeWithinBoundingBox': function(bounds) {...},
+    'toContainVertices': function(expectedVertices) {...},
+    'toHaveExactVertices': function(expectedVertices) {...}
 }
 ```
 
@@ -590,7 +662,9 @@ Begins an assertion or multiple assertions on an OpenSCAD module. This is used f
   'heightToBe': function(expectedHeight) {...},
   'widthToBe': function(expectedWidth) {...},
   'toHaveVertexCountOf': function(expectedVertices) {...},
-  'toBeWithinBoundingBox': function(bounds) {...}
+  'toBeWithinBoundingBox': function(bounds) {...},
+  'toContainVertices': function(expectedVertices) {...},
+  'toHaveExactVertices': function(expectedVertices) {...}
 }
 ```
 Negates the expectation of the following assertion. This is used in a chain of commands such as `not().svgFileToBe()`.
@@ -606,7 +680,9 @@ Negates the expectation of the following assertion. This is used in a chain of c
     'heightToBe': function(expectedHeight) {...},
     'widthToBe': function(expectedWidth) {...},
     'toHaveVertexCountOf': function(expectedVertices) {...},
-    'toBeWithinBoundingBox': function(bounds) {...}
+    'toBeWithinBoundingBox': function(bounds) {...},
+    'toContainVertices': function(expectedVertices) {...},
+    'toHaveExactVertices': function(expectedVertices) {...}
   }
 }
 ```
@@ -629,7 +705,9 @@ Compares the generated SVG file of the OpenSCAD file, with a pre-existing known 
     'widthToBe': function(expectedWidth) {...},
     'heightToBe': function(expectedHeight) {...},
     'toHaveVertexCountOf': function(expectedVertices) {...},
-    'toBeWithinBoundingBox': function(bounds) {...}
+    'toBeWithinBoundingBox': function(bounds) {...},
+    'toContainVertices': function(expectedVertices) {...},
+    'toHaveExactVertices': function(expectedVertices) {...}
   }
 }
 ```
@@ -651,7 +729,9 @@ Compares the reported width of the shape produced by the module, against an expe
     'heightToBe': function(expectedHeight) {...},
     'widthToBe': function(expectedWidth) {...},
     'toHaveVertexCountOf': function(expectedVertices) {...},
-    'toBeWithinBoundingBox': function(bounds) {...}
+    'toBeWithinBoundingBox': function(bounds) {...},
+    'toContainVertices': function(expectedVertices) {...},
+    'toHaveExactVertices': function(expectedVertices) {...}
   }
 }
 ```
@@ -673,7 +753,9 @@ Compares the reported height of the shape produced by the module, against an exp
     'heightToBe': function(expectedHeight) {...},
     'widthToBe': function(expectedWidth) {...},
     'toHaveVertexCountOf': function(expectedVertices) {...},
-    'toBeWithinBoundingBox': function(bounds) {...}
+    'toBeWithinBoundingBox': function(bounds) {...},
+    'toContainVertices': function(expectedVertices) {...},
+    'toHaveExactVertices': function(expectedVertices) {...}
   }
 }
 ```
@@ -695,7 +777,9 @@ Compares the number of vertices produced by the module, against an expected valu
     'heightToBe': function(expectedHeight) {...},
     'widthToBe': function(expectedWidth) {...},
     'toHaveVertexCountOf': function(expectedVertices) {...},
-    'toBeWithinBoundingBox': function(bounds) {...}
+    'toBeWithinBoundingBox': function(bounds) {...},
+    'toContainVertices': function(expectedVertices) {...},
+    'toHaveExactVertices': function(expectedVertices) {...}
   }
 }
 ```
@@ -705,6 +789,58 @@ Checks that every vertex produced by the OpenSCAD module lie between two bounds 
 | Parameter | Data Type | Description |
 |---|---|---|
 | bounds | Array<Array<Integer>[2]>[2] | The bounds, described by an array, of two arrays of three integers. The array follows the format of `[[minX, minY], [maxX, maxY]]`. The model will be considered within bounds if ALL vertices are within or equal to either bounds. |
+
+### `toContainVertices`
+
+**Returns:**
+```javascript
+{
+  'and': {
+    'not': function() {...},
+    'stlFileToBe': function(expectedFile) {...},
+    'widthToBe': function(expectedWidth) {...},
+    'heightToBe': function(expectedHeight) {...},
+    'depthToBe': function(expectedDepth) {...}
+    'toHaveTriangleCountOf': function(expectedTriangles) {...},
+    'toHaveVertexCountOf': function(expectedVertices) {...},
+    'toBeWithinBoundingBox': function(bounds) {...},
+    'toContainVertices': function(expectedVertices) {...},
+    'toHaveExactVertices': function(expectedVertices) {...}
+  }
+}
+```
+
+Checks that every vertex given is present in the model. This assertion passes as long as the all expected vertices are in the model, not vice versa.
+
+| Parameter | Data Type | Description |
+|---|---|---|
+| expectedVertices | Array<Array<Integer>[2]>[] | A list of 2D vertices (described by `[x, y]`) to check for. |
+
+### `toHaveExactVertices`
+
+**Returns:**
+```javascript
+{
+  'and': {
+    'not': function() {...},
+    'stlFileToBe': function(expectedFile) {...},
+    'widthToBe': function(expectedWidth) {...},
+    'heightToBe': function(expectedHeight) {...},
+    'depthToBe': function(expectedDepth) {...}
+    'toHaveTriangleCountOf': function(expectedTriangles) {...},
+    'toHaveVertexCountOf': function(expectedVertices) {...},
+    'toBeWithinBoundingBox': function(bounds) {...},
+    'toContainVertices': function(expectedVertices) {...},
+    'toHaveExactVertices': function(expectedVertices) {...}
+  }
+}
+```
+
+Checks that every vertex given is present in the model. This assertion passes if the expected vertices match all vertices in the model exactly.
+
+| Parameter | Data Type | Description |
+|---|---|---|
+| expectedVertices | Array<Array<Integer>[2]>[] | A list of 2D vertices (described by `[x, y]`) to check for. |
 
 
 # Uninstalling

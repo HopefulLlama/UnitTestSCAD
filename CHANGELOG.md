@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Added `toContainVertices` and `toHaveExactVertices`.
 
+### Changes
+- Arrays/Vectors now print nicer to console.
+
 ## [2.1.1] - 2017-07-27
 ### Fixed
 - Finding vertices also works on floats.

@@ -1,3 +1,5 @@
+var PrintHandler = require('../util/PrintHandler');
+
 function Assertions() {
   this.tester = null;
   this.positiveAssertion = true;
@@ -19,7 +21,6 @@ Assertions.prototype.__testEquality = function(actual, expected) {
     return actual === expected;
   });
 };
-
 
 function isCoordinateWithinBounds(coordinate, min, max) {
   return coordinate >= min && coordinate <= max;
@@ -73,11 +74,11 @@ Assertions.prototype.__testSymmetricDifference = function(actualArray, expectedA
 };
 
 Assertions.prototype.__buildFailureMessage = function(actual, conjunction, expected) {
-  var message = 'Expected <' + actual + '> ';
+  var message = 'Expected <' + PrintHandler(actual) + '> ';
   if(!this.positiveAssertion) {
     message += 'not ';
   }
-  message += conjunction + ' <' + expected + '>.';
+  message += conjunction + ' <' + PrintHandler(expected) + '>.';
   return message;
 };
 

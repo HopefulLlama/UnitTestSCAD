@@ -1,5 +1,4 @@
 var os = require('os');
-
 var ModuleAssertions = require('../../../src/tester/ModuleAssertions');
 
 describe('ModuleAssertions', function() {
@@ -42,11 +41,14 @@ describe('ModuleAssertions', function() {
     assertAssertionsAndFailures(assertions, failures);
   }
 
-  function TestCase(func, pass, fail, conjunction) {
+  function TestCase(func, pass, fail, passAsString, conjunction, failAsString) {
     this.func = func;
     this.pass = pass;
     this.fail = fail;
+
+    this.passAsString = (passAsString !== undefined) ? passAsString : pass;
     this.conjunction = (conjunction !== undefined) ? conjunction : 'to be';
+    this.failAsString = (failAsString !== undefined) ? failAsString : fail;
   }
 
   TestCase.prototype.doTests = function() {
@@ -58,7 +60,7 @@ describe('ModuleAssertions', function() {
 
     it(test.func + ' should fail', function() {
       assert(test.func, test.fail, 1, 1);
-      expect(moduleAssertions.tester.test.failures[0]).toBe('Expected <' + test.pass + '> ' + test.conjunction + ' <' + test.fail + '>.');
+      expect(moduleAssertions.tester.test.failures[0]).toBe('Expected <' + test.passAsString + '> ' + test.conjunction + ' <' + test.failAsString + '>.');
     });
 
     it('not ' + test.func + ' should pass', function() {
@@ -67,9 +69,14 @@ describe('ModuleAssertions', function() {
 
     it('not ' + test.func + ' should fail', function() {
       assertNot(test.func, test.pass, 1, 1);
-      expect(moduleAssertions.tester.test.failures[0]).toBe('Expected <' + test.pass + '> not ' + test.conjunction + ' <' + test.pass + '>.');
+      expect(moduleAssertions.tester.test.failures[0]).toBe('Expected <' + test.passAsString + '> not ' + test.conjunction + ' <' + test.passAsString + '>.');
     });
   };
+
+  function BoundsTestCase(testee, expectedString) {
+    this.testee = testee;
+    this.expectedString = expectedString;
+  }
 
   describe('testGetVertices', function() {
     beforeEach(function() {
@@ -93,7 +100,7 @@ describe('ModuleAssertions', function() {
 
 
   describe('with test file output', function() {
-    var actual = [[0, 0, 0], [3, 0, 3], [3, 3, 3]].toString();
+    var actualAsString = '[[0, 0, 0], [3, 0, 3], [3, 3, 3]]';
     beforeEach(function() {
       OUTPUT = [
         'garbage', 
@@ -130,7 +137,7 @@ describe('ModuleAssertions', function() {
         [3, 3, 3]
       ], [
         [4, 5, 6]
-      ], 'to contain all vertices in'),
+      ], '[[0, 0, 0], [3, 0, 3], [3, 3, 3]]', 'to contain all vertices in', '[[4, 5, 6]]'),
       new TestCase(EXACT_VERTICES, [
         [0, 0, 0], 
         [3, 0, 3], 
@@ -138,7 +145,7 @@ describe('ModuleAssertions', function() {
       ], [
         [0, 0, 0], 
         [3, 0, 3]
-      ], 'to have exactly all vertices in')
+      ], '[[0, 0, 0], [3, 0, 3], [3, 3, 3]]', 'to have exactly all vertices in', '[[0, 0, 0], [3, 0, 3]]')
     ].forEach(function(testCase) {
       testCase.doTests();
     });
@@ -149,8 +156,9 @@ describe('ModuleAssertions', function() {
 
     it('should fail not if within bounds', function() {
       var expected = [[0, 0, 0], [3, 3, 3]];
+      var expectedAsString = '[[0, 0, 0], [3, 3, 3]]';
       assertNot(BOUNDING_BOX, expected, 1, 1);
-      expect(moduleAssertions.tester.test.failures[0]).toBe('Expected <' + actual + '> not to be within the bounds of <' + expected.toString() + '>.');
+      expect(moduleAssertions.tester.test.failures[0]).toBe('Expected <' + actualAsString + '> not to be within the bounds of <' + expectedAsString + '>.');
     });
 
     it('should pass if any point is outside the bounds', function() {
@@ -168,15 +176,15 @@ describe('ModuleAssertions', function() {
 
     it('should fail if any point is outside the bounds', function() {
       [
-        [[1, 0, 0], [3, 3, 3]],
-        [[0, 1, 0], [3, 3, 3]],
-        [[0, 0, 1], [3, 3, 3]],
-        [[0, 0, 0], [2, 3, 3]],
-        [[0, 0, 0], [3, 2, 3]],
-        [[0, 0, 0], [3, 3, 2]]
+        new BoundsTestCase([[1, 0, 0], [3, 3, 3]], '[[1, 0, 0], [3, 3, 3]]'),
+        new BoundsTestCase([[0, 1, 0], [3, 3, 3]], '[[0, 1, 0], [3, 3, 3]]'),
+        new BoundsTestCase([[0, 0, 1], [3, 3, 3]], '[[0, 0, 1], [3, 3, 3]]'),
+        new BoundsTestCase([[0, 0, 0], [2, 3, 3]], '[[0, 0, 0], [2, 3, 3]]'),
+        new BoundsTestCase([[0, 0, 0], [3, 2, 3]], '[[0, 0, 0], [3, 2, 3]]'),
+        new BoundsTestCase([[0, 0, 0], [3, 3, 2]], '[[0, 0, 0], [3, 3, 2]]')
       ].forEach(function(testCase, index) {
-        assert(BOUNDING_BOX, testCase, index+1, index+1);
-        expect(moduleAssertions.tester.test.failures[index]).toBe('Expected <' + actual + '> to be within the bounds of <' + testCase + '>.');
+        assert(BOUNDING_BOX, testCase.testee, index+1, index+1);
+        expect(moduleAssertions.tester.test.failures[index]).toBe('Expected <' + actualAsString + '> to be within the bounds of <' + testCase.expectedString + '>.');
       });
     });
   });

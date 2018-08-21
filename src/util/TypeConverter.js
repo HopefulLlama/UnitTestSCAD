@@ -1,38 +1,38 @@
-var OpenScadType = require('../constants/OpenScadType');
+const OpenScadType = require('../constants/OpenScadType');
 
-var testBoolean = function(text) {
+function testBoolean(text) {
   return ['true', 'false'].indexOf(text) > -1;
-};
+}
 
-var testInf = function(text) {
+function testInf(text) {
   return text === 'inf';
-};
+}
 
-var testNan = function(text) {
+function testNan(text) {
   return text === 'nan';
-};
+}
 
-var testNumber = function(text) {
+function testNumber(text) {
   return !isNaN(parseFloat(text));
-};
+}
 
-var testRange = function(text) {
+function testRange(text) {
   return text.match(/\[.+:.+\]/) !== null;
-};
+}
 
-var testString = function(text) {
+function testString(text) {
   return text[0] === '"' && text[text.length - 1] === '"';
-};
+}
 
-var testUndef = function(text) {
+function testUndef(text) {
   return text === 'undef';
-};
+}
 
-var testVector = function(text) {
+function testVector(text) {
   return text.match(/\[.+,.+\]/) !== null;
-};
+}
 
-var tests = {};
+const tests = {};
 tests[OpenScadType.BOOLEAN] = testBoolean;
 tests[OpenScadType.INF] = testInf;
 tests[OpenScadType.NAN] = testNan;
@@ -42,11 +42,7 @@ tests[OpenScadType.STRING] = testString;
 tests[OpenScadType.UNDEF] = testUndef;
 tests[OpenScadType.VECTOR] = testVector;
 
-module.exports = function(text) {
-  for(var property in tests) {
-    if(tests[property](text)) {
-      return property;
-    }
-  }
-  return undefined;
-};
+module.exports = text => Object
+  .keys(tests)
+  .filter(property => tests[property](text))
+  .pop();

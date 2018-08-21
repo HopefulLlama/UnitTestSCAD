@@ -1,17 +1,17 @@
-var fs = require('fs');
-var os = require('os');
+const fs = require('fs');
+const os = require('os');
 
-var E2eTest = require('./runner/E2eTest');
-var E2eRunner = require('./runner/E2eRunner');
+const E2eTest = require('./runner/E2eTest');
+const E2eRunner = require('./runner/E2eRunner');
 
-var TERMINAL = require('../../src/constants/Terminal');
+const TERMINAL = require('../../src/constants/Terminal');
 
-var USAGE = 'usage: unittestscad <file>';
+const USAGE = 'usage: unittestscad <file>';
 
-function runE2e() {
-  var runner = new E2eRunner([
+module.exports = () => {
+  const runner = new E2eRunner([
     new E2eTest('should ask for config file', undefined, [
-      USAGE, 
+      USAGE,
       'Must specify a configuration file when calling UnitTestSCAD.'
     ], 1),
     new E2eTest('should say it does not exist', 'fake.json', [
@@ -19,7 +19,7 @@ function runE2e() {
       'The supplied path to the configuration file does not point to a valid configuration file.'
     ], 1),
     new E2eTest('should say it is invalid', 'cli/invalid.json', [
-      USAGE, 
+      USAGE,
       'The supplied path to the configuration file does not point to a valid configuration file.'
     ], 1),
     new E2eTest('should say there is an error in the spec file', 'cli/errorInSpec.json', [
@@ -53,42 +53,42 @@ function runE2e() {
     new E2eTest('should pass', 'pass/config.json', [
       'pass:',
       'should pass:',
-      TERMINAL.GREEN + '0 failures' + TERMINAL.RESET + ' in 17 assertions.',
+      `${TERMINAL.GREEN}0 failures${TERMINAL.RESET} in 17 assertions.`,
       'openScad2DModule:',
-      TERMINAL.GREEN + '0 failures' + TERMINAL.RESET + ' in 13 assertions.',
+      `${TERMINAL.GREEN}0 failures${TERMINAL.RESET} in 13 assertions.`,
       'openScadFunction:',
-      TERMINAL.GREEN + '0 failures' + TERMINAL.RESET + ' in 32 assertions.',
-      TERMINAL.GREEN + '0 total failures' + TERMINAL.RESET + ' in 62 total assertions.'
+      `${TERMINAL.GREEN}0 failures${TERMINAL.RESET} in 32 assertions.`,
+      `${TERMINAL.GREEN}0 total failures${TERMINAL.RESET} in 62 total assertions.`
     ]),
     new E2eTest('should use and include correctly', 'use-include/config.json', [
-      TERMINAL.GREEN + '0 total failures' + TERMINAL.RESET + ' in 3 total assertions.'
+      `${TERMINAL.GREEN}0 total failures${TERMINAL.RESET} in 3 total assertions.`
     ]),
     new E2eTest('should report', 'reporters/config.json', [
       'Results written to JsonOutput.json',
       'Results written to XmlOutput.xml',
       'Hello, custom reporter working.'
-    ], 0, [function(test, prefix, failures) {
-      var base = './spec/e2e/resources/reporters/';
-      var utf8 = 'utf8';
+    ], 0, [(test, prefix, failures) => {
+      const base = './spec/e2e/resources/reporters/';
+      const utf8 = 'utf8';
 
-      var assertions = [{
+      [{
         file: 'JsonOutput.json',
         expected: 'Expected.json'
       }, {
         file: 'XmlOutput.xml',
         expected: 'Expected.xml'
-      }].forEach(function(assertion) {
+      }].forEach(assertion => {
         if(fs.existsSync(base + assertion.file)) {
-          var actual = fs.readFileSync(base + assertion.file, utf8).replace(/\n/g, '\r\n'); // Normalize line endings to match
-          var expected = fs.readFileSync(base + assertion.expected, utf8);
+          const actual = fs.readFileSync(base + assertion.file, utf8).replace(/\n/g, '\r\n'); // Normalize line endings to match
+          const expected = fs.readFileSync(base + assertion.expected, utf8);
 
           if(actual !== expected) {
-            failures.push(test.name + ': ' + prefix + ': Expected ' + assertion.file + ' to match ' + assertion.expected);
+            failures.push(`${test.name}: ${prefi}: Expected ${assertion.file} to match ${assertion.expected}`);
           }
 
           fs.unlinkSync(base + assertion.file);
         } else {
-          failures.push(test.name + ': ' + prefix + ':  Expected ' + assertion.file + ' to be written');
+          failures.push(`${test.name}: ${prefix}:  Expected ${assertion.file} to be written`);
         }
       });
     }])
@@ -97,6 +97,4 @@ function runE2e() {
   runner.execute();
 
   return runner.aggregateFailures();
-}
-
-module.exports = runE2e;
+};

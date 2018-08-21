@@ -1,24 +1,16 @@
-var fs = require('fs');
-var os = require('os');
-var util = require('util');
+const Assertions = require('./Assertions');
+const TypeConverter = require('../util/TypeConverter');
 
-var Assertions = require('./Assertions');
-var FileHandler = require('../util/FileHandler');
-var Tester = require('./Tester');
-var TypeConverter = require('../util/TypeConverter');
+module.exports = class extends Assertions {
+  constructor() {
+    super();
+  }
 
-function FunctionAssertions() {
-  Assertions.apply(this);
-}
+  outputToBe(expectedText) {
+    return this.__testEquality(this.tester.output, expectedText);
+  }
 
-util.inherits(FunctionAssertions, Assertions);
-
-FunctionAssertions.prototype.outputToBe = function(expectedText) {
-  return this.__testEquality(this.tester.output, expectedText);
+  typeToBe(expectedType) {
+    return this.__testEquality(TypeConverter(this.tester.output), expectedType);
+  }
 };
-
-FunctionAssertions.prototype.typeToBe = function(expectedType) {
-	return this.__testEquality(TypeConverter(this.tester.output), expectedType);
-};
-
-module.exports = FunctionAssertions;

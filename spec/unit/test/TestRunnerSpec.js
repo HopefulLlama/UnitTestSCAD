@@ -1,23 +1,23 @@
-var testRunner;
+let testRunner;
 
-describe('TestRunner', function() {
-  beforeEach(function() {
+describe('TestRunner', () => {
+  beforeEach(() => {
     testRunner = require('../../../src/test/TestRunner');
   });
-  
-  describe('runTests', function() {
-    it('should change directory and run all tests as "required"', function() {
-     
+
+  describe('runTests', () => {
+    it('should change directory and run all tests as "required"', () => {
+
     });
   });
 
-  describe('aggregateResults', function() {
-    it('should get the summary of all tests', function() {
+  describe('aggregateResults', () => {
+    it('should get the summary of all tests', () => {
       function mockTestSuite(assertions, failures) {
         return {
           'assertions': assertions,
           'failures': failures,
-          'getSummary': function() {
+          'getSummary': () => {
             return {
               'assertions': assertions,
               'failures': failures
@@ -27,66 +27,57 @@ describe('TestRunner', function() {
       }
 
       testRunner.testSuites = [
-        mockTestSuite(5, 2), 
-        mockTestSuite(10, 10), 
-        mockTestSuite(1, 0), 
-        mockTestSuite(15, 5), 
+        mockTestSuite(5, 2),
+        mockTestSuite(10, 10),
+        mockTestSuite(1, 0),
+        mockTestSuite(15, 5),
         mockTestSuite(100, 50)
       ];
 
-      testRunner.testSuites.forEach(function(testSuite) {
-        spyOn(testSuite, 'getSummary').and.callThrough();
-      });
+      testRunner.testSuites.forEach(testSuite => spyOn(testSuite, 'getSummary').and.callThrough());
 
-      var results = testRunner.aggregateResults();
+      const results = testRunner.aggregateResults();
       expect(results.assertions).toBe(131);
       expect(results.failures).toBe(67);
 
-      testRunner.testSuites.forEach(function(testSuite) {
-        expect(testSuite.getSummary).toHaveBeenCalled();
-      });
-
+      testRunner.testSuites.forEach(testSuite => expect(testSuite.getSummary).toHaveBeenCalled());
     });
   });
 
 
-  describe('report', function() {
-    var RESULTS = {};
+  describe('report', () => {
+    const RESULTS = {};
     function MockReporter(name) {
       this.name = name;
       this.options = {
         'mock': true
       };
-      this.report = function() {};
+      this.report = () => {};
     }
 
-    it('should call every reporter listed', function() {
-      spyOn(testRunner, 'aggregateResults').and.callFake(function() {
-        return RESULTS;
-      });
+    it('should call every reporter listed', () => {
+      spyOn(testRunner, 'aggregateResults').and.callFake(() => RESULTS);
 
-      var reporterNames = ['fake', 'mocked', 'hello'];
-      var reporterArray = reporterNames.reduce(function(previousValue, currentValue) {
+      const reporterNames = ['fake', 'mocked', 'hello'];
+      const reporterArray = reporterNames.reduce((previousValue, currentValue) => {
         previousValue.push(new MockReporter(currentValue));
         return previousValue;
       }, []);
 
       global.ReporterRegistry = {
-        'reporters': reporterNames.reduce(function(previousValue, currentValue) {
+        'reporters': reporterNames.reduce((previousValue, currentValue) => {
           previousValue[currentValue] = new MockReporter(currentValue);
           return previousValue;
         }, {})
       };
 
-      reporterNames.forEach(function(reporter) {
-        spyOn(global.ReporterRegistry.reporters[reporter], 'report').and.stub();
-      });
+      reporterNames.forEach(reporter => spyOn(global.ReporterRegistry.reporters[reporter], 'report').and.stub());
 
       testRunner.report(reporterArray);
 
       expect(testRunner.aggregateResults).toHaveBeenCalled();
-      reporterNames.forEach(function(reporter) {
-        var testee = global.ReporterRegistry.reporters[reporter];
+      reporterNames.forEach(reporter => {
+        const testee = global.ReporterRegistry.reporters[reporter];
         expect(testee.report).toHaveBeenCalledWith(RESULTS, testee.options);
       });
     });

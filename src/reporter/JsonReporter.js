@@ -1,9 +1,7 @@
-var fs = require('fs');
-var winston = require('winston');
+const fs = require('fs');
+const winston = require('winston');
 
-var report = function(results, options) {
+module.exports = function(results, options) {
   fs.writeFileSync(options.dest, JSON.stringify(results, null, '  '));
-  winston.info('Results written to ' + options.dest);
+  winston.info(`Results written to ${options.dest}`);
 };
-
-module.exports = report;

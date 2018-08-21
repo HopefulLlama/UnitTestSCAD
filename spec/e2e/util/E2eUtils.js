@@ -1,15 +1,12 @@
-var execSync = require('child_process').execSync;
+const execSync = require('child_process').execSync;
 
-var E2eValues = require('./E2eValues');
+const E2eValues = require('./E2eValues');
 
-function E2eUtils() {}
-
-E2eUtils.prototype.executeCli = function(config) {
-  return execSync(E2eValues.getCommandCli(config));
+module.exports = {
+  executeCli(config) {
+    return execSync(E2eValues.getCommandCli(config));
+  },
+  executeRequire(config) {
+    return execSync(E2eValues.getCommandRequire());
+  }
 };
-
-E2eUtils.prototype.executeRequire = function(config) {
-	return execSync(E2eValues.getCommandRequire());
-};
-
-module.exports = new E2eUtils();

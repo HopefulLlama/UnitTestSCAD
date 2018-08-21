@@ -1,29 +1,24 @@
-var fs = require('fs');
-var util = require('util');
-var xml2js = require('xml2js');
+const xml2js = require('xml2js');
 
-var FileHandler = require('../util/FileHandler');
-var Tester = require('./Tester');
-var TwoDModuleAssertions = require('./TwoDModuleAssertions');
+const FileHandler = require('../util/FileHandler');
+const Tester = require('./Tester');
+const TwoDModuleAssertions = require('./TwoDModuleAssertions');
 
-function TwoDModuleTester(setUpText, testText, test) {
-  Tester.call(this, setUpText, testText, test, new TwoDModuleAssertions());
-}
-util.inherits(TwoDModuleTester, Tester);
+module.exports = class extends Tester {
+  constructor(setUpText, testText, test) {
+    super(setUpText, testText, test, new TwoDModuleAssertions());
+  }
 
-TwoDModuleTester.prototype.generateOutput = function(openScadDirectory) {
-  this.generateScadFile(openScadDirectory);
-  this.output = FileHandler.getSvgContent();
+  generateOutput(openScadDirectory) {
+    this.generateScadFile(openScadDirectory);
+    this.output = FileHandler.getSvgContent();
 
-  var result = '';
-  xml2js.parseString(this.output, function(err, res) {
-    if(err) {
-      throw new Error();
-    } else {
-      result = res.svg;      
-    }
-  });
-  this.parsedOutput = result;
+    xml2js.parseString(this.output, (error, result) => {
+      if(error) {
+        throw new Error();
+      } else {
+        this.parsedOutput = result.svg;
+      }
+    });
+  }
 };
-
-module.exports = TwoDModuleTester;

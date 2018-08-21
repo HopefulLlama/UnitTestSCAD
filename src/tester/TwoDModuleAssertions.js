@@ -1,53 +1,46 @@
-var fs = require('fs');
-var util = require('util');
+const fs = require('fs');
 
-var FileHandler = require('../util/FileHandler');
-var Assertions = require('./Assertions');
-
-function TwoDModuleAssertions() {
-  Assertions.apply(this);
-}
-
-util.inherits(TwoDModuleAssertions, Assertions);
-
-TwoDModuleAssertions.prototype.svgFileToBe = function(file) {
-  return this.__testEquality(this.tester.output, fs.readFileSync(file, 'utf8'));
-};
-
-TwoDModuleAssertions.prototype.heightToBe = function(expected) {
-  return this.__testEquality(parseInt(this.tester.parsedOutput.$.height, 10), expected);
-};
-
-TwoDModuleAssertions.prototype.widthToBe = function(expected) {
-  return this.__testEquality(parseInt(this.tester.parsedOutput.$.width, 10), expected);
-};
+const Assertions = require('./Assertions');
 
 function getVertices(parsedOutput) {
-  return parsedOutput.path.reduce(function(previousValue, currentValue) {
-    return previousValue.concat(currentValue.$.d.match(/(\-*\d+,\-*\d+)/g));
-  }, [])
-  .map(function(value) {
-    return value.split(',')
-    .map(function(point) {
-    	return parseFloat(point);
-    });
-  });
+  return parsedOutput.path
+    .reduce((previousValue, currentValue) => previousValue.concat(currentValue.$.d.match(/(\-*\d+,\-*\d+)/g)), [])
+    .map(value => value
+      .split(',')
+      .map(point => parseFloat(point))
+    );
 }
 
-TwoDModuleAssertions.prototype.toHaveVertexCountOf = function(count) {
-  return this.__testEquality(getVertices(this.tester.parsedOutput).length, count);
-};
+module.exports = class extends Assertions {
+  constructor() {
+    super();
+  }
 
-TwoDModuleAssertions.prototype.toBeWithinBoundingBox = function(vectors) {
-  return this.__testWithinBounds(getVertices(this.tester.parsedOutput), vectors);
-};
+  svgFileToBe(file) {
+    return this.__testEquality(this.tester.output, fs.readFileSync(file, 'utf8'));
+  }
 
-TwoDModuleAssertions.prototype.toContainVertices = function(subsetVertices) {
-	return this.__testAsymmetricDifference(getVertices(this.tester.parsedOutput), subsetVertices);
-};
+  heightToBe(expected) {
+    return this.__testEquality(parseInt(this.tester.parsedOutput.$.height, 10), expected);
+  }
 
-TwoDModuleAssertions.prototype.toHaveExactVertices = function(expectedVertices) {
-	return this.__testSymmetricDifference(getVertices(this.tester.parsedOutput), expectedVertices);
-};
+  widthToBe(expected) {
+    return this.__testEquality(parseInt(this.tester.parsedOutput.$.width, 10), expected);
+  }
 
-module.exports = TwoDModuleAssertions;
+  toHaveVertexCountOf(count) {
+    return this.__testEquality(getVertices(this.tester.parsedOutput).length, count);
+  }
+
+  toBeWithinBoundingBox(vectors) {
+    return this.__testWithinBounds(getVertices(this.tester.parsedOutput), vectors);
+  }
+
+  toContainVertices(subsetVertices) {
+  return this.__testAsymmetricDifference(getVertices(this.tester.parsedOutput), subsetVertices);
+  }
+
+  toHaveExactVertices(expectedVertices) {
+    return this.__testSymmetricDifference(getVertices(this.tester.parsedOutput), expectedVertices);
+  }
+};

@@ -1,21 +1,17 @@
-var os = require('os');
+const os = require('os');
 
-var Tester = require('../../../src/tester/Tester');
+const Tester = require('../../../src/tester/Tester');
 
-describe('Tester', function() {
-  describe('wrapWithText', function() {
-    it('should wrap with text', function() {
-      var echo = 'echo(';
-      var semicolon = ');';
-
-      ['a', 'b', 'c', 'd', 'e'].forEach(function(letter) {
+describe('Tester', () => {
+  describe('wrapWithText', () => {
+    it('should wrap with text', () => {
+      ['a', 'b', 'c', 'd', 'e'].forEach(letter => {
         expect(Tester.wrapWithMarker(letter)).toEqual(
-          echo + Tester.START_MARKER + semicolon + os.EOL +
-          echo + letter + semicolon + os.EOL +
-          echo + Tester.END_MARKER + semicolon + os.EOL +
+          `echo("UnitTestSCAD __start_marker__");${os.EOL}` +
+          `echo(${letter});${os.EOL}` +
+          `echo("UnitTestSCAD __end_marker__");${os.EOL}` +
           'cube(1);');
       });
-
     });
   });
 });

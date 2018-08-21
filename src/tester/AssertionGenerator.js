@@ -1,42 +1,42 @@
-var FunctionTester = require('./FunctionTester');
-var ModuleTester = require('./ModuleTester');
-var TwoDModuleTester = require('./TwoDModuleTester');
+const FunctionTester = require('./FunctionTester');
+const ModuleTester = require('./ModuleTester');
+const TwoDModuleTester = require('./TwoDModuleTester');
 
-function AssertionGenerator(config, testRunner) {
-  this.__setUp = null;
+module.exports = class {
+  constructor(config, testRunner) {
+    this.__setUp = null;
 
-  this.__config = config;
-  this.__testRunner = testRunner;
-}
+    this.__config = config;
+    this.__testRunner = testRunner;
+  }
 
-AssertionGenerator.prototype.withSetup = function(text) {
-  this.__setUp = text;
-  return this;
+  withSetup(text) {
+    this.__setUp = text;
+    return this;
+  }
+
+  createAssertions(clazz, testText) {
+    const tester = new clazz(this.__setUp, testText, this.__testRunner.current.test);
+    tester.generateOutput(this.__config.properties.openScadDirectory);
+
+    this.__setUp = null;
+
+    return tester.assertions;
+  }
+
+  openScadFunction(testText) {
+    return this.createAssertions(FunctionTester, testText);
+  }
+
+  openScadModule(testText) {
+    return this.createAssertions(ModuleTester, testText);
+  }
+
+  openScad3DModule(testText) {
+    return this.openScadModule(testText);
+  }
+
+  openScad2DModule(testText) {
+    return this.createAssertions(TwoDModuleTester, testText);
+  }
 };
-
-AssertionGenerator.prototype.createAssertions = function(clazz, testText) {
-  var tester = new clazz(this.__setUp, testText, this.__testRunner.current.test);
-  tester.generateOutput(this.__config.properties.openScadDirectory);
-
-  this.__setUp = null;
-
-  return tester.assertions;
-};
-
-AssertionGenerator.prototype.openScadFunction = function(testText) {
-  return this.createAssertions(FunctionTester, testText);
-};
-
-AssertionGenerator.prototype.openScadModule = function(testText) {
-  return this.createAssertions(ModuleTester, testText);
-};
-
-AssertionGenerator.prototype.openScad3DModule = function(testText) {
-  return this.openScadModule(testText);
-};
-
-AssertionGenerator.prototype.openScad2DModule = function(testText) {
-  return this.createAssertions(TwoDModuleTester, testText);
-};
-
-module.exports = AssertionGenerator;

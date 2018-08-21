@@ -1,2 +1,2 @@
-var UnitTestSCAD = require('../../src/UnitTestSCAD');
+const UnitTestSCAD = require('../../src/UnitTestSCAD');
 UnitTestSCAD(<config>);

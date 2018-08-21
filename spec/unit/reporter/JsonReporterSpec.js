@@ -1,22 +1,22 @@
-var fs = require('fs');
+const fs = require('fs');
 
-var JsonReporter = require('../../../src/reporter/JsonReporter');
+const JsonReporter = require('../../../src/reporter/JsonReporter');
 
-describe('JsonReporter', function() {
-  it('should write a JSON file', function() {
-    var report = {
+describe('JsonReporter', () => {
+  it('should write a JSON file', () => {
+    const report = {
       'Yolo': 'Swag',
       'MoneyMoney': 'Yeah'
     };
 
-    var options = {
+    const options = {
       'dest': './JsonReporterSpec.json'
     };
 
     JsonReporter(report, options);
 
     if(fs.existsSync(options.dest)) {
-      var contents = fs.readFileSync(options.dest, 'utf8');
+      const contents = fs.readFileSync(options.dest, 'utf8');
       expect(report).toEqual(JSON.parse(contents));
 
       fs.unlinkSync(options.dest);

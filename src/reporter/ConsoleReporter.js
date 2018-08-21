@@ -1,21 +1,21 @@
-var os = require('os');
-var winston = require('winston');
+const os = require('os');
+const winston = require('winston');
 
-var TERMINAL = require('../constants/Terminal');
+const TERMINAL = require('../constants/Terminal');
 
-var report = function(results) {
-  results.testSuites.forEach(function(testSuiteSummary) {
-    winston.info(testSuiteSummary.name + ': ');
+module.exports = results => {
+  results.testSuites.forEach(testSuiteSummary => {
+    winston.info(`${testSuiteSummary.name}: `);
 
-    testSuiteSummary.tests.forEach(function(testSummary) {
-      winston.info(TERMINAL.TAB + testSummary.name + ': ');
-      var summary = TERMINAL.TAB.repeat(2);
+    testSuiteSummary.tests.forEach(testSummary => {
+      winston.info(`${TERMINAL.TAB}${testSummary.name}: `);
+      let summary = TERMINAL.TAB.repeat(2);
       if(testSummary.failures.length === 0) {
         summary += TERMINAL.GREEN;
       } else {
         summary += TERMINAL.RED;
       }
-      summary += testSummary.failures.length + ' failures' + TERMINAL.RESET + ' in ' + testSummary.assertions + ' assertions.';
+      summary += `${testSummary.failures.length} failures${TERMINAL.RESET} in ${testSummary.assertions} assertions.`;
       winston.info(summary);
 
       if(testSummary.failures.length > 0) {
@@ -26,14 +26,12 @@ var report = function(results) {
 
   winston.info();
 
-  var summary = '';
+  let summary = '';
   if(results.failures === 0) {
     summary += TERMINAL.GREEN;
   } else {
     summary += TERMINAL.RED;
   }
-  summary += results.failures + ' total failures' + TERMINAL.RESET + ' in ' +  results.assertions + ' total assertions.';
-  winston.info(summary); 
+  summary += `${results.failures} total failures${TERMINAL.RESET} in ${results.assertions} total assertions.`;
+  winston.info(summary);
 };
-
-module.exports = report;

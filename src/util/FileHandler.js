@@ -1,78 +1,83 @@
-var execSync = require('child_process').execSync;
-var fs = require('fs');
-var os = require('os');
-var path = require('path');
-var winston = require('winston');
+const execSync = require('child_process').execSync;
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
+const winston = require('winston');
 
-function FileHandler() {
-  var _this = this;
-  ['scad', 'stl', 'svg'].forEach(function(format) {
-    _this[format] = ['UnitTestSCAD', '48967', 'TEMP', 'DELETE-ME', format.toUpperCase()].join('_') + '.' + format;
-  });
-}
+class FileHandler {
+  constructor() {
+    ['scad', 'stl', 'svg'].forEach(format => {
+      this[format] = `UnitTestSCAD_48967_TEMP_DELETE-ME_${format.toUpperCase()}.${format}`;
+    });
+  }
 
-FileHandler.prototype.executeNodeFiles = function(files) {
-  files.forEach(function(file) {
+  executeNodeFiles(files) {
+    files.forEach(file => {
+      try {
+        require(path.resolve(file));
+      } catch(error) {
+        winston.error(`ERROR: Unexpected exception occurred in file: ${file}`);
+        throw error;
+      }
+    });
+  }
+
+  writeScadFile(header, setUpText, testText) {
+    let contents = header + os.EOL;
+    if(setUpText !== null) {
+      contents += setUpText + os.EOL;
+    }
+    contents += testText;
+    fs.writeFileSync(this.scad, contents);
+  }
+
+  convert(destination) {
+    const COMMAND = `openscad -o ${destination} ${this.scad}`;
     try {
-      require(path.resolve(file));
-    } catch(error) {
-      winston.error('ERROR: Unexpected exception occurred in file: ' + file);
-      throw error;
+      return execSync(COMMAND).toString();
+    } catch(commandError) {
+      winston.error([
+        'ERROR: Found an error compiling OpenSCAD command given.',
+        'See below for output.',
+        '',
+        'Begin OpenSCAD output',
+        commandError.stdout.toString(),
+        'End OpenSCAD output',
+        ''
+      ].join(os.EOL));
+      throw commandError;
     }
-  });
-};
-
-FileHandler.prototype.writeScadFile = function(header, setUpText, testText) {
-  contents = header + os.EOL;
-  if(setUpText !== null) {
-    contents += setUpText + os.EOL;
   }
-  contents += testText;
-  fs.writeFileSync(this.scad, contents);
-};
 
-FileHandler.prototype.convert = function(destination) {
-  var COMMAND = 'openscad -o ' + destination + ' ' + this.scad;
-  try {
-    return execSync(COMMAND).toString();
-  } catch(commandError) {
-    winston.error([
-      'ERROR: Found an error compiling OpenSCAD command given.',
-      'See below for output.',
-      '',
-      'Begin OpenSCAD output',
-      commandError.stdout.toString(),
-      'End OpenSCAD output',
-      ''
-    ].join(os.EOL));
-    throw commandError;
+  convertToStl() {
+    return this.convert(this.stl);
   }
-};
 
-FileHandler.prototype.convertToStl = function() {
-  return this.convert(this.stl);
-};
+  convertToSvg() {
+    return this.convert(this.svg);
+  }
 
-FileHandler.prototype.convertToSvg = function() {
-  return this.convert(this.svg);
-};
+  getStlConversionOutput() {
+    return this.convertToStl();
+  }
 
-FileHandler.prototype.getStlConversionOutput = FileHandler.prototype.convertToStl;
-FileHandler.prototype.getStlContent = function() {
-  this.convertToStl();
-  return fs.readFileSync(this.stl, 'utf8');
-};
-FileHandler.prototype.getSvgContent = function() {
-  this.convertToSvg();
-  return fs.readFileSync(this.svg, 'utf8');
-};
+  getStlContent() {
+    this.convertToStl();
+    return fs.readFileSync(this.stl, 'utf8');
+  }
 
-FileHandler.prototype.cleanUp = function() {
-  [this.scad, this.stl, this.svg].forEach(function(file) {
-    if(fs.existsSync(file)) {
-      fs.unlinkSync(file);
-    }
-  });
-};
+  getSvgContent() {
+    this.convertToSvg();
+    return fs.readFileSync(this.svg, 'utf8');
+  }
+
+  cleanUp() {
+    [this.scad, this.stl, this.svg].forEach(file => {
+      if(fs.existsSync(file)) {
+        fs.unlinkSync(file);
+      }
+    });
+  }
+}
 
 module.exports = new FileHandler();

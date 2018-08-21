@@ -1,91 +1,79 @@
-var os = require('os');
+const os = require('os');
 
-var TestSuite = require('../../../src/test/TestSuite');
+const TestSuite = require('../../../src/test/TestSuite');
 
-describe('TestSuite', function() {
-  describe('getHeader()', function() {
-    var name = "getHeader";
-    var use = ['Use1', 'Foo', 'Bar'];
-    var include = ['Include1', 'Foil', 'Bazro'];
+describe('TestSuite', () => {
+  describe('getHeader()', () => {
+    const name = "getHeader";
+    const use = ['Use1', 'Foo', 'Bar'];
+    const include = ['Include1', 'Foil', 'Bazro'];
 
-    var directory = 'directory';
+    const directory = 'directory';
 
-    it('should "use" correctly', function() {
-      var testSuite = new TestSuite(name, use, []);
-      var header = testSuite.getHeader(directory);
+    function getUses() {
+      return use.reduce((previousValue, currentValue) => `${previousValue}use <${directory}/${currentValue}>;${os.EOL}`, '');
+    }
 
-      var expected = use.reduce(function(previousValue, currentValue) {
-        previousValue += 'use <' + directory + '/' + currentValue + '>;' + os.EOL;
-        return previousValue;
-      }, '');
-      expected += os.EOL;
+    function getIncludes() {
+      return include.reduce((previousValue, currentValue) => `${previousValue}include <${directory}/${currentValue}>;${os.EOL}`, '');
+    }
 
-      expect(header).toBe(expected);
-    });
+    it('should "use" correctly', () => {
+      const testSuite = new TestSuite(name, use, []);
+      const header = testSuite.getHeader(directory);
 
-    it('should "include" correctly', function() {
-      var testSuite = new TestSuite(name, [], include);
-      var header = testSuite.getHeader(directory);
-
-      var expected = include.reduce(function(previousValue, currentValue) {
-        previousValue += 'include <' + directory + '/' + currentValue + '>;' + os.EOL;
-        return previousValue;
-      }, '');
-      expected += os.EOL;
+      const expected = `${getUses()}${os.EOL}`;
 
       expect(header).toBe(expected);
     });
 
-    it('should "use" and "include" correctly', function() {
-      var testSuite = new TestSuite(name, use, include);
-      var header = testSuite.getHeader(directory);
+    it('should "include" correctly', () => {
+      const testSuite = new TestSuite(name, [], include);
+      const header = testSuite.getHeader(directory);
 
-      var expected = use.reduce(function(previousValue, currentValue) {
-        previousValue += 'use <' + directory + '/' + currentValue + '>;' + os.EOL;
-        return previousValue;
-      }, '');
-      expected = include.reduce(function(previousValue, currentValue) {
-        previousValue += 'include <' + directory + '/' + currentValue + '>;' + os.EOL;
-        return previousValue;
-      }, expected);
-      expected += os.EOL;
+      const expected = `${getIncludes()}${os.EOL}`;
 
       expect(header).toBe(expected);
     });
 
-    it('should rollup information in a summary', function() {
-    	function mockTest(assertions, failures) {
-    		return {
-    			'assertions': assertions,
-    			'failures': {
-    				'length': failures
-    			},
-    			'getSummary': function() {
+    it('should "use" and "include" correctly', () => {
+      const testSuite = new TestSuite(name, use, include);
+      const header = testSuite.getHeader(directory);
 
-    			}
-    		};
-    	}
+      const expected = `${getUses()}${getIncludes()}${os.EOL}`;
 
-    	var testSuite = new TestSuite('TestSuite', [], []);
-    	testSuite.tests = [
-    		mockTest(5, 2),
-    		mockTest(2, 2),
-    		mockTest(0, 0)
-    	];
+      expect(header).toBe(expected);
+    });
 
-    	testSuite.tests.forEach(function(test) {
-    		spyOn(test, 'getSummary').and.callThrough();
-    	});
+    it('should rollup information in a summary', () => {
+      function mockTest(assertions, failures) {
+        return {
+          'assertions': assertions,
+          'failures': {
+            'length': failures
+          },
+          'getSummary': () => {
 
-    	var summary = testSuite.getSummary();
+          }
+        };
+      }
 
-    	expect(summary.name).toBe('TestSuite');
-    	expect(summary.assertions).toBe(7);
-    	expect(summary.failures).toBe(4);
-    	
-    	testSuite.tests.forEach(function(test) {
-        expect(test.getSummary).toHaveBeenCalled();
-      });
+      const testSuite = new TestSuite('TestSuite', [], []);
+      testSuite.tests = [
+        mockTest(5, 2),
+        mockTest(2, 2),
+        mockTest(0, 0)
+      ];
+
+      testSuite.tests.forEach(test => spyOn(test, 'getSummary').and.callThrough());
+
+      const summary = testSuite.getSummary();
+
+      expect(summary.name).toBe('TestSuite');
+      expect(summary.assertions).toBe(7);
+      expect(summary.failures).toBe(4);
+
+      testSuite.tests.forEach(test => expect(test.getSummary).toHaveBeenCalled());
     });
   });
 });

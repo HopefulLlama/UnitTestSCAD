@@ -1,22 +1,22 @@
-var Assertions = require('../../../src/tester/Assertions');
+const Assertions = require('../../../src/tester/Assertions');
 
-var assertions;
+let assertions;
 function getNewTester() {
   return {
-    'test': {
-      'assertions': 0,
-      'failures': []
+    test: {
+      assertions: 0,
+      failures: []
     }
   };
 }
 
-describe('Assertions', function() {
-  beforeEach(function() {
+describe('Assertions', () => {
+  beforeEach(() => {
     assertions = new Assertions();
   });
 
-  describe('__buildFailureMessage', function() {
-    it('should create a failure message', function() {
+  describe('__buildFailureMessage', () => {
+    it('should create a failure message', () => {
       expect(assertions.__buildFailureMessage(5, 'to be', 1)).toBe('Expected <5> to be <1>.');
       expect(assertions.__buildFailureMessage('abc', 'wubl', 'asdsad')).toBe('Expected <abc> wubl <asdsad>.');
       expect(assertions.__buildFailureMessage(true, 'a', false)).toBe('Expected <true> a <false>.');
@@ -26,8 +26,8 @@ describe('Assertions', function() {
     });
   });
 
-  describe('with tester', function() {
-    beforeEach(function() {
+  describe('with tester', () => {
+    beforeEach(() => {
       assertions.tester = getNewTester();
     });
 
@@ -40,37 +40,37 @@ describe('Assertions', function() {
       });
     }
 
-    describe('__test', function() {
-      it('should pass when passing', function() {
-        var result = assertions.__test(true, 'is', true, function() {
+    describe('__test', () => {
+      it('should pass when passing', () => {
+        const result = assertions.__test(true, 'is', true, () => {
           return true === true;
         });
         assertTester(result, assertions, 1, []);
       });
 
-      it('should add to failures when fail', function() {
-        var result = assertions.__test(true, 'is', false, function() {
+      it('should add to failures when fail', () => {
+        const result = assertions.__test(true, 'is', false, () => {
           return true === false;
         });
         assertTester(result, assertions, 1, ['Expected <true> is <false>.']);
       });
     });
 
-    describe('__testEquality', function() {
-      it('should pass when equal', function() {
-        var result = assertions.__testEquality(true, true);
+    describe('__testEquality', () => {
+      it('should pass when equal', () => {
+        const result = assertions.__testEquality(true, true);
         assertTester(result, assertions, 1, []);
       });
 
-      it('should add to failures when not equal', function() {
-        var result = assertions.__testEquality(true, false);
+      it('should add to failures when not equal', () => {
+        const result = assertions.__testEquality(true, false);
         assertTester(result, assertions, 1, ['Expected <true> to be <false>.']);
       });
     });
   });
 
-  describe('__failsExpectation', function() {
-    it('should compare against a positive assertion', function() {
+  describe('__failsExpectation', () => {
+    it('should compare against a positive assertion', () => {
       expect(assertions.__failsExpectation(true)).toBe(false);
       expect(assertions.__failsExpectation(5 === 5)).toBe(false);
       expect(assertions.__failsExpectation(5 > 1)).toBe(false);
@@ -79,7 +79,7 @@ describe('Assertions', function() {
       expect(assertions.__failsExpectation(5 !== 5)).toBe(true);
     });
 
-    it('should compare against a negative assertion', function() {
+    it('should compare against a negative assertion', () => {
       assertions.positiveAssertion = false;
 
       expect(assertions.__failsExpectation(true)).toBe(true);
@@ -91,25 +91,25 @@ describe('Assertions', function() {
     });
   });
 
-  describe('__wrapUp', function() {
-    it('should return to positve assertion and wrap itself in an "and"', function() {
+  describe('__wrapUp', () => {
+    it('should return to positve assertion and wrap itself in an "and"', () => {
       assertions.positiveAssertion = false;
 
-      var wrapUp = assertions.__wrapUp();
+      const firstWrapUp = assertions.__wrapUp();
 
-      expect(wrapUp.and.positiveAssertion).toBe(true);
-      expect(wrapUp.and).toBe(assertions);
+      expect(firstWrapUp.and.positiveAssertion).toBe(true);
+      expect(firstWrapUp.and).toBe(assertions);
 
-      wrapUp = assertions.__wrapUp();
+      const secondWrapUp = assertions.__wrapUp();
 
-      expect(wrapUp.and.positiveAssertion).toBe(true);
-      expect(wrapUp.and).toBe(assertions);
+      expect(secondWrapUp.and.positiveAssertion).toBe(true);
+      expect(secondWrapUp.and).toBe(assertions);
     });
   });
 
-  describe('not', function() {
-    it('should set assertion to negative and return itself', function() {
-      var not = assertions.not();
+  describe('not', () => {
+    it('should set assertion to negative and return itself', () => {
+      const not = assertions.not();
 
       expect(not.positiveAssertion).toBe(false);
       expect(not).toBe(assertions);

@@ -1,44 +1,40 @@
-var os = require('os');
-
-function TestSuite(name, use, include) {
-  this.name = name;
-  this.use = use;
-  this.include = include;
-  this.tests = [];
-}
+const os = require('os');
 
 function wrapInImport(prefix, directory, fileName) {
-  return prefix + " <" + directory + "/" + fileName + ">;" + os.EOL;
+  return `${prefix} <${directory}/${fileName}>;${os.EOL}`;
 }
 
-TestSuite.prototype.getHeader = function(directory) {
-  var contents = "";
-  this.use.forEach(function(u) {
-    contents += wrapInImport("use", directory, u);
-  });
-  this.include.forEach(function(i) {
-    contents += wrapInImport("include", directory, i);
-  });
-  contents += os.EOL;
+module.exports = class {
+  constructor(name, use, include) {
+    this.name = name;
+    this.use = use;
+    this.include = include;
+    this.tests = [];
+  }
 
-  return contents;
+  getUse(directory) {
+    return this.use.reduce((accumulator, use) => `${accumulator}${wrapInImport("use", directory, use)}`, '');
+  }
+
+  getInclude(directory) {
+    return this.include.reduce((accumulator, include) => `${accumulator}${wrapInImport("include", directory, include)}`, '');
+  }
+
+  getHeader(directory) {
+    return `${this.getUse(directory)}${this.getInclude(directory)}${os.EOL}`;
+  }
+
+  getSummary() {
+    return this.tests.reduce((summary, test) => {
+      summary.tests.push(test.getSummary());
+      summary.assertions += test.assertions;
+      summary.failures += test.failures.length;
+      return summary;
+    }, {
+      name: this.name,
+      assertions: 0,
+      failures: 0,
+      tests: []
+    });
+  }
 };
-
-TestSuite.prototype.getSummary = function() {
-  var summary = {
-    'name': this.name,
-    'assertions': 0,
-    'failures': 0,
-    'tests': []
-  };
-
-  this.tests.forEach(function(test) {
-    summary.tests.push(test.getSummary());
-    summary.assertions += test.assertions;
-    summary.failures += test.failures.length;
-  });
-
-  return summary;
-};
-
-module.exports = TestSuite; 

@@ -1,53 +1,13 @@
-var fs = require('fs');
-var os = require('os');
-var util = require('util');
+const fs = require('fs');
+const os = require('os');
 
-var FileHandler = require('../util/FileHandler');
-var Assertions = require('./Assertions');
-
-function ModuleAssertions() {
-  Assertions.apply(this);
-}
-
-util.inherits(ModuleAssertions, Assertions);
-
-function getLinesWithVertex(contents) {
-  return contents.split(os.EOL)
-  .filter(function(line) {
-    return line.match(/vertex([ ]{1}[0-9]+[.]*[0-9]*){3}/);
-  });
-}
-
-function getVertices(contents) {
-  return getLinesWithVertex(contents)
-  .filter(function(value, index, self) {
-    return self.indexOf(value) === index;
-  })
-  .reduce(function(accumulator, currentValue) {
-    // Last three elements should be the co-ordinates, as a string
-    var vertex = currentValue.split(' ')
-    .slice(-3)
-    .map(function(v) {
-      return parseFloat(v, 10);
-    });
-    accumulator.push(vertex);
-    return accumulator;
-  }, []);
-}
-
-function countTriangles(contents) {
-  return contents.split(os.EOL)
-  .filter(function(line) {
-    return line.match(/endfacet/);
-  })
-  .length;
-}
+const Assertions = require('./Assertions');
 
 function getDimensionSize(contents, index) {
-  var min = Number.POSITIVE_INFINITY;
-  var max = Number.NEGATIVE_INFINITY;
+  let min = Number.POSITIVE_INFINITY;
+  let max = Number.NEGATIVE_INFINITY;
 
-  getVertices(contents).forEach(function(vertex) {
+  getVertices(contents).forEach(vertex => {
     if(vertex[index] < min) {
       min = vertex[index];
     }
@@ -71,40 +31,68 @@ function getDepth(contents) {
   return getDimensionSize(contents, 2);
 }
 
-ModuleAssertions.prototype.stlFileToBe = function(file) {
-  return this.__testEquality(this.tester.output, fs.readFileSync(file, 'utf8'));
-};
+function getLinesWithVertex(contents) {
+  return contents
+    .split(os.EOL)
+    .filter(line => line.match(/vertex([ ]{1}[0-9]+[.]*[0-9]*){3}/));
+}
 
-ModuleAssertions.prototype.toHaveVertexCountOf = function(expectedCount) {
-  return this.__testEquality(getVertices(this.tester.output).length, expectedCount);
-};
+function getVertices(contents) {
+  return getLinesWithVertex(contents)
+    .filter((value, index, self) => self.indexOf(value) === index)
+      // Last three elements should be the co-ordinates, as a string
+    .map(currentValue => currentValue
+      .split(' ')
+      .slice(-3)
+      .map(vertex => parseFloat(vertex, 10))
+    );
+}
 
-ModuleAssertions.prototype.toHaveTriangleCountOf = function(expectedCount) {
-  return this.__testEquality(countTriangles(this.tester.output), expectedCount); 
-};
+function countTriangles(contents) {
+  return contents
+    .split(os.EOL)
+    .filter(line => line.match(/endfacet/))
+    .length;
+}
 
-ModuleAssertions.prototype.toBeWithinBoundingBox = function(vectors) {
-  return this.__testWithinBounds(getVertices(this.tester.output), vectors);
-};
+module.exports = class extends Assertions {
+  constructor() {
+    super();
+  }
 
-ModuleAssertions.prototype.widthToBe = function(expectedWidth) {
-  return this.__testEquality(getWidth(this.tester.output), expectedWidth);
-};
+  stlFileToBe(file) {
+    return this.__testEquality(this.tester.output, fs.readFileSync(file, 'utf8'));
+  }
 
-ModuleAssertions.prototype.heightToBe = function(expectedHeight) {
-  return this.__testEquality(getHeight(this.tester.output), expectedHeight);
-};
+  toHaveVertexCountOf(expectedCount) {
+    return this.__testEquality(getVertices(this.tester.output).length, expectedCount);
+  }
 
-ModuleAssertions.prototype.depthToBe = function(expectedDepth) {
-  return this.__testEquality(getDepth(this.tester.output), expectedDepth);
-};
+  toHaveTriangleCountOf(expectedCount) {
+    return this.__testEquality(countTriangles(this.tester.output), expectedCount);
+  }
 
-ModuleAssertions.prototype.toContainVertices = function(subsetVertices) {
-  return this.__testAsymmetricDifference(getVertices(this.tester.output), subsetVertices);
-};
+  toBeWithinBoundingBox(vectors) {
+    return this.__testWithinBounds(getVertices(this.tester.output), vectors);
+  }
 
-ModuleAssertions.prototype.toHaveExactVertices = function(expectedVertices) {
-  return this.__testSymmetricDifference(getVertices(this.tester.output), expectedVertices);
-};
+  widthToBe(expectedWidth) {
+    return this.__testEquality(getWidth(this.tester.output), expectedWidth);
+  }
 
-module.exports = ModuleAssertions;
+  heightToBe(expectedHeight) {
+    return this.__testEquality(getHeight(this.tester.output), expectedHeight);
+  }
+
+  depthToBe(expectedDepth) {
+    return this.__testEquality(getDepth(this.tester.output), expectedDepth);
+  }
+
+  toContainVertices(subsetVertices) {
+    return this.__testAsymmetricDifference(getVertices(this.tester.output), subsetVertices);
+  }
+
+  toHaveExactVertices(expectedVertices) {
+    return this.__testSymmetricDifference(getVertices(this.tester.output), expectedVertices);
+  }
+};

@@ -1,32 +1,30 @@
 #!/usr/bin/env node
-var fs = require('fs');
-var path = require('path');
-var winston = require('winston');
+const fs = require('fs');
+const path = require('path');
+const winston = require('winston');
 
-var AssertionGenerator = require('./tester/AssertionGenerator');
-var ErrorHandler = require('./util/ErrorHandler');
-var FileHandler = require('./util/FileHandler');
-var FunctionTester = require('./tester/FunctionTester');
-var ModuleTester = require('./tester/ModuleTester');
-var ReporterRegistry = require('./reporter/ReporterRegistry');
-var Test = require('./test/Test');
-var TestSuite = require('./test/TestSuite');
-var OpenScadType = require('./constants/OpenScadType');
+const AssertionGenerator = require('./tester/AssertionGenerator');
+const ErrorHandler = require('./util/ErrorHandler');
+const FileHandler = require('./util/FileHandler');
+const ReporterRegistry = require('./reporter/ReporterRegistry');
+const Test = require('./test/Test');
+const TestSuite = require('./test/TestSuite');
+const OpenScadType = require('./constants/OpenScadType');
 
-var TEST_RUNNER = require('./test/TestRunner');
+const TEST_RUNNER = require('./test/TestRunner');
 
-var CONFIG = {};
+let CONFIG = {};
 
 winston
-.remove(winston.transports.Console)
-.add(winston.transports.Console, {'showLevel': false});
+  .remove(winston.transports.Console)
+  .add(winston.transports.Console, {'showLevel': false});
 
 function setUpGlobals(config, testRunner) {
   global.OpenScadType = OpenScadType;
   global.ReporterRegistry = ReporterRegistry;
 
-  global.testSuite = function(name, options, callback) {
-    var testSuite = new TestSuite(name, options.use, options.include);
+  global.testSuite = (name, options, callback) => {
+    const testSuite = new TestSuite(name, options.use, options.include);
 
     testRunner.testSuites.push(testSuite);
     testRunner.current.testSuite = testSuite;
@@ -34,9 +32,9 @@ function setUpGlobals(config, testRunner) {
     callback();
   };
 
-  global.it = function(title, callback) {
-    var test = new Test(title, testRunner.current.testSuite);
-    
+  global.it = (title, callback) => {
+    const test = new Test(title, testRunner.current.testSuite);
+
     testRunner.current.testSuite.tests.push(test);
     testRunner.current.test = test;
     callback();
@@ -47,8 +45,8 @@ function setUpGlobals(config, testRunner) {
 
 function readConfig(pathToConfig) {
   return {
-    'path': pathToConfig,
-    'properties': JSON.parse(fs.readFileSync(pathToConfig, 'utf8'))
+    path: pathToConfig,
+    properties: JSON.parse(fs.readFileSync(pathToConfig, 'utf8'))
   };
 }
 
@@ -62,14 +60,14 @@ function main(config, testRunner) {
 
     testRunner.runTests(config.properties.testFiles);
   } catch(error) {
-    winston.error(error.name + ': ' + error.message);
+    winston.error(`${error.name}: ${error.message}`);
     ErrorHandler.throwErrorAndSetExitCode(ErrorHandler.REASONS.FILE_EXECUTION_ERROR);
     return;
   }
 
-  var reporters = (config.properties.reporters !== undefined) ? config.properties.reporters : [{
-    'name': 'console',
-    'options': null
+  const reporters = (config.properties.reporters !== undefined) ? config.properties.reporters : [{
+    name: 'console',
+    options: null
   }];
   testRunner.report(reporters);
 
@@ -79,9 +77,7 @@ function main(config, testRunner) {
 }
 
 function run(pathToConfig) {
-  process.on('exit', function(code) {
-    FileHandler.cleanUp();
-  });
+  process.on('exit', () => FileHandler.cleanUp());
 
   if(pathToConfig) {
     try {
@@ -99,7 +95,7 @@ function run(pathToConfig) {
 }
 
 if (require.main === module) {
-  var pathToConfig = process.argv[2];
+  const pathToConfig = process.argv[2];
 
   run(pathToConfig);
 } else {

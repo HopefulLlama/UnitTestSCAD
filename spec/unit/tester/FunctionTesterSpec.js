@@ -1,31 +1,28 @@
-var fs = require('fs');
-var os = require('os');
+const fs = require('fs');
 
-var FileHandler = require('../../../src/util/FileHandler');
-var FunctionTester = require('../../../src/tester/FunctionTester');
+const FileHandler = require('../../../src/util/FileHandler');
+const FunctionTester = require('../../../src/tester/FunctionTester');
 
-describe('FunctionTester', function() {
-  describe('generateOutput', function() {
-    var TEST, tester;
-    beforeEach(function() {
+describe('FunctionTester', () => {
+  describe('generateOutput', () => {
+    let TEST, tester;
+    beforeEach(() => {
       TEST = {
-        'testSuite': {
-          'getHeader': function() {
-            return '';
-          }
+        testSuite: {
+          getHeader: () => ''
         }
       };
     });
 
-    afterEach(function() {
-      [FileHandler.scad, FileHandler.stl].forEach(function(file) {
+    afterEach(() => {
+      [FileHandler.scad, FileHandler.stl].forEach(file => {
         if (fs.existsSync(file)) {
           fs.unlinkSync(file);
         }
       });
     });
 
-    it('should write a scad file and generate output', function() {
+    it('should write a scad file and generate output', () => {
       tester = new FunctionTester(null, '"Hello"', TEST);
 
       expect(tester.output).toBe('');

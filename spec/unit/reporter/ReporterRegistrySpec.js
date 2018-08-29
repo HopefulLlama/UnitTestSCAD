@@ -1,28 +1,26 @@
-var ReporterRegistry;
+let ReporterRegistry;
 
-describe('ReporterRegistry', function() {
-  beforeEach(function() {
+describe('ReporterRegistry', () => {
+  beforeEach(() => {
     ReporterRegistry = require('../../../src/reporter/ReporterRegistry');
   });
 
-  var checkReporterExists = function(reporter) {
+  function checkReporterExists(reporter) {
     expect(ReporterRegistry.reporters[reporter]).not.toBe(undefined);
-  };
+  }
 
-   var checkReporterNotExists = function(reporter) {
+  function checkReporterNotExists(reporter) {
     expect(ReporterRegistry.reporters[reporter]).toBe(undefined);
-  };
+  }
 
-	['console', 'json', 'xml'].forEach(function(reporter) {
-		it('should have default reporters: ' + reporter, function() {
-			checkReporterExists(reporter);
-  	});
+  ['console', 'json', 'xml'].forEach(reporter => {
+    it(`should have default reporters: ${reporter}`, () => checkReporterExists(reporter));
   });
 
-  it('should add new reporters', function() {
-    ['wizzle', 'wozzle', 'woo'].forEach(function(reporter) {
+  it('should add new reporters', () => {
+    ['wizzle', 'wozzle', 'woo'].forEach(reporter => {
       checkReporterNotExists(reporter);
-      ReporterRegistry.add(reporter, function() {});
+      ReporterRegistry.add(reporter, () => {});
       checkReporterExists(reporter);
     });
   });

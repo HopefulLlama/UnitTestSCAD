@@ -1,13 +1,11 @@
-var os = require('os');
+const os = require('os');
 
-var FunctionAssertions = require('../../../src/tester/FunctionAssertions');
-var Tester = require('../../../src/tester/Tester');
+const FunctionAssertions = require('../../../src/tester/FunctionAssertions');
 
-describe('FunctionAssertions', function() {
-  var functionAssertions, TESTER;
-  var ECHO = 'ECHO: ';
-  describe('outputToBe', function() {
-    beforeEach(function() { 
+describe('FunctionAssertions', () => {
+  let functionAssertions, TESTER;
+  describe('outputToBe', () => {
+    beforeEach(() => {
       TESTER = {
         'output': ['cat'].join(os.EOL),
         'test': {
@@ -20,49 +18,45 @@ describe('FunctionAssertions', function() {
       functionAssertions.tester = TESTER;
     });
 
-    var failingTestCases = ['fake', 'lion', 'tiger', 'lynx', 'spider'];
+    const failingTestCases = ['fake', 'lion', 'tiger', 'lynx', 'spider'];
 
     function assertAssertionsAndFailures(assertions, failures) {
       expect(functionAssertions.tester.test.assertions).toBe(assertions);
       expect(functionAssertions.tester.test.failures.length).toBe(failures);
     }
 
-    describe('Positive Assertion', function() {
+    describe('Positive Assertion', () => {
       function assertOutput(output, assertions, failures) {
         expect(functionAssertions.outputToBe(output)).toEqual({'and': functionAssertions});
         assertAssertionsAndFailures(assertions, failures);
       }
-      
-      it('should fail if you only attempt a substring', function() {
-        assertOutput('ca', 1, 1);
-      });
 
-      it('should pass if the phrase exists', function() {
+      it('should fail if you only attempt a substring', () => assertOutput('ca', 1, 1));
+
+      it('should pass if the phrase exists', () => {
         assertOutput('cat', 1, 0);
         assertOutput('cat', 2, 0);
       });
 
-      it('should fail if the phrase does not exist', function() {
-        failingTestCases.forEach(function(failingTestCase, index) {
+      it('should fail if the phrase does not exist', () => {
+        failingTestCases.forEach((failingTestCase, index) => {
           assertOutput(failingTestCase, index+1, index+1);
-          expect(functionAssertions.tester.test.failures[index]).toBe('Expected <cat> to be <' + failingTestCase + '>.');
+          expect(functionAssertions.tester.test.failures[index]).toBe(`Expected <cat> to be <${failingTestCase}>.`);
         });
       });
     });
 
-    describe('Negative Assertion', function() {
-      var assertNotOutput = function(output, assertions, failures) {
-        expect(functionAssertions.not().outputToBe(output)).toEqual({'and': functionAssertions});
+    describe('Negative Assertion', () => {
+      function assertNotOutput(output, assertions, failures) {
+        expect(functionAssertions.not().outputToBe(output)).toEqual({and: functionAssertions});
         assertAssertionsAndFailures(assertions, failures);
-      };
+      }
 
-      it('shoud pass if the phrase does not exist', function() {
-        failingTestCases.forEach(function(passingTestCase, index) {
-          assertNotOutput(passingTestCase, index+1, 0);
-        });
+      it('shoud pass if the phrase does not exist', () => {
+        failingTestCases.forEach((passingTestCase, index) => assertNotOutput(passingTestCase, index+1, 0));
       });
 
-      it('should fail if the phrase exists', function() {
+      it('should fail if the phrase exists', () => {
         assertNotOutput('cat', 1, 1);
         expect(functionAssertions.tester.test.failures[0]).toBe('Expected <cat> not to be <cat>.');
 

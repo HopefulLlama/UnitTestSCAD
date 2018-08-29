@@ -1,18 +1,14 @@
-var fs = require('fs');
-var util = require('util');
+const FileHandler = require('../util/FileHandler');
+const ModuleAssertions = require('./ModuleAssertions');
+const Tester = require('./Tester');
 
-var FileHandler = require('../util/FileHandler');
-var ModuleAssertions = require('./ModuleAssertions');
-var Tester = require('./Tester');
+module.exports = class extends Tester {
+  constructor(setUpText, testText, test) {
+    super(setUpText, testText, test, new ModuleAssertions());
+  }
 
-function ModuleTester(setUpText, testText, test) {
-  Tester.call(this, setUpText, testText, test, new ModuleAssertions());
-}
-util.inherits(ModuleTester, Tester);
-
-ModuleTester.prototype.generateOutput = function(openScadDirectory) {
-  this.generateScadFile(openScadDirectory);
-  this.output = FileHandler.getStlContent();
+  generateOutput(openScadDirectory) {
+    this.generateScadFile(openScadDirectory);
+    this.output = FileHandler.getStlContent();
+  }
 };
-
-module.exports = ModuleTester;

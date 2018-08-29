@@ -1,14 +1,12 @@
 function genericThingToString(thing) {
   if(Array.isArray(thing)) {
-    var string = '[';
-    thing.forEach(function(element, index) {
-      string += genericThingToString(element);
+    return thing.reduce((accumulator, element, index) => {
+      accumulator += genericThingToString(element);
       if(index !== thing.length - 1) {
-        string += ', ';
+        accumulator += ', ';
       }
-    });
-    string += ']';
-    return string;
+      return accumulator;
+    }, '[') + ']';
   } else if (thing === null) {
     return 'null';
   } else if (thing === undefined) {

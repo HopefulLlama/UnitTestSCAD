@@ -1,11 +1,11 @@
-var PrintHandler = require('../../../src/util/PrintHandler');
+const PrintHandler = require('../../../src/util/PrintHandler');
 
 function TestCase(testee, expectedResult) {
   this.testee = testee;
   this.expectedResult = expectedResult;
 }
 
-describe('PrintHandler', function() {
+describe('PrintHandler', () => {
   [
     new TestCase('Hello', 'Hello'),
     new TestCase(123, '123'),
@@ -17,9 +17,5 @@ describe('PrintHandler', function() {
     new TestCase(undefined, 'undefined'),
     new TestCase([1, 2, 3], '[1, 2, 3]'),
     new TestCase([1, 2, [3, 4]], '[1, 2, [3, 4]]')
-  ].forEach(function(testCase) {
-    it('should do nothing to ' + testCase, function() {
-      expect(PrintHandler(testCase.testee)).toBe(testCase.expectedResult);
-    });
-  });
+  ].forEach(testCase => it(`should do nothing to ${testCase}`, () => expect(PrintHandler(testCase.testee)).toBe(testCase.expectedResult)));
 });

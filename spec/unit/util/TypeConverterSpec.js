@@ -1,8 +1,8 @@
-var OpenScadType = require('../../../src/constants/OpenScadType');
-var TypeConverter = require('../../../src/util/TypeConverter');
+const OpenScadType = require('../../../src/constants/OpenScadType');
+const TypeConverter = require('../../../src/util/TypeConverter');
 
 describe('TypeConverter', function() {
-  var TESTS = {
+  const TESTS = {
     '1': OpenScadType.NUMBER,
     '1.5': OpenScadType.NUMBER,
     '3.14159': OpenScadType.NUMBER,
@@ -20,10 +20,5 @@ describe('TypeConverter', function() {
     'dsfdsfs': undefined
   };
 
-  for(var property in TESTS) {
-  	/* jshint loopfunc: true */
-    it('should convert ' + property + ' to ' + TESTS[property], function() {
-      expect(TypeConverter(property)).toBe(TESTS[property]);
-    });
-  }
+  Object.keys(TESTS).forEach(property => it(`should convert ${property} to ${TESTS[property]}`, () => expect(TypeConverter(property)).toBe(TESTS[property])));
 });

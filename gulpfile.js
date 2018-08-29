@@ -1,12 +1,11 @@
 const gulp = require('gulp');
 const jshint = require('gulp-jshint');
 const jasmine = require('gulp-jasmine');
-const coverage = require('gulp-coverage');
 
 const E2E = require('./spec/e2e/E2E.js');
 
 gulp.task('default', ['test']);
-gulp.task('test', ['lint', 'unit-coverage', 'e2e']);
+gulp.task('test', ['lint', 'unit-test', 'e2e']);
 
 gulp.task('lint', () => {
   return gulp
@@ -27,18 +26,6 @@ gulp.task('unit-test', () => {
   return gulp
     .src('spec/unit/**/*.js')
     .pipe(jasmine());
-});
-
-gulp.task('unit-coverage', () => {
-  return gulp
-    .src('spec/unit/**/*.js')
-    .pipe(coverage.instrument({
-      pattern: ['src/**/*.js']
-    }))
-    .pipe(jasmine())
-    .pipe(coverage.gather())
-    .pipe(coverage.format())
-    .pipe(gulp.dest('reports/unit'));
 });
 
 gulp.task('e2e', done => {

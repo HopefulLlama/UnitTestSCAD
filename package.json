@@ -32,6 +32,8 @@
     "gulp": "^3.9.1",
     "gulp-jasmine": "^2.4.2",
     "gulp-jshint": "^2.0.4",
-    "jshint": "^2.9.4"
+    "jshint": "^2.9.4",
+    "proxyquire": "^2.1.0",
+    "sinon": "^6.1.5"
   }
 }

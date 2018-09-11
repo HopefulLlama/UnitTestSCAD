@@ -22,7 +22,7 @@ function getVertices(contents) {
     .split(EOL)
     .filter(line => line.match(/vertex([ ][0-9]+[.]*[0-9]*){3}/))
     .filter((value, index, self) => self.indexOf(value) === index)
-      // Last three elements should be the co-ordinates, as a string
+  // Last three elements should be the co-ordinates, as a string
     .map(vectorString => vectorString
       .split(' ')
       .slice(-3)

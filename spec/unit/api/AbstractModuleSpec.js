@@ -24,6 +24,7 @@ describe('AbstractModuleSpec', () => {
         [-1, -1],
         [1, 1]
       ];
+
       expect(testee.isWithinBoundingBox(box)).toBe(true, box);
     });
 
@@ -37,6 +38,7 @@ describe('AbstractModuleSpec', () => {
         [-2, -2],
         [2, 2]
       ];
+
       expect(testee.isWithinBoundingBox(box)).toBe(true, box);
     });
 
@@ -50,6 +52,7 @@ describe('AbstractModuleSpec', () => {
         [-2, -2],
         [2, 2]
       ];
+
       expect(testee.isWithinBoundingBox(box)).toBe(false, box);
     });
 
@@ -63,6 +66,7 @@ describe('AbstractModuleSpec', () => {
         [-2, -2],
         [2, 2]
       ];
+
       expect(testee.isWithinBoundingBox(box)).toBe(false, box);
     });
 
@@ -76,6 +80,7 @@ describe('AbstractModuleSpec', () => {
         [-2, -2],
         [2, 2]
       ];
+
       expect(testee.isWithinBoundingBox(box)).toBe(false, box);
     });
 
@@ -89,9 +94,11 @@ describe('AbstractModuleSpec', () => {
         [-2, -2],
         [2, 2]
       ];
+
       expect(testee.isWithinBoundingBox(box)).toBe(false, box);
     });
   });
+
   describe('3d', () => {
     it('should be within bounds when equal', () => {
       const testee = generateAbstractModule([
@@ -103,6 +110,7 @@ describe('AbstractModuleSpec', () => {
         [-1, -1, -1],
         [1, 1, 1]
       ];
+
       expect(testee.isWithinBoundingBox(box)).toBe(true, box);
     });
 
@@ -116,6 +124,7 @@ describe('AbstractModuleSpec', () => {
         [-2, -2, -2],
         [2, 2, 2]
       ];
+
       expect(testee.isWithinBoundingBox(box)).toBe(true, box);
     });
 
@@ -129,6 +138,7 @@ describe('AbstractModuleSpec', () => {
         [-2, -2, -2],
         [2, 2, 2]
       ];
+
       expect(testee.isWithinBoundingBox(box)).toBe(false, box);
     });
 
@@ -142,6 +152,7 @@ describe('AbstractModuleSpec', () => {
         [-2, -2, -2],
         [2, 2, 2]
       ];
+
       expect(testee.isWithinBoundingBox(box)).toBe(false, box);
     });
 
@@ -155,6 +166,7 @@ describe('AbstractModuleSpec', () => {
         [-2, -2, -2],
         [2, 2, 2]
       ];
+
       expect(testee.isWithinBoundingBox(box)).toBe(false, box);
     });
 
@@ -168,6 +180,7 @@ describe('AbstractModuleSpec', () => {
         [-2, -2, -2],
         [2, 2, 2]
       ];
+
       expect(testee.isWithinBoundingBox(box)).toBe(false, box);
     });
 
@@ -181,6 +194,7 @@ describe('AbstractModuleSpec', () => {
         [-2, -2, -2],
         [2, 2, 2]
       ];
+
       expect(testee.isWithinBoundingBox(box)).toBe(false, box);
     });
 
@@ -194,6 +208,7 @@ describe('AbstractModuleSpec', () => {
         [-2, -2, -2],
         [2, 2, 2]
       ];
+
       expect(testee.isWithinBoundingBox(box)).toBe(false, box);
     });
   });

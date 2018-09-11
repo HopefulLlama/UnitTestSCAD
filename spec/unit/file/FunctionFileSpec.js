@@ -3,7 +3,7 @@ const {EOL} = require('os');
 const proxyquire = require('proxyquire');
 
 // copied from FunctionFile.js
-const stlFile = `UnitTestSCAD_48967_TEMP_DELETE-ME_FUNCTION.stl`;
+const stlFile = 'UnitTestSCAD_48967_TEMP_DELETE-ME_FUNCTION.stl';
 
 const startMarker = '"UnitTestSCAD __start_marker__"';
 const endMarker = '"UnitTestSCAD __end_marker__"';

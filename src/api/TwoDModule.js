@@ -6,7 +6,7 @@ const TwoDModuleFile = require('../file/TwoDModuleFile');
 function getVertices(parsedOutput) {
   return parsedOutput.path
     .reduce((previousValue, currentValue) => {
-      return previousValue.concat(currentValue.$.d.match(/(\-*\d+,\-*\d+)/g));
+      return previousValue.concat(currentValue.$.d.match(/(-*\d+,-*\d+)/g));
     }, [])
     .map(value => value
       .split(',')

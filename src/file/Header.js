@@ -10,11 +10,11 @@ function getImports(imports, prefix, directory) {
 }
 
 function getUses(imports, directory) {
-  return getImports(imports, "use", directory);
+  return getImports(imports, 'use', directory);
 }
 
 function getIncludes(imports, directory) {
-  return getImports(imports, "include", directory);
+  return getImports(imports, 'include', directory);
 }
 
 module.exports = {

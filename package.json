@@ -4,7 +4,18 @@
   "description": "UnitTestSCAD: Unit Testing for OpenSCAD",
   "main": "index.js",
   "scripts": {
-    "test": "gulp test"
+    "lint-src": "eslint -c .eslintrc.src.json ./src/**/*.js",
+    "lint-spec": "eslint -c .eslintrc.spec.json ./spec/**/*.js",
+    "lint": "npm run lint-src && npm run lint-spec",
+    "lint-fix": "npm run lint-src -- --fix && npm run lint-spec -- --fix",
+    "unit-test": "jasmine \"./spec/unit/**/*Spec.js\"",
+    "integration-test": "jasmine \"./spec/integration/**/*Spec.js\"",
+    "test": "npm run lint && npm run unit-test && npm run integration-test",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "./src/**/*.js": ["npm run lint-src -- --fix", "git add"],
+    "./spec/**/*.js": ["npm run lint-spec -- --fix", "git add"]
   },
   "bin": {
     "unittestscad": "./src/UnitTestSCAD.js"
@@ -25,14 +36,14 @@
   },
   "homepage": "https://github.com/HopefulLlama/UnitTestSCAD#readme",
   "dependencies": {
-    "winston": "^2.3.1",
     "xml2js": "^0.4.17"
   },
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-jasmine": "^2.4.2",
-    "gulp-jshint": "^2.0.4",
-    "jshint": "^2.9.4",
+    "eslint": "^5.5.0",
+    "eslint-plugin-jasmine": "^2.10.1",
+    "husky": "^0.14.3",
+    "jasmine": "^3.2.0",
+    "lint-staged": "^7.2.2",
     "proxyquire": "^2.1.0",
     "sinon": "^6.1.5"
   }

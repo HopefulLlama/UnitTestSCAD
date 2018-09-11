@@ -12,6 +12,7 @@ describe('HeaderSpec', () => {
     describe('use', () => {
       it('should generate uses', () => {
         const header = getHeader('', uses, []);
+
         expect(header).toBe([
           'use <uses-a>;',
           'use <uses-b>;',
@@ -22,6 +23,7 @@ describe('HeaderSpec', () => {
 
       it('should generate uses with route', () => {
         const header = getHeader(directory, uses, []);
+
         expect(header).toBe([
           'use <mockDirectory/uses-a>;',
           'use <mockDirectory/uses-b>;',
@@ -34,6 +36,7 @@ describe('HeaderSpec', () => {
     describe('include', () => {
       it('should generate includes', () => {
         const header = getHeader('', [], includes);
+
         expect(header).toBe([
           'include <includes-a>;',
           'include <includes-b>;',
@@ -44,6 +47,7 @@ describe('HeaderSpec', () => {
 
       it('should generate includes with route', () => {
         const header = getHeader(directory, [], includes);
+
         expect(header).toBe([
           'include <mockDirectory/includes-a>;',
           'include <mockDirectory/includes-b>;',
@@ -56,6 +60,7 @@ describe('HeaderSpec', () => {
     describe('use and include', () => {
       it('should generate uses and includes', () => {
         const header = getHeader('', uses, includes);
+
         expect(header).toBe([
           'use <uses-a>;',
           'use <uses-b>;',
@@ -69,6 +74,7 @@ describe('HeaderSpec', () => {
 
       it('should generate uses and includes with route', () => {
         const header = getHeader(directory, uses, includes);
+
         expect(header).toBe([
           'use <mockDirectory/uses-a>;',
           'use <mockDirectory/uses-b>;',

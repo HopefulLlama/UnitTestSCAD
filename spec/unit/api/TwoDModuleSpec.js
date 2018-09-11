@@ -1,6 +1,5 @@
 const path = require('path');
 const fs = require('fs');
-const {EOL} = require('os');
 
 const proxyquire = require('proxyquire');
 
@@ -35,18 +34,27 @@ describe('TwoDModuleSpec', () => {
 
       expect(testee.parsedOutput).toEqual(jasmineAssertion);
     });
-    it('should extract the height', () => expect(testee.height).toBe(6));
-    it('should extract the width', () => expect(testee.width).toBe(6));
-    it('should extract the vertices', () => expect(testee.vertices).toEqual([
-      [6, -6],
-      [5, -6],
-      [5, -5],
-      [6, -5],
-      [1, -1],
-      [0, -1],
-      [0, -0],
-      [1, -0],
-    ]));
+
+    it('should extract the height', () =>
+
+      expect(testee.height).toBe(6));
+
+    it('should extract the width', () =>
+
+      expect(testee.width).toBe(6));
+
+    it('should extract the vertices', () =>
+
+      expect(testee.vertices).toEqual([
+        [6, -6],
+        [5, -6],
+        [5, -5],
+        [6, -5],
+        [1, -1],
+        [0, -1],
+        [0, -0],
+        [1, -0],
+      ]));
   });
 
   describe('error thrown on XML parse', () => {

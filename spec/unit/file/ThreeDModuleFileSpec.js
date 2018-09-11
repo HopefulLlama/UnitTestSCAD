@@ -1,7 +1,7 @@
 const proxyquire = require('proxyquire');
 
 // Copied from ThreeDModuleFile.js
-const stlFile = `UnitTestSCAD_48967_TEMP_DELETE-ME_THREE_D.stl`;
+const stlFile = 'UnitTestSCAD_48967_TEMP_DELETE-ME_THREE_D.stl';
 
 const header = 'header';
 const setUpText = 'setUpText';

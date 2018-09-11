@@ -1,7 +1,7 @@
 const proxyquire = require('proxyquire');
 
 // Copied from TwoDModuleFile.js
-const svgFile = `UnitTestSCAD_48967_TEMP_DELETE-ME_TWO_D.svg`;
+const svgFile = 'UnitTestSCAD_48967_TEMP_DELETE-ME_TWO_D.svg';
 
 const header = 'header';
 const setUpText = 'setUpText';

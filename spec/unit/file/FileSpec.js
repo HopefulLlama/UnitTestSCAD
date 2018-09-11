@@ -9,7 +9,7 @@ const options = {
 };
 
 // scadFile comes directly from File.js
-const scadFile = `UnitTestSCAD_48967_TEMP_DELETE-ME_SCAD.scad`;
+const scadFile = 'UnitTestSCAD_48967_TEMP_DELETE-ME_SCAD.scad';
 
 const tempDirectory = 'temp';
 const output = 'output';

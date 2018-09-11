@@ -47,10 +47,21 @@ describe('TwoDModuleSpec', () => {
         });
       });
 
-      it('should have the correct height', () => expect(testee.height).toBe(4));
-      it('should have the correct width', () => expect(testee.width).toBe(5));
-      it('should have the correct vertices', () => expect(testee.vertices).toEqual(expectedVertices));
-      it('should have the correct parsedOutput', () => expect(testee.parsedOutput).toEqual(jasmineAssertion));
+      it('should have the correct height', () =>
+
+        expect(testee.height).toBe(4));
+
+      it('should have the correct width', () =>
+
+        expect(testee.width).toBe(5));
+
+      it('should have the correct vertices', () =>
+
+        expect(testee.vertices).toEqual(expectedVertices));
+
+      it('should have the correct parsedOutput', () =>
+
+        expect(testee.parsedOutput).toEqual(jasmineAssertion));
     });
 
     describe('use', () => {
@@ -64,10 +75,21 @@ describe('TwoDModuleSpec', () => {
         });
       });
 
-      it('should have the correct height', () => expect(testee.height).toBe(4));
-      it('should have the correct width', () => expect(testee.width).toBe(5));
-      it('should have the correct vertices', () => expect(testee.vertices).toEqual(expectedVertices));
-      it('should have the correct parsedOutput', () => expect(testee.parsedOutput).toEqual(jasmineAssertion));
+      it('should have the correct height', () =>
+
+        expect(testee.height).toBe(4));
+
+      it('should have the correct width', () =>
+
+        expect(testee.width).toBe(5));
+
+      it('should have the correct vertices', () =>
+
+        expect(testee.vertices).toEqual(expectedVertices));
+
+      it('should have the correct parsedOutput', () =>
+
+        expect(testee.parsedOutput).toEqual(jasmineAssertion));
     });
 
     describe('setUpText', () => {
@@ -80,10 +102,21 @@ describe('TwoDModuleSpec', () => {
         });
       });
 
-      it('should have the correct height', () => expect(testee.height).toBe(4));
-      it('should have the correct width', () => expect(testee.width).toBe(5));
-      it('should have the correct vertices', () => expect(testee.vertices).toEqual(expectedVertices));
-      it('should have the correct parsedOutput', () => expect(testee.parsedOutput).toEqual(jasmineAssertion));
+      it('should have the correct height', () =>
+
+        expect(testee.height).toBe(4));
+
+      it('should have the correct width', () =>
+
+        expect(testee.width).toBe(5));
+
+      it('should have the correct vertices', () =>
+
+        expect(testee.vertices).toEqual(expectedVertices));
+
+      it('should have the correct parsedOutput', () =>
+
+        expect(testee.parsedOutput).toEqual(jasmineAssertion));
     });
 
     describe('testText', () => {
@@ -96,10 +129,21 @@ describe('TwoDModuleSpec', () => {
         });
       });
 
-      it('should have the correct height', () => expect(testee.height).toBe(4));
-      it('should have the correct width', () => expect(testee.width).toBe(5));
-      it('should have the correct vertices', () => expect(testee.vertices).toEqual(expectedVertices));
-      it('should have the correct parsedOutput', () => expect(testee.parsedOutput).toEqual(jasmineAssertion));
+      it('should have the correct height', () =>
+
+        expect(testee.height).toBe(4));
+
+      it('should have the correct width', () =>
+
+        expect(testee.width).toBe(5));
+
+      it('should have the correct vertices', () =>
+
+        expect(testee.vertices).toEqual(expectedVertices));
+
+      it('should have the correct parsedOutput', () =>
+
+        expect(testee.parsedOutput).toEqual(jasmineAssertion));
     });
   });
 });

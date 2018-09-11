@@ -60,12 +60,16 @@ describe('OpenSCADFunctionSpec', () => {
       });
 
 
-      it(`${type.method} should be true`, () => expect(testee[type.method]()).toBe(true, type.method));
+      it(`${type.method} should be true`, () =>
+
+        expect(testee[type.method]()).toBe(true, type.method));
 
       types
         .filter(notType => notType !== type)
         .forEach(notType => {
-          it(`${notType.method} should be false`, () => expect(testee[notType.method]()).toBe(false, notType.method));
+          it(`${notType.method} should be false`, () =>
+
+            expect(testee[notType.method]()).toBe(false, notType.method));
         });
     });
   });

@@ -20,10 +20,10 @@ describe('AbstractModuleSpec', () => {
         [1, 1]
       ]);
 
-      const box = [
-        [-1, -1],
-        [1, 1]
-      ];
+      const box = {
+        min: [-1, -1],
+        max: [1, 1]
+      };
 
       expect(testee.isWithinBoundingBox(box)).toBe(true, box);
     });
@@ -34,10 +34,10 @@ describe('AbstractModuleSpec', () => {
         [1, 1]
       ]);
 
-      const box = [
-        [-2, -2],
-        [2, 2]
-      ];
+      const box = {
+        min: [-2, -2],
+        max: [2, 2]
+      };
 
       expect(testee.isWithinBoundingBox(box)).toBe(true, box);
     });
@@ -48,10 +48,10 @@ describe('AbstractModuleSpec', () => {
         [1, 1]
       ]);
 
-      const box = [
-        [-2, -2],
-        [2, 2]
-      ];
+      const box = {
+        min: [-2, -2],
+        max: [2, 2]
+      };
 
       expect(testee.isWithinBoundingBox(box)).toBe(false, box);
     });
@@ -62,10 +62,10 @@ describe('AbstractModuleSpec', () => {
         [5, 1]
       ]);
 
-      const box = [
-        [-2, -2],
-        [2, 2]
-      ];
+      const box = {
+        min: [-2, -2],
+        max: [2, 2]
+      };
 
       expect(testee.isWithinBoundingBox(box)).toBe(false, box);
     });
@@ -76,10 +76,10 @@ describe('AbstractModuleSpec', () => {
         [1, 1]
       ]);
 
-      const box = [
-        [-2, -2],
-        [2, 2]
-      ];
+      const box = {
+        min: [-2, -2],
+        max: [2, 2]
+      };
 
       expect(testee.isWithinBoundingBox(box)).toBe(false, box);
     });
@@ -90,10 +90,10 @@ describe('AbstractModuleSpec', () => {
         [1, 5]
       ]);
 
-      const box = [
-        [-2, -2],
-        [2, 2]
-      ];
+      const box = {
+        min: [-2, -2],
+        max: [2, 2]
+      };
 
       expect(testee.isWithinBoundingBox(box)).toBe(false, box);
     });
@@ -106,10 +106,10 @@ describe('AbstractModuleSpec', () => {
         [1, 1, 1]
       ]);
 
-      const box = [
-        [-1, -1, -1],
-        [1, 1, 1]
-      ];
+      const box = {
+        min: [-1, -1, -1],
+        max: [1, 1, 1]
+      };
 
       expect(testee.isWithinBoundingBox(box)).toBe(true, box);
     });
@@ -120,10 +120,10 @@ describe('AbstractModuleSpec', () => {
         [1, 1, 1]
       ]);
 
-      const box = [
-        [-2, -2, -2],
-        [2, 2, 2]
-      ];
+      const box = {
+        min: [-2, -2, -2],
+        max: [2, 2, 2]
+      };
 
       expect(testee.isWithinBoundingBox(box)).toBe(true, box);
     });
@@ -134,10 +134,10 @@ describe('AbstractModuleSpec', () => {
         [1, 1, 1]
       ]);
 
-      const box = [
-        [-2, -2, -2],
-        [2, 2, 2]
-      ];
+      const box = {
+        min: [-2, -2, -2],
+        max: [2, 2, 2]
+      };
 
       expect(testee.isWithinBoundingBox(box)).toBe(false, box);
     });
@@ -148,10 +148,10 @@ describe('AbstractModuleSpec', () => {
         [5, 1, 1]
       ]);
 
-      const box = [
-        [-2, -2, -2],
-        [2, 2, 2]
-      ];
+      const box = {
+        min: [-2, -2, -2],
+        max: [2, 2, 2]
+      };
 
       expect(testee.isWithinBoundingBox(box)).toBe(false, box);
     });
@@ -162,10 +162,10 @@ describe('AbstractModuleSpec', () => {
         [1, 1, 1]
       ]);
 
-      const box = [
-        [-2, -2, -2],
-        [2, 2, 2]
-      ];
+      const box = {
+        min: [-2, -2, -2],
+        max: [2, 2, 2]
+      };
 
       expect(testee.isWithinBoundingBox(box)).toBe(false, box);
     });
@@ -176,10 +176,10 @@ describe('AbstractModuleSpec', () => {
         [1, 5, 1]
       ]);
 
-      const box = [
-        [-2, -2, -2],
-        [2, 2, 2]
-      ];
+      const box = {
+        min: [-2, -2, -2],
+        max: [2, 2, 2]
+      };
 
       expect(testee.isWithinBoundingBox(box)).toBe(false, box);
     });
@@ -190,10 +190,10 @@ describe('AbstractModuleSpec', () => {
         [1, 1, 1]
       ]);
 
-      const box = [
-        [-2, -2, -2],
-        [2, 2, 2]
-      ];
+      const box = {
+        min: [-2, -2, -2],
+        max: [2, 2, 2]
+      };
 
       expect(testee.isWithinBoundingBox(box)).toBe(false, box);
     });
@@ -204,10 +204,10 @@ describe('AbstractModuleSpec', () => {
         [1, 1, 5]
       ]);
 
-      const box = [
-        [-2, -2, -2],
-        [2, 2, 2]
-      ];
+      const box = {
+        min: [-2, -2, -2],
+        max: [2, 2, 2]
+      };
 
       expect(testee.isWithinBoundingBox(box)).toBe(false, box);
     });

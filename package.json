@@ -11,11 +11,18 @@
     "unit-test": "jasmine \"./spec/unit/**/*Spec.js\"",
     "integration-test": "jasmine \"./spec/integration/**/*Spec.js\"",
     "test": "npm run lint && npm run unit-test && npm run integration-test",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged && npm run doc && git add docs",
+    "doc": "jsdoc -r ./src -d docs -c ./jsdoc.conf.json"
   },
   "lint-staged": {
-    "./src/**/*.js": ["npm run lint-src -- --fix", "git add"],
-    "./spec/**/*.js": ["npm run lint-spec -- --fix", "git add"]
+    "./src/**/*.js": [
+      "npm run lint-src -- --fix",
+      "git add"
+    ],
+    "./spec/**/*.js": [
+      "npm run lint-spec -- --fix",
+      "git add"
+    ]
   },
   "bin": {
     "unittestscad": "./src/UnitTestSCAD.js"
@@ -36,6 +43,7 @@
   },
   "homepage": "https://github.com/HopefulLlama/UnitTestSCAD#readme",
   "dependencies": {
+    "jsdoc": "^3.5.5",
     "xml2js": "^0.4.17"
   },
   "devDependencies": {

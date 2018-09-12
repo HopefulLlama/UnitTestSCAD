@@ -9,10 +9,16 @@ module.exports = class extends AbstractParent {
     super(options, file);
   }
 
-  isWithinBoundingBox(vectors) {
+  /**
+   * @typedef {object} BoundingBox A box in 2D/3D space.
+   * @property {Vertex} min A 2D/3D vertex which defines the 'minimum' co-ordinates. This is the corner of the box with the lowest x, y and optional z co-ordinate.
+   * @property {Vertex} max A 2D/3D vertex which defines the 'maximum' co-ordinates. This is the corner of the box with the highest x, y and optional z co-ordinate.
+   */
+
+  isWithinBoundingBox(boundingBox) {
     const failingVertices = this.vertices.reduce((failingCounter, vertex) => {
-      return failingCounter + vertex.reduce((prevValue, coordinate, index) => {
-        return isCoordinateWithinBounds(coordinate, vectors[0][index], vectors[1][index]) ? prevValue : prevValue + 1;
+      return failingCounter + vertex.reduce((accumulator, coordinate, index) => {
+        return isCoordinateWithinBounds(coordinate, boundingBox.min[index], boundingBox.max[index]) ? accumulator : accumulator + 1;
       }, 0);
     }, 0);
 

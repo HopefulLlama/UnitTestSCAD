@@ -14,6 +14,19 @@ function sanitise(options) {
   };
 }
 
+/**
+ * @typedef {object} Options Key/value pair of options to configure the execution of an OpenSCAD test.
+ * @property {String} openSCADDirectory The prefix to prepend to all uses/includes.
+ * @property {String[]} use List of .scad files to import as 'use'.
+ * @property {String[]} include List of .scad files to import as 'include'.
+ * @property {String} setUpText Any required OpenSCAD code to set up the test.
+ * @property {String} testText The OpenSCAD code to be tested and asserted on.
+ */
+
+/**
+ * @typedef {number[]} Vertex A 2/3 length co-ordinate representing a point in 2D/3D space.
+ */
+
 module.exports = class {
   constructor(dirtyOptions, fileType) {
     const options = sanitise(dirtyOptions);

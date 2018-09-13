@@ -45,24 +45,33 @@ function getDimensionSize(vertices, index) {
   return range.max - range.min;
 }
 
-function getVertices(contents) {
-  return contents
-    .split(EOL)
-    .filter(line => line.match(/vertex([ ][0-9]+[.]*[0-9]*){3}/))
-    .filter((value, index, self) => self.indexOf(value) === index)
-  // Last three elements should be the co-ordinates, as a string
-    .map(vectorString => vectorString
-      .split(' ')
-      .slice(-3)
-      .map(vertex => parseFloat(vertex, 10))
-    );
+function getVertex(content) {
+  return content
+    .split(' ')
+    // Last three elements should be the co-ordinates, as a string
+    .slice(-3)
+    .map(vertex => parseFloat(vertex, 10));
 }
 
-function getTriangleCount(contents) {
+function getVertices(contents) {
+  const vertexRegex = new RegExp(/vertex([ ][0-9]+[.]*[0-9]*){3}/, 'gm');
+
   return contents
-    .split(EOL)
-    .filter(line => line.match(/endfacet/))
-    .length;
+    .match(vertexRegex)
+    .filter((value, index, self) => self.indexOf(value) === index)
+    .map(vertexString => getVertex(vertexString));
+}
+
+function getTriangles(contents) {
+  const triangleRegex = new RegExp(/outer loop[\s\S]+?endloop/, 'g');
+
+  return contents
+    .match(triangleRegex)
+    .map(triangleString => triangleString.split(EOL))
+    .map(triangleStrings => triangleStrings.splice(1, 3))
+    .map(verticesOfTriangleStrings => {
+      return verticesOfTriangleStrings.map(vertexString => getVertex(vertexString));
+    });
 }
 
 /** @class */
@@ -113,13 +122,16 @@ class ThreeDModule extends AbstractModule {
      */
     this.depth = getDimensionSize(this.vertices, 2);
 
-    // List of triangles rather than count pls
+    /**
+     * @typedef {Vertex[]} Triangle An array of three 3D vertices which describe a triangle. See {@link https://en.wikipedia.org/wiki/Triangle_mesh}.
+     */
+
     /**
      * @memberof ThreeDModule
      * @instance
-     * @member {number} triangleCount The number of the 'triangles' which make up the model. See {@link https://en.wikipedia.org/wiki/Triangle_mesh}.
+     * @member {Triangle[]} triangles The triangles which make up the model. See {@link https://en.wikipedia.org/wiki/Triangle_mesh}.
      */
-    this.triangleCount = getTriangleCount(this.output);
+    this.triangles = getTriangles(this.output);
   }
 }
 

@@ -12,7 +12,7 @@ UnitTestSCAD brings forth unit testing capabilities to OpenSCAD. Unit testing en
 - [API Reference](#api-reference)
 - [Change Log](#change-log)
 - [Uninstalling](#uninstalling)
-- [Contribuing](#contributing)
+- [Contributing](#contributing)
 - [License](#license)
 
 # Getting Started

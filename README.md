@@ -56,7 +56,7 @@ const UnitTestSCAD = require('unittestscad');
 ```
 
 # API Reference
-See [API Documentation](docs/index.html) for more details.
+See [API Documentation](https://hopefulllama.github.io/UnitTestSCAD/) for more details.
 
 # Change Log
 See the [Change Log](CHANGELOG.md) document for more information on changes.

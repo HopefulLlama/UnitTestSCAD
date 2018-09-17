@@ -13,13 +13,13 @@ The [GitHub Issues](https://github.com/HopefulLlama/UnitTestSCAD/issues) page fo
 Please feel free to join in!
 
 ### Bugs
-Include as much detail as possible. 
-- What were you trying to do? 
-- What happened instead? 
+Include as much detail as possible.
+- What were you trying to do?
+- What happened instead?
 - What did you do to make it happen?
 
 ### Feature Requests
-Include as much detail as possible. 
+Include as much detail as possible.
 - What would this new feature do? What problem does it fix?
 - Is this achievable by the current implementation of JointSCAD at all?
 
@@ -34,6 +34,4 @@ GitHub has a pretty strictly enforced branch/pull request flow if you wish to su
 ## Dev Setup
 Follow the instructions listed in [Getting Started](../../..#getting-started).
 
-Clone UnitTestSCAD repository and run `npm install` in the to install all dependencies needed.
-
-Additionally run `npm install -g gulp`. Gulp is used to run linting and unit tests.
+Clone the UnitTestSCAD repository and run `npm install` to install all dependencies.

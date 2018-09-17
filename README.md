@@ -2,7 +2,9 @@
 
 ![License](https://img.shields.io/npm/l/unittestscad.svg) [![NPM](https://img.shields.io/npm/v/unittestscad.svg)](https://www.npmjs.com/package/unittestscad) [![Code Climate](https://img.shields.io/codeclimate/github/HopefulLlama/UnitTestSCAD.svg)](https://codeclimate.com/github/HopefulLlama/UnitTestSCAD) [![Join the chat at https://gitter.im/UnitTestSCAD/Lobby](https://badges.gitter.im/UnitTestSCAD/Lobby.svg)](https://gitter.im/UnitTestSCAD/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Unit Testing for OpenSCAD
+![UnitTestSCAD: expect(cube.scad).toBe(cube);](assets/banner.png)
+
+# Unit Testing for OpenSCAD
 
 UnitTestSCAD brings forth unit testing capabilities to OpenSCAD. Unit testing enables you to check for regressions, accuracy and robustness of code in a fast, repeatable manner. Speed of development increases as unit tests will worry about your regressions, and allow you to plow ahead with your vision.
 
@@ -10,10 +12,6 @@ UnitTestSCAD brings forth unit testing capabilities to OpenSCAD. Unit testing en
 - [Getting Started](#getting-started)
 - [Usage](#usage)
 - [API Reference](#api-reference)
-- [Change Log](#change-log)
-- [Uninstalling](#uninstalling)
-- [Contributing](#contributing)
-- [License](#license)
 
 # Getting Started
 ## Installing OpenSCAD
@@ -55,14 +53,15 @@ UnitTestSCAD should be required as standard into a NodeJS script.
 const UnitTestSCAD = require('unittestscad');
 ```
 
+`UnitTestSCAD` exposes several classes designed at enabling assertions on your `.scad` functions and modules. For example, to assert against a `.scad` file which produces a cube (`cube.scad`), you can create it as such:
+
+```javascript
+const cube = new UnitTestSCAD.ThreeDModule({
+  include: 'cube.scad'
+});
+
+cube.height === 5;
+```
+
 # API Reference
 See [API Documentation](https://hopefulllama.github.io/UnitTestSCAD/) for more details.
-
-# Change Log
-See the [Change Log](CHANGELOG.md) document for more information on changes.
-
-# Contributing
-See the [Contributing](CONTRIBUTING.md) document for more information on contributing.
-
-# License
-See the [License](LICENSE) document for more information on licensing.

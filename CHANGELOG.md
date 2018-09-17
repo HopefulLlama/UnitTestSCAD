@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Nothing yet
+
+## [3.0.0] 2018-09-17
 ### Changed
 - Entire API has been reworked.
 - Removed all assertion methods.
@@ -68,7 +71,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Initial release hype!
 
-[Unreleased]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v2.2.0...HEAD
+[Unreleased]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v3.0.0...HEAD
+[3.0.0]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v2.2.0...v3.0.0
 [2.2.0]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v2.1.1...v2.2.0
 [2.1.1]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v2.0.1...v2.1.0

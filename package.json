@@ -12,7 +12,8 @@
     "integration-test": "jasmine \"./spec/integration/**/*Spec.js\"",
     "test": "npm run lint && npm run unit-test && npm run integration-test",
     "precommit": "lint-staged && npm run doc && git add docs",
-    "doc": "jsdoc -r ./src -d docs -c ./jsdoc.conf.json"
+    "doc": "jsdoc -r ./src -d docs -c ./jsdoc.conf.json",
+    "release": "node node_modules/llama-rlsr/src/llama-rlsr.js llama-rlsr.config.js"
   },
   "lint-staged": {
     "./src/**/*.js": [
@@ -49,10 +50,15 @@
   "devDependencies": {
     "eslint": "^5.5.0",
     "eslint-plugin-jasmine": "^2.10.1",
+    "github-api": "^3.0.0",
     "husky": "^0.14.3",
     "jasmine": "^3.2.0",
     "lint-staged": "^7.2.2",
+    "llama-rlsr": "0.0.6",
+    "llama-rlsr-keep-a-changelog": "0.0.4",
+    "llama-rlsr-npm": "0.0.2",
     "proxyquire": "^2.1.0",
+    "simple-git": "^1.98.0",
     "sinon": "^6.1.5"
   }
 }

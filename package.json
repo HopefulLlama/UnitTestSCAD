@@ -8,12 +8,13 @@
     "lint-spec": "eslint -c .eslintrc.spec.json ./spec/**/*.js",
     "lint": "npm run lint-src && npm run lint-spec",
     "lint-fix": "npm run lint-src -- --fix && npm run lint-spec -- --fix",
-    "unit-test": "jasmine \"./spec/unit/**/*Spec.js\"",
-    "integration-test": "jasmine \"./spec/integration/**/*Spec.js\"",
+    "unit-test": "nyc jasmine \"./spec/unit/**/*Spec.js\"",
+    "integration-test": "nyc --no-clean jasmine \"./spec/integration/**/*Spec.js\"",
     "test": "npm run lint && npm run unit-test && npm run integration-test",
     "precommit": "lint-staged && npm run doc && git add docs",
     "doc": "jsdoc -r ./src -d docs -c ./jsdoc.conf.json",
-    "release": "node node_modules/llama-rlsr/src/llama-rlsr.js llama-rlsr.config.js"
+    "release": "node node_modules/llama-rlsr/src/llama-rlsr.js llama-rlsr.config.js",
+    "coverage-report": "nyc report --reporter=html"
   },
   "lint-staged": {
     "./src/**/*.js": [
@@ -57,6 +58,7 @@
     "llama-rlsr": "0.0.6",
     "llama-rlsr-keep-a-changelog": "0.0.4",
     "llama-rlsr-npm": "0.0.2",
+    "nyc": "^13.0.1",
     "proxyquire": "^2.1.0",
     "simple-git": "^1.98.0",
     "sinon": "^6.1.5"

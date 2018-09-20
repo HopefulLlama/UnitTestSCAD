@@ -60,6 +60,7 @@
     "llama-rlsr-npm": "0.0.2",
     "nyc": "^13.0.1",
     "proxyquire": "^2.1.0",
+    "rimraf": "^2.6.2",
     "simple-git": "^1.98.0",
     "sinon": "^6.1.5"
   }

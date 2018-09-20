@@ -5,7 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-- Nothing yet
+### Fixed
+- Fixed `package-lock.json`.
 
 ## [3.0.0] 2018-09-17
 ### Changed

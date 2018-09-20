@@ -1,6 +1,6 @@
 {
   "name": "unittestscad",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "UnitTestSCAD: Unit Testing for OpenSCAD",
   "main": "index.js",
   "scripts": {

@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Nothing yet
+
+## [3.0.3] 2018-09-27
 ### Fixed
 - Fixed `main` entry in `package.json` to point to UnitTestSCAD's correct entry point.
 
@@ -80,7 +83,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Initial release hype!
 
-[Unreleased]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v3.0.2...HEAD
+[Unreleased]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v3.0.3...HEAD
+[3.0.3]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v3.0.2...v3.0.3
 [3.0.2]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v3.0.1...v3.0.2
 [3.0.1]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v3.0.0...v3.0.1
 [3.0.0]: https://github.com/HopefulLlama/UnitTestSCAD/compare/v2.2.0...v3.0.0

@@ -1,6 +1,6 @@
 # ![UnitTestSCAD Logo](assets/UnitTestSCAD-32.png)UnitTestSCAD
 
-![License](https://img.shields.io/npm/l/unittestscad.svg) [![NPM](https://img.shields.io/npm/v/unittestscad.svg)](https://www.npmjs.com/package/unittestscad) [![Code Climate](https://img.shields.io/codeclimate/github/HopefulLlama/UnitTestSCAD.svg)](https://codeclimate.com/github/HopefulLlama/UnitTestSCAD) [![Join the chat at https://gitter.im/UnitTestSCAD/Lobby](https://badges.gitter.im/UnitTestSCAD/Lobby.svg)](https://gitter.im/UnitTestSCAD/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+![License](https://img.shields.io/npm/l/unittestscad.svg) [![NPM](https://img.shields.io/npm/v/unittestscad.svg)](https://www.npmjs.com/package/unittestscad) [![Code Climate](https://img.shields.io/codeclimate/github/HopefulLlama/UnitTestSCAD.svg)](https://codeclimate.com/github/HopefulLlama/UnitTestSCAD) [![Join the chat at https://gitter.im/UnitTestSCAD/Lobby](https://badges.gitter.im/UnitTestSCAD/Lobby.svg)](https://gitter.im/UnitTestSCAD/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Greenkeeper badge](https://badges.greenkeeper.io/HopefulLlama/UnitTestSCAD.svg)](https://greenkeeper.io/)
 
 ![UnitTestSCAD: expect(cube.scad).toBe(cube);](assets/banner.png)
 

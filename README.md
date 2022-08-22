@@ -57,7 +57,7 @@ const UnitTestSCAD = require('unittestscad');
 
 ```javascript
 const cube = new UnitTestSCAD.ThreeDModule({
-  include: 'cube.scad'
+  include: ['cube.scad']
 });
 
 cube.height === 5;

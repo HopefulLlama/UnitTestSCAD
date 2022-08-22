@@ -9,8 +9,8 @@ function writeSCADFile(header, setUpText, testText) {
   fs.writeFileSync(scadFile, contents);
 }
 
-function executeOpenSCAD(tempFile) {
-  const command = `openscad -o ${tempFile} ${scadFile}`;
+function executeOpenSCAD(tempFile, variables) {
+  const command = `openscad -o ${tempFile} ${variables.reduce((acc,item)=>" -D "+item[0]+"=\""+item[1]+acc+"\"", "")} ${scadFile}`;
   const out = execSync(command).toString();
   const file = fs.readFileSync(tempFile, 'utf-8');
   return {
@@ -29,7 +29,7 @@ module.exports = {
   execute(options, tempOutput) {
     writeSCADFile(options.header, options.setUpText, options.testText);
     try {
-      return executeOpenSCAD(tempOutput);
+      return executeOpenSCAD(tempOutput, options.setVariables);
     } catch(error) {
       throw error;
     } finally {
